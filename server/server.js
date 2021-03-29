@@ -1,43 +1,75 @@
-let express=require("express");
-//var server=express();
-let bodyParser=require("body-parser");
-let mysql=require("mysql");
+const express=require("express");
+const mysql=require("mysql");
+const cors=require("cors");
 
-let server = express();
-server.use(bodyParser.json());
-server.use(express.static(__dirname + "App.js"));
-server.listen(8080, informIsAlive);
+const app=express();
 
-let mysqlConection=mysql.createConnection({
 
+app.use(express.json());
+app.use(cors());
+
+const mySqlConection=mysql.createConnection({
     host: "mysqlhoteldb.mysql.database.azure.com",
-    //port: 3306,
     user: "ATLAS@mysqlhoteldb",
     password: "Assistehotel2021",
     database: "hotel_db",
     ssl: true
+});
+
+app.post('/register',(req,res)=>{
+
+    const first_name=req.body.first_name;
+    const second_name=req.body.second_name;
+    const email=req.body.email;
+    const phone=req.body.phone;
+    const username=req.body.username;
+    const password=req.body.password;
+
+
+    const register_querry="INSERT INTO accounts (first_name,second_name,email,phone,role,username,password) VALUES (?,?,?,?,?,?,?)";
+
+    mySqlConection.query(
+        register_querry,
+        [first_name,second_name,email,phone,1,username,password],
+        (err,result)=>{
+            console.log(err);
+    });
 
 });
 
-function informIsAlive() {
-    console.log("Server is running on 8080");
-  }
+app.post('/login',(req,res)=>{
 
-mysqlConection.connect((err)=>
-{
-    if(!err)
-        console.log("DB connection succeded\n");
-    else
-        console.log("DB connection failed\n Error: "+JSON.stringify(err,undefined,2));
+    const email=req.body.email;
+    const password=req.body.password;
+
+    //console.log(email);
+    //console.log(password);
+
+    const login_querry="SELECT * FROM accounts WHERE email = ? AND password = ?";
+    mySqlConection.query(
+        login_querry,
+        [email,password],
+        (err,result)=>{
+            if(err)
+            {
+                res.send({err:err});
+            }
+            if(Object.keys(result).length > 0)
+            {
+                res.send(result);
+                //console.log(Object.keys(result).length);
+            }
+            else
+            {
+                //console.log("wrong");
+                //console.log(result);
+                res.send({message:"Wrong username/passward combination"});
+            }
+        }
+    );
+
+});
+
+app.listen(3001,()=>{
+    console.log("Running on port 3001");
 })
-
-
-server.get("/accounts", function (res, req) {
-    mysqlConection.query("SELECT * FROM accounts",(err,rows,fields)=>{
-        if(!err)
-            console.log(rows);
-        else
-            console.log(err);
-    })
-
-  });
