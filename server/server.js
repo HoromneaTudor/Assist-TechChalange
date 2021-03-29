@@ -1,10 +1,11 @@
 const express=require("express");
 const mysql=require("mysql");
 const cors=require("cors");
+// depricated  const bodyParser=require("body-parser");
 
 const app=express();
 
-
+app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
 
