@@ -63,6 +63,7 @@ export default function App() {
       <Text>First name:</Text>
       <TextInput
         style={styles.input}
+        placeholder='e.g John'
         onChangeText={onChangeFirstNameReq}
         value={first_name_req}
       />
@@ -70,6 +71,7 @@ export default function App() {
       <Text>Second name:</Text>
       <TextInput
         style={styles.input}
+        placeholder='e.g Smith'
         onChangeText={onChangeSecondNameReq}
         value={second_name_req}
       />
@@ -77,6 +79,8 @@ export default function App() {
        <Text>Email:</Text>
       <TextInput
         style={styles.input}
+        keyboardType='email-address'
+        placeholder='e.g. johnsmith@email.com'
         onChangeText={onChangeEmailReq}
         value={email_req}
       />
@@ -84,6 +88,8 @@ export default function App() {
        <Text>Phone:</Text>
       <TextInput
         style={styles.input}
+        keyboardType='numeric'
+        placeholder='07xxxxxxxx'
         onChangeText={onChangePhoneReq}
         value={phone_req}
       />
