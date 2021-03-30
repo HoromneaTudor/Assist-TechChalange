@@ -1,21 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, View, SafeAreaView, Button, Alert,TextInput} from 'react-native';
 import Axios from 'axios'
-import { Header } from 'react-native/Libraries/NewAppScreen';
 
 export default function App() {
-  const [first_name_req,onChangeFirstNameReq] = useState("");
-  const [second_name_req,onChangeSecondNameReq] = useState("");
-  const [email_req, onChangeEmailReq] = useState("");
-  const [phone_req,onChangePhoneReq] = useState("");
-  const [password_req, onChangePassReq] = useState("");
-  const [username_req,onChangeUsernameReq] = useState("");
+  const [first_name_req,onChangeFirstNameReq] = React.useState("");
+  const [second_name_req,onChangeSecondNameReq] = React.useState("");
+  const [email_req, onChangeEmailReq] = React.useState("");
+  const [phone_req,onChangePhoneReq] = React.useState("");
+  const [password_req, onChangePassReq] = React.useState("");
+  const [username_req,onChangeUsernameReq] = React.useState("");
 
-  const [email,onChangeEmail] = useState("");
-  const [password,onChangePass] = useState("");
+  const [email,onChangeEmail] = React.useState("");
+  const [password,onChangePass] = React.useState("");
 
-  const [loginStatus,setLoginStatus] = useState("");
+  const [loginStatus,setLoginStatus] = React.useState("");
 
   const register =()=>{
     Axios.post('http://localhost:3001/register',
@@ -44,7 +43,9 @@ export default function App() {
 
         setLoginStatus(response.data.message);
         //console.log(response.data.message);
+        
 
+        
       }
       else{
         setLoginStatus(response.data[0].username);
@@ -59,72 +60,56 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
 
-      <Text>First name:</Text>
+
       <TextInput
         style={styles.input}
         onChangeText={onChangeFirstNameReq}
         value={first_name_req}
       />
-      <Text></Text>
-      <Text>Second name:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeSecondNameReq}
         value={second_name_req}
       />
-       <Text></Text>
-       <Text>Email:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeEmailReq}
         value={email_req}
       />
-       <Text></Text>
-       <Text>Phone:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangePhoneReq}
         value={phone_req}
       />
-       <Text></Text>
-       <Text>Username:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangeUsernameReq}
         value={username_req}
       />
-       <Text></Text>
-       <Text>Password:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangePassReq}
         value={password_req}
       />
-       <Text></Text>
       
       <Button title='Register' style={styles.buttonlgn} onPress={register}></Button>
 
 
-      <Text></Text>
-      <Text>Username:</Text>
+
     <TextInput
         style={styles.input}
         onChangeText={onChangeEmail}
         value={email}
       />
-       <Text></Text>
-       <Text>Password:</Text>
       <TextInput
         style={styles.input}
         onChangeText={onChangePass}
         value={password}
       />
-
-        <Text></Text>
       
       <Button title='Login' style={styles.buttonlgn} onPress={login}></Button>
 
-      <Text h1 style={styles.header}>{loginStatus}</Text>
+      <h1>{loginStatus}</h1>
     </SafeAreaView>
     
   );
@@ -141,15 +126,12 @@ const styles = StyleSheet.create({
   input:{
     borderWidth:1,
     borderColor:'black',
-    borderRadius: 4,
     padding:8,
     width:200,
   },
   buttonlgn:{
     width:500,
     bottom:40,
-    borderRadius: 12,
-    
 
   },
   
