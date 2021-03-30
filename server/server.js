@@ -9,6 +9,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
 
+const PORT=3001;
+
 const mySqlConection=mysql.createConnection({
     host: "mysqlhoteldb.mysql.database.azure.com",
     user: "ATLAS@mysqlhoteldb",
@@ -72,5 +74,5 @@ app.post('/login',(req,res)=>{
 });
 
 app.listen(3001,()=>{
-    console.log("Running on port 3001");
+    console.log('Running on port ${PORT}');
 })
