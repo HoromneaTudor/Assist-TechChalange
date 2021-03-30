@@ -66,7 +66,7 @@ app.post('/login',(req,res)=>{
             {
                 //console.log("wrong");
                 //console.log(result);
-                res.send({message:"Wrong username/passward combination"});
+                res.send({message:"Wrong username/password combination"});
             }
         }
     );
