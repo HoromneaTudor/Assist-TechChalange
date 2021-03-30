@@ -73,6 +73,6 @@ app.post('/login',(req,res)=>{
 
 });
 
-app.listen(3001,()=>{
-    console.log('Running on port ${PORT}');
+app.listen(process.env.PORT || PORT,()=>{
+    console.log('Running on port '+ PORT);
 })

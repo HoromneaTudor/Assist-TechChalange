@@ -17,7 +17,7 @@ export default function App() {
   const [loginStatus,setLoginStatus] = useState("");
 
   const register =()=>{
-    Axios.post('http://192.168.1.6:3001/register',  //ipV4-ul vostru
+    Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
     {
         first_name: first_name_req,
         second_name: second_name_req,
@@ -31,7 +31,7 @@ export default function App() {
   };
 
   const login=()=>{
-    Axios.post('http://192.168.1.6:3001/login',
+    Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
     {
         email: email,
         password: password
