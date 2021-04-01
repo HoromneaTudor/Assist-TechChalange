@@ -4,6 +4,7 @@ import colors from '../config/colors';
 import { Image, SafeAreaView, StyleSheet, Text,Animated, Button,TouchableHighlight,TouchableOpacity,TextInput,View} from 'react-native';
 import {Dimensions} from 'react-native';
 import { useEffect } from 'react';
+import Axios from 'axios';
 
 const imageWidth = Dimensions.get('window').width/2;
 
@@ -178,7 +179,8 @@ function SplashScreen(props) {
                     bottom:'10%',
                 }}>
              
-                <TextInput placeholder="Username" color={colors.primary}/>
+                <TextInput placeholder="Username" color={colors.primary} onChangeText={onChangeEmail}
+        value={email}/>
            
                 </Animated.View>
 
@@ -194,7 +196,8 @@ function SplashScreen(props) {
                     fontFamily:'roboto',
                     bottom:'8%',   
                 }}>
-                <TextInput placeholder="Password" color={colors.primary}/>                         
+                <TextInput placeholder="Password" color={colors.primary} onChangeText={onChangePass}
+        value={password}/>                         
                 </Animated.View>
                
 
@@ -203,9 +206,9 @@ function SplashScreen(props) {
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity >
+                <TouchableOpacity onPress={login}>
                     <View style={styles.loginBtn}>
-                    <Text style={styles.loginBtnText} >Login</Text>
+                    <Text style={styles.loginBtnText} onPress={login}>Login</Text>
                     </View>
                 </TouchableOpacity>    
                  </Animated.View>
@@ -213,8 +216,10 @@ function SplashScreen(props) {
                  <Animated.View style={{
                     opacity:opacityLogin,                     
                 }}>
-                    <Text style={styles.SignUpBtnText} >I'm a new user. Sign Up</Text>
+                    <Text style={styles.SignUpBtnText} >{loginStatus}</Text>
                  </Animated.View>
+
+                 
 
                 <StatusBar style="auto"></StatusBar>
             </SafeAreaView>
