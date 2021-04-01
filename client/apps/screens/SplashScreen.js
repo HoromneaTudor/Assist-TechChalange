@@ -208,7 +208,7 @@ function SplashScreen(props) {
 
                 <TouchableOpacity onPress={login}>
                     <View style={styles.loginBtn}>
-                    <Text style={styles.loginBtnText} onPress={login}>Login</Text>
+                    <Text style={styles.loginBtnText}>Login</Text>
                     </View>
                 </TouchableOpacity>    
                  </Animated.View>
