@@ -15,6 +15,59 @@ function SplashScreen(props) {
     const opacityMoto = new Animated.Value(0)
     const opacityLogin = new Animated.Value(0)
 
+    const [first_name_req,onChangeFirstNameReq] = useState("");
+  const [second_name_req,onChangeSecondNameReq] = useState("");
+  const [email_req, onChangeEmailReq] = useState("");
+  const [phone_req,onChangePhoneReq] = useState("");
+  const [password_req, onChangePassReq] = useState("");
+  const [username_req,onChangeUsernameReq] = useState("");
+
+  const [email,onChangeEmail] = useState("");
+  const [password,onChangePass] = useState("");
+
+  const [loginStatus,setLoginStatus] = useState("");
+
+  const register =()=>{
+    Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
+    {
+        first_name: first_name_req,
+        second_name: second_name_req,
+        email: email_req,
+        phone: phone_req,
+        username: username_req,
+        password: password_req
+    }).then((response)=>{
+      console.log(response);
+    });
+  };
+
+  const login=()=>{
+    Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
+    {
+        email: email,
+        password: password
+
+    }).then((response)=>{
+      console.log(response);
+      if(response.data.message)
+      {
+
+        setLoginStatus(response.data.message);
+        //console.log(response.data.message);
+        
+
+        
+      }
+      else{
+        setLoginStatus(response.data[0].username);
+        //console.log(response.data[0].username);
+
+        //console.log(typeof(response));
+        //console.log(response[0].lenght);
+      }
+    });
+  };
+
     Animated.sequence([
         Animated.parallel([
             Animated.spring(position,{
