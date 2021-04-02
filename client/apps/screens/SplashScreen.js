@@ -1,45 +1,27 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import colors from '../config/colors';
 import { Image, SafeAreaView, StyleSheet, Text,Animated, Button,TouchableHighlight,TouchableOpacity,TextInput,View} from 'react-native';
 import {Dimensions} from 'react-native';
 import { useEffect } from 'react';
 import Axios from 'axios';
+import { render } from 'react-dom';
 
 const imageWidth = Dimensions.get('window').width/2;
 
-function SplashScreen(props) {
-
-    const position = new Animated.ValueXY({x:0,y:-30})
-    const size = new Animated.Value(0)
-    const opacity = new Animated.Value(0)
-    const opacityMoto = new Animated.Value(0)
-    const opacityLogin = new Animated.Value(0)
-
-    const [first_name_req,onChangeFirstNameReq] = useState("");
-    const [second_name_req,onChangeSecondNameReq] = useState("");
-    const [email_req, onChangeEmailReq] = useState("");
-    const [phone_req,onChangePhoneReq] = useState("");
-    const [password_req, onChangePassReq] = useState("");
-    const [username_req,onChangeUsernameReq] = useState("");
-
-    const [email,onChangeEmail] = useState("");
-    const [password,onChangePass] = useState("");
-
-    const [loginStatus,setLoginStatus] = useState("");
-
-    const emailRef=React.useRef();
-    const passRef=React.useRef();
-
-
-    const handlePressLogin= e=>{
-        onChangeEmail(valueRefEmail.current.email);
-        onChangePass(valueRefPass.current.password);
-        //Alert.alert(valueRefEmail);
+class SplashScreen extends Component {
+    state={
+     position:new Animated.ValueXY({x:0,y:-30}),
+     size: new Animated.Value(0),
+     opacity : new Animated.Value(0),
+     opacityMoto : new Animated.Value(0),
+     opacityLogin : new Animated.Value(0),
+     email:"",
+     passward:"",
+     loginStatus:""
     }
-
-
-  const register =()=>{
+    
+    register =()=>{
     Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
     {
         first_name: first_name_req,
@@ -53,7 +35,7 @@ function SplashScreen(props) {
     });
   };
 
-  const login=()=>{
+      login=()=>{
       //handlePressLogin;
       let email1=emailRef.current.value;
       console.log(email1);
@@ -85,85 +67,86 @@ function SplashScreen(props) {
     });
   };
 
-    Animated.sequence([
-        Animated.parallel([
-            Animated.spring(position,{
-                toValue:{x:0,y:imageWidth/1.5},
-                speed:2.5,
-                bounciness:17,
-                useNativeDriver:true,
-               
-            }),
-                        
-            Animated.timing(size,{
-                
-                toValue:1,
-                duration:500,
-                useNativeDriver:true,
-             
-
-            }),
-         
-             Animated.timing(opacity,{
-                 toValue:1,
-                 duration:1000, 
-                 useNativeDriver:true,
-              
-             }),
-
-             Animated.timing(opacityLogin,{
-                toValue:0,
-                duration:1000, 
-                useNativeDriver:true,
-             
-            }),
-
-        ]),
-        Animated.parallel([
-            Animated.timing(position,{
-                toValue:{x:0,y:-imageWidth/5},                     
-                useNativeDriver:true,
-               
-            }),
-                        
-            Animated.timing(size,{             
-                toValue:0.7, 
-                duration:500,
-                useNativeDriver:true,         
-            }),
-
-            Animated.timing(opacityMoto,{
-                toValue:0,
-                duration:10,    
-                useNativeDriver:true,
-            }),
-
-            Animated.timing(opacityLogin,{
-                toValue:1,
-                duration:1000, 
-                useNativeDriver:true,
-            }),
-        ]),
-        ]).start()
-
+       render(){
+           
+        Animated.sequence([
+            Animated.parallel([
+                Animated.spring(this.state.position,{
+                    toValue:{x:0,y:imageWidth/1.5},
+                    speed:2.5,
+                    bounciness:17,
+                    useNativeDriver:true,
+                   
+                }),
+                            
+                Animated.timing(this.state.size,{
+                    
+                    toValue:1,
+                    duration:500,
+                    useNativeDriver:true,
+                 
     
-        const [text, onChangeText] = React.useState("Useless Text");
+                }),
+             
+                 Animated.timing(this.state.opacity,{
+                     toValue:1,
+                     duration:1000, 
+                     useNativeDriver:true,
+                  
+                 }),
+    
+                 Animated.timing(this.state.opacityLogin,{
+                    toValue:0,
+                    duration:1000, 
+                    useNativeDriver:true,
+                 
+                }),
+    
+            ]),
+            Animated.parallel([
+                Animated.timing(this.state.position,{
+                    toValue:{x:0,y:-imageWidth/5},                     
+                    useNativeDriver:true,
+                   
+                }),
+                            
+                Animated.timing(this.state.size,{             
+                    toValue:0.7, 
+                    duration:500,
+                    useNativeDriver:true,         
+                }),
+    
+                Animated.timing(this.state.opacityMoto,{
+                    toValue:0,
+                    duration:10,    
+                    useNativeDriver:true,
+                }),
+    
+                Animated.timing(this.state.opacityLogin,{
+                    toValue:1,
+                    duration:1000, 
+                    useNativeDriver:true,
+                }),
+            ]),
+            ]).start()
+
+
         return (          
             <SafeAreaView style={styles.container}>   
                 <Animated.View style={{
                     alignItems:'center',
                     justifyContent:'center',
                     transform:[
-                        { translateX: position.x},
-                        { translateY: position.y },
-                        { scale: size},  
+                        { translateX: this.state.position.x},
+                        { translateY: this.state.position.y },
+                        { scale: this.state.size},  
                     ]
                 }}> 
                 
                 <Image resizemode="contain" source={require("../assets/SplashScrnLogo.png")} style={styles.logo}/>
                 
                 <Animated.View style={{
-                    opacity,
+                    opacity:this.state.opacity,
                     alignItems:'center',
                     justifyContent:'center',
                  }}>        
@@ -171,7 +154,7 @@ function SplashScreen(props) {
                 <Text style={styles.appTeam}> Atlas </Text>
 
                 <Animated.View style={{
-                    opacity:opacityMoto,
+                    opacity:this.state.opacityMoto,
                 }}>
 
                 <Text style={styles.appMoto}>The perfect partner for your trip</Text>
@@ -183,7 +166,7 @@ function SplashScreen(props) {
                 </Animated.View>
                 
                 <Animated.View style={{
-                    opacity:opacityLogin,   
+                    opacity:this.state.opacityLogin,   
                     height: 45,
                     width:'80%',    
                     borderWidth: 2, 
@@ -195,12 +178,12 @@ function SplashScreen(props) {
                     bottom:'10%',
                 }}>
              
-                <TextInput placeholder="Username" color={colors.primary} ref={emailRef}/>
+                <TextInput placeholder="Username" color={colors.primary} />
            
                 </Animated.View>
 
                 <Animated.View style={{
-                    opacity:opacityLogin,   
+                    opacity:this.state.opacityLogin,   
                     height: 45,
                     width:'80%',    
                     borderWidth: 2, 
@@ -211,16 +194,16 @@ function SplashScreen(props) {
                     fontFamily:'roboto',
                     bottom:'8%',   
                 }}>
-                <TextInput placeholder="Password" color={colors.primary} ref={passRef}/>                         
+                <TextInput placeholder="Password" color={colors.primary} />                     
                 </Animated.View>
                
 
                 <Animated.View style={{
-                    opacity:opacityLogin,
+                    opacity:this.state.opacityLogin,
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity onPress={login}>
+                <TouchableOpacity >
                     <View style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
@@ -228,17 +211,18 @@ function SplashScreen(props) {
                  </Animated.View>
 
                  <Animated.View style={{
-                    opacity:opacityLogin,                     
+                    opacity:this.state.opacityLogin,                     
                 }}>
-                    <Text style={styles.SignUpBtnText} >{loginStatus}</Text>
+                    <Text style={styles.SignUpBtnText} >{this.state.loginStatus}</Text>
                  </Animated.View>
 
                  
 
                 <StatusBar style="auto"></StatusBar>
             </SafeAreaView>
-    );
-}
+       );
+            }
+        }
 
 const styles = StyleSheet.create({
     container: {
