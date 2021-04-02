@@ -55,17 +55,17 @@ function SplashScreen(props) {
 
   const login=()=>{
       //handlePressLogin;
-      const email1=emailRef.current.value;
-      //console.log(email1);
-      const password1=passRef.current.value;
-      //console.log(password1);
+      let email1=emailRef.current.value;
+      console.log(email1);
+      let password1=passRef.current.value;
+      console.log(password1);
     Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
     {
         email: email1,
         password: password1
 
     }).then((response)=>{
-      console.log(response);
+      //console.log(response);
       if(response.data.message)
       {
 
