@@ -17,16 +17,27 @@ function SplashScreen(props) {
     const opacityLogin = new Animated.Value(0)
 
     const [first_name_req,onChangeFirstNameReq] = useState("");
-  const [second_name_req,onChangeSecondNameReq] = useState("");
-  const [email_req, onChangeEmailReq] = useState("");
-  const [phone_req,onChangePhoneReq] = useState("");
-  const [password_req, onChangePassReq] = useState("");
-  const [username_req,onChangeUsernameReq] = useState("");
+    const [second_name_req,onChangeSecondNameReq] = useState("");
+    const [email_req, onChangeEmailReq] = useState("");
+    const [phone_req,onChangePhoneReq] = useState("");
+    const [password_req, onChangePassReq] = useState("");
+    const [username_req,onChangeUsernameReq] = useState("");
 
-  const [email,onChangeEmail] = useState("");
-  const [password,onChangePass] = useState("");
+    const [email,onChangeEmail] = useState("");
+    const [password,onChangePass] = useState("");
 
-  const [loginStatus,setLoginStatus] = useState("");
+    const [loginStatus,setLoginStatus] = useState("");
+
+    const emailRef=React.useRef();
+    const passRef=React.useRef();
+
+
+    const handlePressLogin= e=>{
+        onChangeEmail(valueRefEmail.current.email);
+        onChangePass(valueRefPass.current.password);
+        //Alert.alert(valueRefEmail);
+    }
+
 
   const register =()=>{
     Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
@@ -43,10 +54,15 @@ function SplashScreen(props) {
   };
 
   const login=()=>{
+      //handlePressLogin;
+      const email1=emailRef.current.value;
+      //console.log(email1);
+      const password1=passRef.current.value;
+      //console.log(password1);
     Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
     {
-        email: email,
-        password: password
+        email: email1,
+        password: password1
 
     }).then((response)=>{
       console.log(response);
@@ -179,8 +195,7 @@ function SplashScreen(props) {
                     bottom:'10%',
                 }}>
              
-                <TextInput placeholder="Username" color={colors.primary} onChangeText={onChangeEmail}
-        value={email}/>
+                <TextInput placeholder="Username" color={colors.primary} ref={emailRef}/>
            
                 </Animated.View>
 
@@ -196,8 +211,7 @@ function SplashScreen(props) {
                     fontFamily:'roboto',
                     bottom:'8%',   
                 }}>
-                <TextInput placeholder="Password" color={colors.primary} onChangeText={onChangePass}
-        value={password}/>                         
+                <TextInput placeholder="Password" color={colors.primary} ref={passRef}/>                         
                 </Animated.View>
                
 
@@ -223,7 +237,7 @@ function SplashScreen(props) {
 
                 <StatusBar style="auto"></StatusBar>
             </SafeAreaView>
-        );
+    );
 }
 
 const styles = StyleSheet.create({
