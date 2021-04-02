@@ -11,61 +11,61 @@ const imageWidth = Dimensions.get('window').width/2;
 
 class SplashScreen extends Component {
     state={
-     position:new Animated.ValueXY({x:0,y:-30}),
-     size: new Animated.Value(0),
-     opacity : new Animated.Value(0),
-     opacityMoto : new Animated.Value(0),
-     opacityLogin : new Animated.Value(0),
-     email:"",
-     passward:"",
-     loginStatus:""
+        position:new Animated.ValueXY({x:0,y:-30}),
+        size: new Animated.Value(0),
+        opacity : new Animated.Value(0),
+        opacityMoto : new Animated.Value(0),
+        opacityLogin : new Animated.Value(0),
+        playAnimation:true,
+        email:"",
+        password:"",
+        loginStatus:""
     }
+
+    _getPass=(text)=>{
+        this.setState({password:text});
+    }
+
+    _getEmail=(text)=>{
+        this.setState({email:text});
+    }
+
     
     register =()=>{
-    Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
-    {
-        first_name: first_name_req,
-        second_name: second_name_req,
-        email: email_req,
-        phone: phone_req,
-        username: username_req,
-        password: password_req
-    }).then((response)=>{
-      console.log(response);
-    });
-  };
+        Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
+        {
+            first_name: first_name_req,
+            second_name: second_name_req,
+            email: email_req,
+            phone: phone_req,
+            username: username_req,
+            password: password_req
+        }).then((response)=>{
+            console.log(response);
+        });
+    };
 
-      login=()=>{
-      //handlePressLogin;
-      let email1=emailRef.current.value;
-      console.log(email1);
-      let password1=passRef.current.value;
-      console.log(password1);
-    Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
-    {
-        email: email1,
-        password: password1
+    login = (email1,password1)=>{
+        Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
+        {
+            email: email1,
+            password: password1
 
-    }).then((response)=>{
-      //console.log(response);
-      if(response.data.message)
-      {
+        }).then((response)=>{
+        //console.log(response);
+        if(response.data.message)
+        {
 
-        setLoginStatus(response.data.message);
-        //console.log(response.data.message);
-        
-
-        
-      }
-      else{
-        setLoginStatus(response.data[0].username);
-        //console.log(response.data[0].username);
-
-        //console.log(typeof(response));
-        //console.log(response[0].lenght);
-      }
-    });
-  };
+            //setLoginStatus(response.data.message);
+            this.setState({loginStatus:response.data.message});
+            //console.log(response.data.message);
+        }
+        else{
+            //setLoginStatus(response.data[0].username);
+            this.setState({loginStatus:response.data[0].username});
+            }
+        });
+    }
 
        render(){
            
@@ -178,7 +178,7 @@ class SplashScreen extends Component {
                     bottom:'10%',
                 }}>
              
-                <TextInput placeholder="Username" color={colors.primary} />
+                <TextInput placeholder="Username" color={colors.primary} onChangeText={this._getEmail}/>
            
                 </Animated.View>
 
@@ -194,7 +194,7 @@ class SplashScreen extends Component {
                     fontFamily:'roboto',
                     bottom:'8%',   
                 }}>
-                <TextInput placeholder="Password" color={colors.primary} />                     
+                <TextInput placeholder="Password" color={colors.primary} onChangeText={this._getPass} />                     
                 </Animated.View>
                
 
@@ -203,7 +203,7 @@ class SplashScreen extends Component {
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity >
+                <TouchableOpacity onPress={()=>{this.login(this.state.email,this.state.password)}}>
                     <View style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
@@ -222,7 +222,7 @@ class SplashScreen extends Component {
             </SafeAreaView>
        );
             }
-        }
+}
 
 const styles = StyleSheet.create({
     container: {
