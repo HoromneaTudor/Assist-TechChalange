@@ -16,15 +16,43 @@ class SplashScreen extends Component {
      opacity : new Animated.Value(0),
      opacityMoto : new Animated.Value(0),
      opacityLogin : new Animated.Value(0),
+     loginPressed:false,
      email:"",
      password:"",
      loginStatus:""
     }
 
-    shouldComponentUpdate(nextProps) {
-      const differentEmail = this.props.email !== nextProps.props;
-      const differentPass = this.props.password !== nextProps.props;
-      return differentEmail || differentPass;
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.state.loginPressed)
+        {
+            console.log("butonul de login a fost apasat"+this.state.loginPressed);
+            this.setState({loginPressed:false});
+            return true;
+        }
+        //console.log(this.state.email+"   "+nextState.email);
+        if(this.state.email!==nextState.email){
+            //console.log(this.state.writingEmail)
+            //this.setState({writingEmail:false});
+            
+            return false;
+        }
+        if(this.state.password!==nextState.password){
+            //this.setState({writingPass:false});
+            return false;
+        }
+        return true;
+
+    //     const differentEmail = this.state.email !== nextState.email;
+    //     console.log(differentEmail);
+    //     if(differentEmail)
+    //         return false;
+    //   //const differentPass = this.props.password !== nextProps.props;
+    //     const differentPass=this.state.pass!==nextState.password;
+    //     //console.log(differentPass);
+    //     if(differentPass)
+    //         return false;
+        
+    //     return true ;
   }
 
   _getPass=(text)=>{
@@ -72,13 +100,14 @@ register =()=>{
 
 login = (email1,password1)=>{
     
+    
         Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
         {
             email: email1,
             password: password1
 
         }).then((response)=>{
-        //console.log(response);
+        console.log(response);
         if(response.data.message)
         {
 
@@ -232,7 +261,7 @@ login = (email1,password1)=>{
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity onPress={this.login()}>
+                <TouchableOpacity onPress={()=>{this.login(this.state.email,this.state.password);this.setState({loginPressed:true});}}>
                     <View style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
