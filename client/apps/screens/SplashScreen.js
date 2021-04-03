@@ -116,10 +116,10 @@ login = (email1,password1)=>{
            // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
             //console.log(response.data.message);
         }
-        else{
+        //else{
             //setLoginStatus(response.data[0].username);
-            this.setState({loginStatus:response.data[0].username});
-            }
+            //this.setState({loginStatus:response.data[0].username});
+           // }
         });
     
 };
@@ -253,7 +253,7 @@ login = (email1,password1)=>{
                     bottom:'6%',   
                     
                 }}>
-                <TextInput placeholder="Password" style={Platform.OS === "android" && {outlineColor: "orange" }} color={colors.primary} onChangeText={this._getPass}/>       
+                <TextInput placeholder="Password"  color={colors.primary} onChangeText={this._getPass}/>       
                 </Animated.View>
 
                 <Animated.View style={{
@@ -278,8 +278,10 @@ login = (email1,password1)=>{
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
                 </TouchableOpacity>    
-                 </Animated.View>
 
+                
+                 </Animated.View>
+                 <Text style={{alignItems:'center',justifyContent:'center',color:'red',top:20,}}>{this.state.loginStatus}</Text>
                  <Animated.View style={{
                     opacity:this.state.opacityLogin,                     
                 }}>
