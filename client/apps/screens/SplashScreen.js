@@ -273,7 +273,7 @@ login = (email1,password1)=>{
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity onPress={()=>{this.login(this.state.email,this.state.password);this.setState({loginPressed:true});}}>
+                <TouchableOpacity style={{top:10,}}onPress={()=>{this.login(this.state.email,this.state.password);this.setState({loginPressed:true});}}>
                     <View style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
