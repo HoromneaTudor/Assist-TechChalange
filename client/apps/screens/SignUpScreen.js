@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   TextInput,
   View,
+  ScrollView,
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useEffect } from "react";
@@ -20,7 +21,7 @@ import { render } from "react-dom";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
-class SplashScreen extends Component {
+class SignUpScreen extends Component {
   state = {
     position: new Animated.ValueXY({ x: 0, y: -30 }),
     size: new Animated.Value(0),
@@ -129,34 +130,15 @@ class SplashScreen extends Component {
   SplashAnimation = () => {
     Animated.sequence([
       Animated.parallel([
-        Animated.spring(this.state.position, {
-          toValue: { x: 0, y: imageWidth / 1.3 },
-          speed: 2.5,
-          bounciness: 17,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(this.state.size, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-
         Animated.timing(this.state.opacity, {
           toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(this.state.opacityLogin, {
-          toValue: 0,
           duration: 1000,
           useNativeDriver: true,
         }),
       ]),
       Animated.parallel([
         Animated.timing(this.state.position, {
-          toValue: { x: 0, y: -imageWidth / 9 },
+          toValue: { x: 0, y: imageWidth / 9 },
           useNativeDriver: true,
         }),
 
@@ -185,137 +167,208 @@ class SplashScreen extends Component {
     this.SplashAnimation();
     return (
       <SafeAreaView style={styles.container}>
-        <Animated.View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            transform: [
-              { translateX: this.state.position.x },
-              { translateY: this.state.position.y },
-              { scale: this.state.size },
-            ],
-          }}
-        >
-          <Image
-            resizemode="contain"
-            source={require("../assets/SplashScrnLogo.png")}
-            style={styles.logo}
-          />
-
+        <View>
           <Animated.View
             style={{
-              opacity: this.state.opacity,
               alignItems: "center",
               justifyContent: "center",
+              transform: [
+                { translateX: this.state.position.x },
+                { translateY: this.state.position.y },
+                { scale: this.state.size },
+              ],
             }}
           >
-            <Text style={styles.appTeam}> Atlas </Text>
+            <Image
+              resizemode="contain"
+              source={require("../assets/SplashScrnLogo.png")}
+              style={styles.logo}
+            />
 
             <Animated.View
               style={{
-                opacity: this.state.opacityMoto,
+                opacity: this.state.opacity,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <Text style={styles.appMoto}>
-                The perfect partner for your trip
-              </Text>
+              <Text style={styles.appTeam}> Atlas </Text>
             </Animated.View>
           </Animated.View>
-        </Animated.View>
+        </View>
 
-        <Animated.View
-          style={{
-            opacity: this.state.opacityLogin,
-            height: 45,
-            width: "80%",
-            borderWidth: 2,
-            borderRadius: 10,
-            borderColor: colors.quaternary,
-            justifyContent: "center",
-            paddingLeft: "5%",
-            fontFamily: "roboto",
-            bottom: "8%",
-          }}
-        >
-          <TextInput
-            placeholder="Email"
-            color={colors.primary}
-            onChangeText={this._getEmail}
-          />
-        </Animated.View>
-
-        <Animated.View
-          style={{
-            opacity: this.state.opacityLogin,
-            height: 45,
-            width: "80%",
-            borderWidth: 2,
-            borderRadius: 10,
-            borderColor: colors.quaternary,
-            justifyContent: "center",
-            paddingLeft: "5%",
-            fontFamily: "roboto",
-            bottom: "6%",
-          }}
-        >
-          <TextInput
-            placeholder="Password"
-            color={colors.primary}
-            onChangeText={this._getPass}
-          />
-        </Animated.View>
-
-        <Animated.View
-          style={{
-            opacity: this.state.opacityLogin,
-            textAlign: "left",
-            alignSelf: "flex-end",
-            marginRight: "11%",
-            bottom: "5%",
-          }}
-        >
-          <TouchableOpacity>
-            <Text style={styles.forgetPass}>Forgot password?</Text>
-          </TouchableOpacity>
-        </Animated.View>
-
-        <Animated.View
-          style={{
-            opacity: this.state.opacityLogin,
-            width: "80%",
-          }}
-        >
-          <TouchableOpacity
-            style={{ top: 10 }}
-            onPress={() => {
-              this.login(this.state.email, this.state.password);
-              this.setState({ loginPressed: true });
+        <View style={{ height: "33%", width: "100%" }}>
+          <ScrollView
+            style={{
+              bottom: "10%",
+              left: "1%",
+              width: "100%",
             }}
           >
-            <View style={styles.loginBtn}>
-              <Text style={styles.loginBtnText}>Login</Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-        <Text
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            color: "red",
-            top: 40,
-          }}
-        >
-          {this.state.loginStatus}
-        </Text>
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "1%",
+              }}
+            >
+              <TextInput
+                placeholder="First name"
+                color={colors.primary}
+                onChangeText={this._getEmail}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "3%",
+              }}
+            >
+              <TextInput
+                placeholder="Last name"
+                color={colors.primary}
+                onChangeText={this._getPass}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "5%",
+              }}
+            >
+              <TextInput
+                placeholder="Email"
+                color={colors.primary}
+                onChangeText={this._getPass}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "7%",
+              }}
+            >
+              <TextInput
+                placeholder="Phone number"
+                color={colors.primary}
+                onChangeText={this._getPass}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "9%",
+              }}
+            >
+              <TextInput
+                placeholder="Password"
+                color={colors.primary}
+                onChangeText={this._getPass}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                height: 45,
+                width: "80%",
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: colors.quaternary,
+                justifyContent: "center",
+                left: "9%",
+                paddingLeft: "5%",
+                fontFamily: "roboto",
+                top: "11%",
+              }}
+            >
+              <TextInput
+                placeholder="Confirm password"
+                color={colors.primary}
+                onChangeText={this._getPass}
+              />
+            </Animated.View>
+
+            <Animated.View
+              style={{
+                opacity: this.state.opacityLogin,
+                width: "80%",
+              }}
+            >
+              <TouchableOpacity
+                style={{ top: "200%" }}
+                onPress={() => {
+                  this.login(this.state.email, this.state.password);
+                  this.setState({ loginPressed: true });
+                }}
+              >
+                <View style={styles.loginBtn}>
+                  <Text style={styles.loginBtnText}>Sign up</Text>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
+
+            <View style={{ height: 100, width: "10%" }} />
+          </ScrollView>
+        </View>
+
         <Animated.View
           style={{
             opacity: this.state.opacityLogin,
           }}
         >
           <View style={styles.SignUpBtnText}>
-            <Text>I'm a new user. </Text>
+            <Text>I already have an account. </Text>
             <TouchableOpacity>
-              <Text style={{ color: colors.secondary }}>Sign Up</Text>
+              <Text style={{ color: colors.secondary }}>Login</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -357,18 +410,19 @@ const styles = StyleSheet.create({
     fontFamily: "roboto",
   },
   SignUpBtnText: {
-    marginTop: "20%",
     color: "black",
     fontSize: 14,
     fontFamily: "roboto",
     flexDirection: "row",
     justifyContent: "center",
+    bottom: "0%",
   },
   loginBtn: {
     backgroundColor: colors.secondary,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    left: "11%",
     height: imageWidth / 5,
   },
   forgetPassContainer: {
@@ -384,4 +438,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SplashScreen;
+export default SignUpScreen;
