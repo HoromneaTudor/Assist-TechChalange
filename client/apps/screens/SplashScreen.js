@@ -1,6 +1,7 @@
 import React, { Component, PureComponent, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
+import AppLoading from "expo-app-loading";
 import {
   Image,
   SafeAreaView,
@@ -31,6 +32,9 @@ class SplashScreen extends Component {
     email: "",
     password: "",
     loginStatus: "",
+    InputBorderColorEmail: colors.quaternary,
+    InputBorderColorPassword: colors.quaternary,
+    timePassed: false,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -126,60 +130,96 @@ class SplashScreen extends Component {
     });
   };
 
+  onFocusEmail() {
+    this.setState({
+      InputBorderColorEmail: colors.tertiary,
+    });
+  }
+
+  onFocusPassword() {
+    this.setState({
+      InputBorderColorPassword: colors.tertiary,
+    });
+  }
+
+  onBlurEmail() {
+    this.setState({
+      InputBorderColorEmail: colors.quaternary,
+    });
+  }
+
+  onBlurPassword() {
+    this.setState({
+      InputBorderColorPassword: colors.quaternary,
+    });
+  }
+
   SplashAnimation = () => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.spring(this.state.position, {
-          toValue: { x: 0, y: imageWidth / 1.3 },
-          speed: 2.5,
-          bounciness: 17,
-          useNativeDriver: true,
-        }),
+    Animated.parallel([
+      Animated.spring(this.state.position, {
+        toValue: { x: 0, y: imageWidth / 1.3 },
+        speed: 2.5,
+        bounciness: 17,
+        useNativeDriver: true,
+      }),
 
-        Animated.timing(this.state.size, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
+      Animated.timing(this.state.size, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
 
-        Animated.timing(this.state.opacity, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
+      Animated.timing(this.state.opacity, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
 
-        Animated.timing(this.state.opacityLogin, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
-      Animated.parallel([
-        Animated.timing(this.state.position, {
-          toValue: { x: 0, y: -imageWidth / 9 },
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(this.state.size, {
-          toValue: 0.8,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(this.state.opacityMoto, {
-          toValue: 0,
-          duration: 10,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(this.state.opacityLogin, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ]),
+      Animated.timing(this.state.opacityLogin, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
+
+  SplashAnimation1 = () => {
+    Animated.parallel([
+      Animated.timing(this.state.position, {
+        toValue: { x: 0, y: -imageWidth / 9 },
+        useNativeDriver: true,
+      }),
+
+      Animated.timing(this.state.size, {
+        toValue: 0.8,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+
+      Animated.timing(this.state.opacityMoto, {
+        toValue: 0,
+        duration: 10,
+        useNativeDriver: true,
+      }),
+
+      Animated.timing(this.state.opacityLogin, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ timePassed: true }), 1700);
+  }
+
+  componentDidUpdate() {
+    if (!this.state.timePassed) {
+    } else {
+      this.SplashAnimation1();
+    }
+  }
 
   render() {
     this.SplashAnimation();
@@ -230,7 +270,7 @@ class SplashScreen extends Component {
             width: "80%",
             borderWidth: 2,
             borderRadius: 10,
-            borderColor: colors.quaternary,
+            borderColor: this.state.InputBorderColorEmail,
             justifyContent: "center",
             paddingLeft: "5%",
             fontFamily: "roboto",
@@ -240,6 +280,9 @@ class SplashScreen extends Component {
           <TextInput
             placeholder="Email"
             color={colors.primary}
+            keyboardType="email-address"
+            onFocus={() => this.onFocusEmail()}
+            onBlur={() => this.onBlurEmail()}
             onChangeText={this._getEmail}
           />
         </Animated.View>
@@ -251,7 +294,7 @@ class SplashScreen extends Component {
             width: "80%",
             borderWidth: 2,
             borderRadius: 10,
-            borderColor: colors.quaternary,
+            borderColor: this.state.InputBorderColorPassword,
             justifyContent: "center",
             paddingLeft: "5%",
             fontFamily: "roboto",
@@ -261,6 +304,8 @@ class SplashScreen extends Component {
           <TextInput
             placeholder="Password"
             color={colors.primary}
+            onFocus={() => this.onFocusPassword()}
+            onBlur={() => this.onBlurPassword()}
             onChangeText={this._getPass}
           />
         </Animated.View>

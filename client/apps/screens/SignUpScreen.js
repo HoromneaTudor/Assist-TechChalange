@@ -32,6 +32,12 @@ class SignUpScreen extends Component {
     email: "",
     password: "",
     loginStatus: "",
+    InputBorderColorFirstName: colors.quaternary,
+    InputBorderColorLastName: colors.quaternary,
+    InputBorderColorEmail: colors.quaternary,
+    InputBorderColorPhoneNumber: colors.quaternary,
+    InputBorderColorPassword: colors.quaternary,
+    InputBorderColorConfirPassword: colors.quaternary,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -127,6 +133,78 @@ class SignUpScreen extends Component {
     });
   };
 
+  onFocusFirstName() {
+    this.setState({
+      InputBorderColorFirstName: colors.tertiary,
+    });
+  }
+
+  onFocusLastName() {
+    this.setState({
+      InputBorderColorLastName: colors.tertiary,
+    });
+  }
+
+  onFocusEmail() {
+    this.setState({
+      InputBorderColorEmail: colors.tertiary,
+    });
+  }
+
+  onFocusNumber() {
+    this.setState({
+      InputBorderColorPhoneNumber: colors.tertiary,
+    });
+  }
+
+  onFocusPassword() {
+    this.setState({
+      InputBorderColorPassword: colors.tertiary,
+    });
+  }
+
+  onFocusConfirmPassword() {
+    this.setState({
+      InputBorderColorConfirPassword: colors.tertiary,
+    });
+  }
+
+  onBlurFirstName() {
+    this.setState({
+      InputBorderColorFirstName: colors.quaternary,
+    });
+  }
+
+  onBlurLastName() {
+    this.setState({
+      InputBorderColorLastName: colors.quaternary,
+    });
+  }
+
+  onBlurEmail() {
+    this.setState({
+      InputBorderColorEmail: colors.quaternary,
+    });
+  }
+
+  onBlurNumber() {
+    this.setState({
+      InputBorderColorPhoneNumber: colors.quaternary,
+    });
+  }
+
+  onBlurPassword() {
+    this.setState({
+      InputBorderColorPassword: colors.quaternary,
+    });
+  }
+
+  onBlurConfirmPassword() {
+    this.setState({
+      InputBorderColorConfirPassword: colors.quaternary,
+    });
+  }
+
   SplashAnimation = () => {
     Animated.sequence([
       Animated.parallel([
@@ -212,7 +290,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorFirstName,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -223,6 +301,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="First name"
                 color={colors.primary}
+                onFocus={() => this.onFocusFirstName()}
+                onBlur={() => this.onBlurFirstName()}
                 onChangeText={this._getEmail}
               />
             </Animated.View>
@@ -234,7 +314,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorLastName,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -245,6 +325,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Last name"
                 color={colors.primary}
+                onFocus={() => this.onFocusLastName()}
+                onBlur={() => this.onBlurLastName()}
                 onChangeText={this._getPass}
               />
             </Animated.View>
@@ -256,7 +338,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorEmail,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -267,6 +349,9 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Email"
                 color={colors.primary}
+                keyboardType="email-address"
+                onFocus={() => this.onFocusEmail()}
+                onBlur={() => this.onBlurEmail()}
                 onChangeText={this._getPass}
               />
             </Animated.View>
@@ -278,7 +363,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorPhoneNumber,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -289,6 +374,9 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Phone number"
                 color={colors.primary}
+                keyboardType="numeric"
+                onFocus={() => this.onFocusNumber()}
+                onBlur={() => this.onBlurNumber()}
                 onChangeText={this._getPass}
               />
             </Animated.View>
@@ -300,7 +388,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorPassword,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -311,6 +399,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Password"
                 color={colors.primary}
+                onFocus={() => this.onFocusPassword()}
+                onBlur={() => this.onBlurPassword()}
                 onChangeText={this._getPass}
               />
             </Animated.View>
@@ -322,7 +412,7 @@ class SignUpScreen extends Component {
                 width: "80%",
                 borderWidth: 2,
                 borderRadius: 10,
-                borderColor: colors.quaternary,
+                borderColor: this.state.InputBorderColorConfirPassword,
                 justifyContent: "center",
                 left: "9%",
                 paddingLeft: "5%",
@@ -333,6 +423,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Confirm password"
                 color={colors.primary}
+                onFocus={() => this.onFocusConfirmPassword()}
+                onBlur={() => this.onBlurConfirmPassword()}
                 onChangeText={this._getPass}
               />
             </Animated.View>
@@ -341,10 +433,10 @@ class SignUpScreen extends Component {
               style={{
                 opacity: this.state.opacityLogin,
                 width: "80%",
+                top: "19%",
               }}
             >
               <TouchableOpacity
-                style={{ top: "200%" }}
                 onPress={() => {
                   this.login(this.state.email, this.state.password);
                   this.setState({ loginPressed: true });
