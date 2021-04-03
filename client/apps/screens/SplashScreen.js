@@ -128,7 +128,7 @@ login = (email1,password1)=>{
     Animated.sequence([
         Animated.parallel([
             Animated.spring(this.state.position,{
-                toValue:{x:0,y:imageWidth/1.5},
+                toValue:{x:0,y:imageWidth/1.3},
                 speed:2.5,
                 bounciness:17,
                 useNativeDriver:true,
@@ -161,13 +161,13 @@ login = (email1,password1)=>{
         ]),
         Animated.parallel([
             Animated.timing(this.state.position,{
-                toValue:{x:0,y:-imageWidth/5},                     
+                toValue:{x:0,y:-imageWidth/9},                     
                 useNativeDriver:true,
                
             }),
                         
             Animated.timing(this.state.size,{             
-                toValue:0.7, 
+                toValue:0.8, 
                 duration:500,
                 useNativeDriver:true,         
             }),
@@ -229,11 +229,11 @@ login = (email1,password1)=>{
                     width:'80%',    
                     borderWidth: 2, 
                     borderRadius:10, 
-                    borderColor:colors.inputBorders,
+                    borderColor:colors.quaternary,
                     justifyContent:'center', 
                     paddingLeft:'5%',      
                     fontFamily:'roboto',    
-                    bottom:'10%',
+                    bottom:'5%',
                 }}>
              
                 <TextInput placeholder="Username" color={colors.primary} onChangeText={this._getEmail}/>
@@ -246,15 +246,15 @@ login = (email1,password1)=>{
                     width:'80%',    
                     borderWidth: 2, 
                     borderRadius:10, 
-                    borderColor:colors.inputBorders,
+                    borderColor:colors.quaternary,
                     justifyContent:'center', 
                     paddingLeft:'5%',      
                     fontFamily:'roboto',
-                    bottom:'8%',   
+                    bottom:'3%',   
                 }}>
                 <TextInput placeholder="Password" color={colors.primary} onChangeText={this._getPass}/>                     
                 </Animated.View>
-               
+                <Text style={{ textAlign: 'right', alignSelf: 'stretch'}}>Forgot password?</Text>
 
                 <Animated.View style={{
                     opacity:this.state.opacityLogin,
@@ -271,7 +271,12 @@ login = (email1,password1)=>{
                  <Animated.View style={{
                     opacity:this.state.opacityLogin,                     
                 }}>
-                    <Text style={styles.SignUpBtnText} >{this.state.loginStatus}</Text>
+                    <View style={styles.SignUpBtnText}>
+                    <Text>I'm a new user. </Text>
+                    <TouchableOpacity>
+                    <Text style={{color:colors.secondary}}>Sign Up</Text>
+                    </TouchableOpacity>    
+                    </View>
                  </Animated.View>
 
                  
@@ -315,11 +320,10 @@ const styles = StyleSheet.create({
     SignUpBtnText:{
         marginTop:'20%',
         color:'black',
-        fontSize:12,
+        fontSize:14,
         fontFamily:'roboto',
-    },
-    input:{
-        
+        flexDirection:'row',
+        justifyContent:'center',
     },
     loginBtn:{
         backgroundColor:colors.secondary,
@@ -327,6 +331,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         height:imageWidth/5,
+        top:20,
     },
    
 })
