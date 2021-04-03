@@ -233,7 +233,7 @@ login = (email1,password1)=>{
                     justifyContent:'center', 
                     paddingLeft:'5%',      
                     fontFamily:'roboto',    
-                    bottom:'5%',
+                    bottom:'8%',
                 }}>
              
                 <TextInput placeholder="Username" color={colors.primary} onChangeText={this._getEmail}/>
@@ -250,11 +250,23 @@ login = (email1,password1)=>{
                     justifyContent:'center', 
                     paddingLeft:'5%',      
                     fontFamily:'roboto',
-                    bottom:'3%',   
+                    bottom:'6%',   
+                    
                 }}>
-                <TextInput placeholder="Password" color={colors.primary} onChangeText={this._getPass}/>                     
+                <TextInput placeholder="Password" style={Platform.OS === "android" && {outlineColor: "orange" }} color={colors.primary} onChangeText={this._getPass}/>       
                 </Animated.View>
-                <Text style={{ textAlign: 'right', alignSelf: 'stretch'}}>Forgot password?</Text>
+
+                <Animated.View style={{
+                    opacity:this.state.opacityLogin,   
+                    textAlign: 'left',
+                    alignSelf:'flex-end',
+                    marginRight:'11%', 
+                    bottom:'5%',
+                }}>
+                <TouchableOpacity>
+                <Text style={styles.forgetPass}>Forgot password?</Text>
+                </TouchableOpacity>           
+                </Animated.View>
 
                 <Animated.View style={{
                     opacity:this.state.opacityLogin,
@@ -313,26 +325,37 @@ const styles = StyleSheet.create({
         fontFamily:'roboto',
     },
     loginBtnText:{
-        color:'white',
-        fontSize:17,
-        fontFamily:'roboto',
-    },
-    SignUpBtnText:{
-        marginTop:'20%',
-        color:'black',
-        fontSize:14,
-        fontFamily:'roboto',
-        flexDirection:'row',
-        justifyContent:'center',
-    },
-    loginBtn:{
-        backgroundColor:colors.secondary,
-        borderRadius:10,   
-        alignItems:'center',
-        justifyContent:'center',
-        height:imageWidth/5,
-        top:20,
-    },
+      color:'white',
+      fontSize:17,
+      fontFamily:'roboto',
+  },
+  SignUpBtnText:{
+      marginTop:'20%',
+      color:'black',
+      fontSize:14,
+      fontFamily:'roboto',
+      flexDirection:'row',
+      justifyContent:'center',
+  },
+  loginBtn:{
+      backgroundColor:colors.secondary,
+      borderRadius:10,   
+      alignItems:'center',
+      justifyContent:'center',
+      height:imageWidth/5,
+     
+  },
+  forgetPassContainer:{
+    textAlign: 'left',
+    alignSelf:'flex-end',
+    marginRight:'11%', 
+    bottom:'5%',
+  },  
+  forgetPass:{     
+    fontFamily:'roboto',
+    fontSize:12,
+   
+  }
    
 })
 
