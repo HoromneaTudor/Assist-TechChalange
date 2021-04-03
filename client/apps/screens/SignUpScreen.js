@@ -350,6 +350,7 @@ class SignUpScreen extends Component {
                 placeholder="Email"
                 color={colors.primary}
                 keyboardType="email-address"
+                autoCapitalize="none"
                 onFocus={() => this.onFocusEmail()}
                 onBlur={() => this.onBlurEmail()}
                 onChangeText={this._getPass}
@@ -399,6 +400,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Password"
                 color={colors.primary}
+                autoCapitalize="none"
+                secureTextEntry={true}
                 onFocus={() => this.onFocusPassword()}
                 onBlur={() => this.onBlurPassword()}
                 onChangeText={this._getPass}
@@ -423,6 +426,8 @@ class SignUpScreen extends Component {
               <TextInput
                 placeholder="Confirm password"
                 color={colors.primary}
+                secureTextEntry={true}
+                autoCapitalize="none"
                 onFocus={() => this.onFocusConfirmPassword()}
                 onBlur={() => this.onBlurConfirmPassword()}
                 onChangeText={this._getPass}
@@ -455,8 +460,11 @@ class SignUpScreen extends Component {
         <Animated.View
           style={{
             opacity: this.state.opacityLogin,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
+          <Text style={{ color: "red", bottom: "20%" }}>Error message</Text>
           <View style={styles.SignUpBtnText}>
             <Text>I already have an account. </Text>
             <TouchableOpacity>
@@ -507,7 +515,6 @@ const styles = StyleSheet.create({
     fontFamily: "roboto",
     flexDirection: "row",
     justifyContent: "center",
-    bottom: "0%",
   },
   loginBtn: {
     backgroundColor: colors.secondary,

@@ -1,7 +1,7 @@
-import React, { Component, PureComponent, useState } from "react";
+import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
-import AppLoading from "expo-app-loading";
+
 import {
   Image,
   SafeAreaView,
@@ -211,7 +211,7 @@ class SplashScreen extends Component {
   };
 
   componentDidMount() {
-    setTimeout(() => this.setState({ timePassed: true }), 1700);
+    setTimeout(() => this.setState({ timePassed: true }), 1900);
   }
 
   componentDidUpdate() {
@@ -281,6 +281,7 @@ class SplashScreen extends Component {
             placeholder="Email"
             color={colors.primary}
             keyboardType="email-address"
+            autoCapitalize="none"
             onFocus={() => this.onFocusEmail()}
             onBlur={() => this.onBlurEmail()}
             onChangeText={this._getEmail}
@@ -304,6 +305,8 @@ class SplashScreen extends Component {
           <TextInput
             placeholder="Password"
             color={colors.primary}
+            secureTextEntry={true}
+            autoCapitalize="none"
             onFocus={() => this.onFocusPassword()}
             onBlur={() => this.onBlurPassword()}
             onChangeText={this._getPass}
