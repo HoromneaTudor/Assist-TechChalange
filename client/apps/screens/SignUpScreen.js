@@ -29,15 +29,20 @@ class SignUpScreen extends Component {
     opacityMoto: new Animated.Value(0),
     opacityLogin: new Animated.Value(0),
     loginPressed: false,
-    email: "",
-    password: "",
-    loginStatus: "",
+
     InputBorderColorFirstName: colors.quaternary,
     InputBorderColorLastName: colors.quaternary,
     InputBorderColorEmail: colors.quaternary,
     InputBorderColorPhoneNumber: colors.quaternary,
     InputBorderColorPassword: colors.quaternary,
     InputBorderColorConfirPassword: colors.quaternary,
+
+    firstNameReq: "",
+    lastNameReq: "",
+    emailReq: "",
+    phoneReq: "",
+    passwordReq: "",
+    confPassReq: "",
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -72,14 +77,34 @@ class SignUpScreen extends Component {
     //     return true ;
   }
 
-  _getPass = (text) => {
-    this.setState({ password: text });
-    console.log(this.state.password);
+  _getFirstName = (text) => {
+    this.setState({ firstNameReq: text });
+    console.log(this.state.firstNameReq);
+  };
+
+  _getLastName = (text) => {
+    this.setState({ lastNameReq: text });
+    console.log(this.state.lastNameReq);
   };
 
   _getEmail = (text) => {
-    this.setState({ email: text });
-    console.log(this.state.email);
+    this.setState({ emailReq: text });
+    console.log(this.state.emailReq);
+  };
+
+  _getPhone = (text) => {
+    this.setState({ phoneReq: text });
+    console.log(this.state.phoneReq);
+  };
+
+  _getPassword = (text) => {
+    this.setState({ passwordReq: text });
+    console.log(this.state.passwordReq);
+  };
+
+  _getPasswardConfirmation = (text) => {
+    this.setState({ confPassReq: text });
+    console.log(this.state.confPassReq);
   };
 
   _emailValidation = (text) => {
@@ -102,34 +127,25 @@ class SignUpScreen extends Component {
     Axios.post(
       "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
       {
-        first_name: first_name_req,
-        second_name: second_name_req,
-        email: email_req,
-        phone: phone_req,
-        username: username_req,
-        password: password_req,
+        first_name: this.state.firstNameReq,
+        second_name: this.state.lastNameReq,
+        email: this.state.emailReq,
+        phone: this.state.phoneReq,
+        //username: username_req,
+        password: this.state.passwordReq,
       }
     ).then((response) => {
-      console.log(response);
-    });
-  };
-
-  login = (email1, password1) => {
-    Axios.post("https://mysql-ehotelplus.herokuapp.com/login", {
-      email: email1,
-      password: password1,
-    }).then((response) => {
-      console.log(response);
+      //console.log(response);
       if (response.data.message) {
-        //setLoginStatus(response.data.message);
-        this.setState({ loginStatus: response.data.message });
-        // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
-        //console.log(response.data.message);
+        this.setState({ registerStatus: response.data.message });
+        console.log(response.data.message);
+      } else {
+        this.setState({
+          registerStatus:
+            "Registration was successful please log in from login menu",
+        });
+        console.log(response);
       }
-      //else{
-      //setLoginStatus(response.data[0].username);
-      //this.setState({loginStatus:response.data[0].username});
-      // }
     });
   };
 
@@ -303,7 +319,7 @@ class SignUpScreen extends Component {
                 color={colors.primary}
                 onFocus={() => this.onFocusFirstName()}
                 onBlur={() => this.onBlurFirstName()}
-                onChangeText={this._getEmail}
+                onChangeText={this._getFirstName}
               />
             </Animated.View>
 
@@ -327,7 +343,7 @@ class SignUpScreen extends Component {
                 color={colors.primary}
                 onFocus={() => this.onFocusLastName()}
                 onBlur={() => this.onBlurLastName()}
-                onChangeText={this._getPass}
+                onChangeText={this._getLastName}
               />
             </Animated.View>
 
@@ -353,7 +369,7 @@ class SignUpScreen extends Component {
                 autoCapitalize="none"
                 onFocus={() => this.onFocusEmail()}
                 onBlur={() => this.onBlurEmail()}
-                onChangeText={this._getPass}
+                onChangeText={this._getEmail}
               />
             </Animated.View>
 
@@ -378,7 +394,7 @@ class SignUpScreen extends Component {
                 keyboardType="numeric"
                 onFocus={() => this.onFocusNumber()}
                 onBlur={() => this.onBlurNumber()}
-                onChangeText={this._getPass}
+                onChangeText={this._getPhone}
               />
             </Animated.View>
 
@@ -404,7 +420,7 @@ class SignUpScreen extends Component {
                 secureTextEntry={true}
                 onFocus={() => this.onFocusPassword()}
                 onBlur={() => this.onBlurPassword()}
-                onChangeText={this._getPass}
+                onChangeText={this._getPassword}
               />
             </Animated.View>
 
@@ -430,7 +446,7 @@ class SignUpScreen extends Component {
                 autoCapitalize="none"
                 onFocus={() => this.onFocusConfirmPassword()}
                 onBlur={() => this.onBlurConfirmPassword()}
-                onChangeText={this._getPass}
+                onChangeText={this._getPasswardConfirmation}
               />
             </Animated.View>
 
@@ -443,8 +459,7 @@ class SignUpScreen extends Component {
             >
               <TouchableOpacity
                 onPress={() => {
-                  this.login(this.state.email, this.state.password);
-                  this.setState({ loginPressed: true });
+                  this.register();
                 }}
               >
                 <View style={styles.loginBtn}>
