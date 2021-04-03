@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, PureComponent, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import colors from '../config/colors';
 import { Image, SafeAreaView, StyleSheet, Text,Animated, Button,TouchableHighlight,TouchableOpacity,TextInput,View} from 'react-native';
@@ -17,11 +17,46 @@ class SplashScreen extends Component {
      opacityMoto : new Animated.Value(0),
      opacityLogin : new Animated.Value(0),
      email:"",
-     passward:"",
+     password:"",
      loginStatus:""
     }
-    
-    register =()=>{
+
+    shouldComponentUpdate(nextProps) {
+      const differentEmail = this.props.email !== nextProps.props;
+      const differentPass = this.props.password !== nextProps.props;
+      return differentEmail || differentPass;
+  }
+
+  _getPass=(text)=>{
+    this.setState({password:text});
+    console.log(this.state.password);
+}
+
+_getEmail=(text)=>{
+    this.setState({email:text});
+    console.log(this.state.email);
+}
+
+_emailValidation = (text) => {
+    console.log(text);
+    let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    if (reg.test(text) === false) {
+      console.log("Email is Not Correct");
+      //this.setState({ email: text })
+      return false;
+    }
+    else {
+      //this.setState({ email: text })
+      console.log("Email is Correct");
+      return true;
+    }
+  }
+
+  _failedAttemptsPenality=()=>{
+
+  }
+
+register =()=>{
     Axios.post('https://mysql-ehotelplus.herokuapp.com/register',  //ipV4-ul vostru
     {
         first_name: first_name_req,
@@ -31,106 +66,100 @@ class SplashScreen extends Component {
         username: username_req,
         password: password_req
     }).then((response)=>{
-      console.log(response);
+        console.log(response);
     });
-  };
+};
 
-      login=()=>{
-      //handlePressLogin;
-      let email1=emailRef.current.value;
-      console.log(email1);
-      let password1=passRef.current.value;
-      console.log(password1);
-    Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
-    {
-        email: email1,
-        password: password1
-
-    }).then((response)=>{
-      //console.log(response);
-      if(response.data.message)
-      {
-
-        setLoginStatus(response.data.message);
-        //console.log(response.data.message);
-        
-
-        
-      }
-      else{
-        setLoginStatus(response.data[0].username);
-        //console.log(response.data[0].username);
-
-        //console.log(typeof(response));
-        //console.log(response[0].lenght);
-      }
-    });
-  };
-
-       render(){
-           
-        Animated.sequence([
-            Animated.parallel([
-                Animated.spring(this.state.position,{
-                    toValue:{x:0,y:imageWidth/1.5},
-                    speed:2.5,
-                    bounciness:17,
-                    useNativeDriver:true,
-                   
-                }),
-                            
-                Animated.timing(this.state.size,{
-                    
-                    toValue:1,
-                    duration:500,
-                    useNativeDriver:true,
-                 
+login = (email1,password1)=>{
     
-                }),
+        Axios.post('https://mysql-ehotelplus.herokuapp.com/login',
+        {
+            email: email1,
+            password: password1
+
+        }).then((response)=>{
+        //console.log(response);
+        if(response.data.message)
+        {
+
+            //setLoginStatus(response.data.message);
+            this.setState({loginStatus:response.data.message});
+           // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
+            //console.log(response.data.message);
+        }
+        else{
+            //setLoginStatus(response.data[0].username);
+            this.setState({loginStatus:response.data[0].username});
+            }
+        });
+    
+};
+
+    SplashAnimation = () => {  
+    Animated.sequence([
+        Animated.parallel([
+            Animated.spring(this.state.position,{
+                toValue:{x:0,y:imageWidth/1.5},
+                speed:2.5,
+                bounciness:17,
+                useNativeDriver:true,
+               
+            }),
+                        
+            Animated.timing(this.state.size,{
+                
+                toValue:1,
+                duration:500,
+                useNativeDriver:true,
              
-                 Animated.timing(this.state.opacity,{
-                     toValue:1,
-                     duration:1000, 
-                     useNativeDriver:true,
-                  
-                 }),
-    
-                 Animated.timing(this.state.opacityLogin,{
-                    toValue:0,
-                    duration:1000, 
-                    useNativeDriver:true,
-                 
-                }),
-    
-            ]),
-            Animated.parallel([
-                Animated.timing(this.state.position,{
-                    toValue:{x:0,y:-imageWidth/5},                     
-                    useNativeDriver:true,
-                   
-                }),
-                            
-                Animated.timing(this.state.size,{             
-                    toValue:0.7, 
-                    duration:500,
-                    useNativeDriver:true,         
-                }),
-    
-                Animated.timing(this.state.opacityMoto,{
-                    toValue:0,
-                    duration:10,    
-                    useNativeDriver:true,
-                }),
-    
-                Animated.timing(this.state.opacityLogin,{
-                    toValue:1,
-                    duration:1000, 
-                    useNativeDriver:true,
-                }),
-            ]),
-            ]).start()
 
+            }),
+         
+             Animated.timing(this.state.opacity,{
+                 toValue:1,
+                 duration:1000, 
+                 useNativeDriver:true,
+              
+             }),
 
+             Animated.timing(this.state.opacityLogin,{
+                toValue:0,
+                duration:1000, 
+                useNativeDriver:true,
+             
+            }),
+
+        ]),
+        Animated.parallel([
+            Animated.timing(this.state.position,{
+                toValue:{x:0,y:-imageWidth/5},                     
+                useNativeDriver:true,
+               
+            }),
+                        
+            Animated.timing(this.state.size,{             
+                toValue:0.7, 
+                duration:500,
+                useNativeDriver:true,         
+            }),
+
+            Animated.timing(this.state.opacityMoto,{
+                toValue:0,
+                duration:10,    
+                useNativeDriver:true,
+            }),
+
+            Animated.timing(this.state.opacityLogin,{
+                toValue:1,
+                duration:1000, 
+                useNativeDriver:true,
+            }),
+        ]),
+        ]).start()
+      };   
+
+      render(){
+        this.SplashAnimation();
         return (          
             <SafeAreaView style={styles.container}>   
                 <Animated.View style={{
@@ -178,7 +207,7 @@ class SplashScreen extends Component {
                     bottom:'10%',
                 }}>
              
-                <TextInput placeholder="Username" color={colors.primary} />
+                <TextInput placeholder="Username" color={colors.primary} onChangeText={this._getEmail}/>
            
                 </Animated.View>
 
@@ -194,7 +223,7 @@ class SplashScreen extends Component {
                     fontFamily:'roboto',
                     bottom:'8%',   
                 }}>
-                <TextInput placeholder="Password" color={colors.primary} />                     
+                <TextInput placeholder="Password" color={colors.primary} onChangeText={this._getPass}/>                     
                 </Animated.View>
                
 
@@ -203,7 +232,7 @@ class SplashScreen extends Component {
                     width:'80%',            
                 }}>
 
-                <TouchableOpacity >
+                <TouchableOpacity onPress={this.login()}>
                     <View style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>Login</Text>
                     </View>
