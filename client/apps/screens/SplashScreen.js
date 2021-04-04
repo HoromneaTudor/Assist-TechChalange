@@ -126,7 +126,7 @@ class SplashScreen extends Component {
         // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
         //console.log(response.data.message);
       } else {
-        this.props.navigation.navigate("Signup");
+        this.props.navigation.navigate("MainMenu");
       }
     });
   };

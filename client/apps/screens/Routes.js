@@ -6,6 +6,7 @@ import SignUpScreen from './SignUpScreen';
 import SplashScreen from './SplashScreen';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import MainTabScreen from './MainTabScreen';
+import HomeScreen from './HomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,3 +24,4 @@ function Routes() {
 }
 
 export default Routes;
+

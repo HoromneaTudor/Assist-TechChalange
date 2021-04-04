@@ -14,7 +14,7 @@ import { NavigationContainer } from '@react-navigation/native';
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTabScreen = () => (
-  <NavigationContainer>
+  <NavigationContainer independent='true'>
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
