@@ -121,32 +121,70 @@ class SignUpScreen extends Component {
     }
   };
 
+  _phoneValidation = () => {
+    if (this.state.phoneReq.length != 10) {
+      console.log("wrong number");
+      return false;
+    }
+    return true;
+  };
+
+  _passwordValidation = () => {
+    if (
+      this.state.passwordReq != "" &&
+      this.state.passwordReq === this.state.confPassReq
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  _firstNameValidation = () => {
+    if (this.state.firstNameReq != "") return true;
+    return false;
+  };
+
+  _lastNameValidation = () => {
+    if (this.state.lastNameReq != "") return true;
+    return false;
+  };
+
   _failedAttemptsPenality = () => {};
 
   register = () => {
-    Axios.post(
-      "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
-      {
-        first_name: this.state.firstNameReq,
-        second_name: this.state.lastNameReq,
-        email: this.state.emailReq,
-        phone: this.state.phoneReq,
-        //username: username_req,
-        password: this.state.passwordReq,
-      }
-    ).then((response) => {
-      //console.log(response);
-      if (response.data.message) {
-        this.setState({ registerStatus: response.data.message });
-        console.log(response.data.message);
-      } else {
-        this.setState({
-          registerStatus:
-            "Registration was successful please log in from login menu",
-        });
-        console.log(response);
-      }
-    });
+    if (
+      this._firstNameValidation &&
+      this._lastNameValidation &&
+      this._phoneValidation &&
+      this._emailValidation &&
+      this._passwordValidation
+    ) {
+      Axios.post(
+        "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
+        {
+          first_name: this.state.firstNameReq,
+          second_name: this.state.lastNameReq,
+          email: this.state.emailReq,
+          phone: this.state.phoneReq,
+          //username: username_req,
+          password: this.state.passwordReq,
+        }
+      ).then((response) => {
+        //console.log(response);
+        if (response.data.message) {
+          this.setState({ registerStatus: response.data.message });
+          console.log(response.data.message);
+        } else {
+          this.setState({
+            registerStatus:
+              "Registration was successful please log in from login menu",
+          });
+          console.log(response);
+        }
+      });
+    } else {
+      this.setState({ registerStatus: "Wrong creditentials" });
+    }
   };
 
   onFocusFirstName() {
