@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
-import { useNavigation } from '@react-navigation/native';
-import {withNavigation} from 'react-navigation';
-
-
+import { withNavigation } from "react-navigation";
 
 import {
   Image,
@@ -25,7 +22,7 @@ import { render } from "react-dom";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
-class SplashScreen extends Component  {
+class SplashScreen extends Component {
   state = {
     position: new Animated.ValueXY({ x: 0, y: -30 }),
     size: new Animated.Value(0),
@@ -43,7 +40,7 @@ class SplashScreen extends Component  {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.loginPressed) {
-      console.log("butonul de login a fost apasat" + this.state.loginPressed);
+      //console.log("butonul de login a fost apasat" + this.state.loginPressed);
       this.setState({ loginPressed: false });
       return true;
     }
@@ -75,24 +72,24 @@ class SplashScreen extends Component  {
 
   _getPass = (text) => {
     this.setState({ password: text });
-    console.log(this.state.password);
+    //console.log(this.state.password);
   };
 
   _getEmail = (text) => {
     this.setState({ email: text });
-    console.log(this.state.email);
+    //console.log(this.state.email);
   };
 
   _emailValidation = (text) => {
     console.log(text);
     let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
     if (reg.test(text) === false) {
-      console.log("Email is Not Correct");
+      //console.log("Email is Not Correct");
       //this.setState({ email: text })
       return false;
     } else {
       //this.setState({ email: text })
-      console.log("Email is Correct");
+      //console.log("Email is Correct");
       return true;
     }
   };
@@ -111,7 +108,7 @@ class SplashScreen extends Component  {
         password: password_req,
       }
     ).then((response) => {
-      console.log(response);
+      //console.log(response);
     });
   };
 
@@ -120,17 +117,17 @@ class SplashScreen extends Component  {
       email: email1,
       password: password1,
     }).then((response) => {
-      console.log(response);
+      //console.log(response);
       if (response.data.message) {
         //setLoginStatus(response.data.message);
         this.setState({ loginStatus: response.data.message });
+        this.setState({ InputBorderColorEmail: colors.wrongInput });
+        this.setState({ InputBorderColorPassword: colors.wrongInput });
         // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
         //console.log(response.data.message);
+      } else {
+        this.props.navigation.navigate("Signup");
       }
-      //else{
-      //setLoginStatus(response.data[0].username);
-      //this.setState({loginStatus:response.data[0].username});
-      // }
     });
   };
 
@@ -226,7 +223,6 @@ class SplashScreen extends Component  {
   }
 
   render() {
-   
     this.SplashAnimation();
     return (
       <SafeAreaView style={styles.container}>
@@ -343,7 +339,6 @@ class SplashScreen extends Component  {
             onPress={() => {
               this.login(this.state.email, this.state.password);
               this.setState({ loginPressed: true });
-              
             }}
           >
             <View style={styles.loginBtn}>
@@ -369,10 +364,9 @@ class SplashScreen extends Component  {
           <View style={styles.SignUpBtnText}>
             <Text>I'm a new user. </Text>
             <TouchableOpacity
-             onPress={()=>{
-               this.props.navigation.navigate('Signup');
-             }
-            }
+              onPress={() => {
+                this.props.navigation.navigate("Signup");
+              }}
             >
               <Text style={{ color: colors.secondary }}>Sign Up</Text>
             </TouchableOpacity>
@@ -389,6 +383,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
