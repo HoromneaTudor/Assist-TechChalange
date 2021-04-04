@@ -124,6 +124,7 @@ class SignUpScreen extends Component {
       //console.log("Email is Not Correct");
       //this.setState({ email: text })
       this.setState({ emailErrorMsg: "The email is not valid" });
+      this.setState({ InputBorderColorEmail: colors.wrongInput });
       return false;
     } else {
       //this.setState({ email: text })
@@ -137,6 +138,7 @@ class SignUpScreen extends Component {
     let phonenumberLenght = this.state.phoneReq.length;
     if (phonenumberLenght != 10) {
       this.setState({ phoneErrorMsg: "the phone number is not valid" });
+      this.setState({ InputBorderColorPhoneNumber: colors.wrongInput });
       return false;
     }
     this.setState({ phoneErrorMsg: "" });
@@ -148,7 +150,8 @@ class SignUpScreen extends Component {
       this.setState({ passwordErrorMsg: "" });
       return true;
     }
-    this.setState({ passwordErrorMsg: "This field cannot be empty" });
+    this.setState({ passwordErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorPassword: colors.wrongInput });
     return false;
   };
 
@@ -157,20 +160,25 @@ class SignUpScreen extends Component {
       this.setState({ confPassErrorMsg: "" });
       return true;
     }
-    this.setState({ confPassErrorMsg: "This field cannot be empty" });
+    this.setState({ confPassErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorConfirPassword: colors.wrongInput });
     return false;
   };
 
   _passwordEquallytyConfirnation = () => {
+    let PassConf = this._passwordConfirmationValidation();
     if (
       this._passwordValidation() &&
-      this._passwordConfirmationValidation() &&
+      PassConf &&
       this.state.confPassReq === this.state.passwordReq
     ) {
       this.setState({ confPassErrorMsg: "" });
       return true;
+    } else if (PassConf == true) {
+      this.setState({ confPassErrorMsg: "The passwords don't match" });
+      this.setState({ InputBorderColorConfirPassword: colors.wrongInput });
+      return false;
     }
-    this.setState({ confPassErrorMsg: "The passwords dont match" });
     return false;
   };
 
@@ -180,6 +188,7 @@ class SignUpScreen extends Component {
       return true;
     }
     this.setState({ firstNameErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorFirstName: colors.wrongInput });
     return false;
   };
 
@@ -189,6 +198,7 @@ class SignUpScreen extends Component {
       return true;
     }
     this.setState({ lastNameErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorLastName: colors.wrongInput });
     return false;
   };
 
