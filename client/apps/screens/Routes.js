@@ -7,8 +7,7 @@ import SplashScreen from './SplashScreen';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import MainTabScreen from './MainTabScreen';
 
-
-  const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
 function Routes() {
   return (
@@ -24,4 +23,3 @@ function Routes() {
 }
 
 export default Routes;
-

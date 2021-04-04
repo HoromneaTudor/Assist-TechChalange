@@ -1,8 +1,8 @@
 import React, { Component, PureComponent, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
-import { useNavigation } from '@react-navigation/native';
-import {withNavigation} from 'react-navigation';
+import { useNavigation } from "@react-navigation/native";
+import { withNavigation } from "react-navigation";
 
 import {
   Image,
@@ -23,7 +23,7 @@ import Axios from "axios";
 import { render } from "react-dom";
 
 const imageWidth = Dimensions.get("window").width / 2;
-
+let PostitionWrong = 1;
 class SignUpScreen extends Component {
   state = {
     position: new Animated.ValueXY({ x: 0, y: -30 }),
@@ -46,6 +46,13 @@ class SignUpScreen extends Component {
     phoneReq: "",
     passwordReq: "",
     confPassReq: "",
+
+    firstNameErrorMsg: "",
+    lastNameErrorMsg: "",
+    emailErrorMsg: "",
+    phoneErrorMsg: "",
+    passwordErrorMsg: "",
+    confPassErrorMsg: "",
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -114,54 +121,97 @@ class SignUpScreen extends Component {
     console.log(text);
     let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
     if (reg.test(text) === false) {
-      console.log("Email is Not Correct");
+      //console.log("Email is Not Correct");
       //this.setState({ email: text })
+      this.setState({ emailErrorMsg: "The email is not valid" });
+      this.setState({ InputBorderColorEmail: colors.wrongInput });
       return false;
     } else {
       //this.setState({ email: text })
-      console.log("Email is Correct");
+      //console.log("Email is Correct");
+      this.setState({ emailErrorMsg: "" });
       return true;
     }
   };
 
   _phoneValidation = () => {
-    if (this.state.phoneReq.length != 10) {
-      console.log("wrong number");
+    let phonenumberLenght = this.state.phoneReq.length;
+    if (phonenumberLenght != 10) {
+      this.setState({ phoneErrorMsg: "the phone number is not valid" });
+      this.setState({ InputBorderColorPhoneNumber: colors.wrongInput });
       return false;
     }
+    this.setState({ phoneErrorMsg: "" });
     return true;
   };
 
   _passwordValidation = () => {
-    if (
-      this.state.passwordReq != "" &&
-      this.state.passwordReq === this.state.confPassReq
-    ) {
+    if (this.state.passwordReq != "") {
+      this.setState({ passwordErrorMsg: "" });
       return true;
+    }
+    this.setState({ passwordErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorPassword: colors.wrongInput });
+    return false;
+  };
+
+  _passwordConfirmationValidation = () => {
+    if (this.state.confPassReq != "") {
+      this.setState({ confPassErrorMsg: "" });
+      return true;
+    }
+    this.setState({ confPassErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorConfirPassword: colors.wrongInput });
+    return false;
+  };
+
+  _passwordEquallytyConfirnation = () => {
+    let PassConf = this._passwordConfirmationValidation();
+    if (
+      this._passwordValidation() &&
+      PassConf &&
+      this.state.confPassReq === this.state.passwordReq
+    ) {
+      this.setState({ confPassErrorMsg: "" });
+      return true;
+    } else if (PassConf == true) {
+      this.setState({ confPassErrorMsg: "The passwords don't match" });
+      this.setState({ InputBorderColorConfirPassword: colors.wrongInput });
+      return false;
     }
     return false;
   };
 
   _firstNameValidation = () => {
-    if (this.state.firstNameReq != "") return true;
+    if (this.state.firstNameReq != "") {
+      this.setState({ firstNameErrorMsg: "" });
+      return true;
+    }
+    this.setState({ firstNameErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorFirstName: colors.wrongInput });
     return false;
   };
 
   _lastNameValidation = () => {
-    if (this.state.lastNameReq != "") return true;
+    if (this.state.lastNameReq != "") {
+      this.setState({ lastNameErrorMsg: "" });
+      return true;
+    }
+    this.setState({ lastNameErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorLastName: colors.wrongInput });
     return false;
   };
 
   _failedAttemptsPenality = () => {};
 
   register = () => {
-    if (
-      this._firstNameValidation &&
-      this._lastNameValidation &&
-      this._phoneValidation &&
-      this._emailValidation &&
-      this._passwordValidation
-    ) {
+    let var1 = this._firstNameValidation();
+    let var2 = this._lastNameValidation();
+    let var3 = this._emailValidation(this.state.emailReq);
+    let var4 = this._phoneValidation();
+    let var5 = this._passwordEquallytyConfirnation();
+
+    if (var1 && var2 && var3 && var4 && var5) {
       Axios.post(
         "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
         {
@@ -364,7 +414,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getFirstName}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "1%" }]}>
+              {this.state.firstNameErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -388,7 +440,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getLastName}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "3%" }]}>
+              {this.state.lastNameErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -414,7 +468,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getEmail}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "5%" }]}>
+              {this.state.emailErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -439,7 +495,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getPhone}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "7%" }]}>
+              {this.state.phoneErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -465,7 +523,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getPassword}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "9%" }]}>
+              {this.state.passwordErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -491,7 +551,9 @@ class SignUpScreen extends Component {
                 onChangeText={this._getPasswardConfirmation}
               />
             </Animated.View>
-
+            <Text style={[styles.wrongDataInput, { top: "11%" }]}>
+              {this.state.confPassErrorMsg}
+            </Text>
             <Animated.View
               style={{
                 opacity: this.state.opacityLogin,
@@ -521,16 +583,14 @@ class SignUpScreen extends Component {
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "red", bottom: "20%" }}>Error message</Text>
           <View style={styles.SignUpBtnText}>
             <Text>I already have an account. </Text>
             <TouchableOpacity
-            onPress={()=>{
-              this.props.navigation.goBack();
-            }
-           }>
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            >
               <Text style={{ color: colors.secondary }}>Login</Text>
-              
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -545,6 +605,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
@@ -597,7 +658,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.quaternary,
   },
+  wrongDataInput: {
+    color: colors.wrongInput,
+    left: "11%",
+    fontFamily: "roboto",
+    fontSize: 12,
+  },
 });
-
 
 export default withNavigation(SignUpScreen);
