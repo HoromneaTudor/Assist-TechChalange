@@ -1,10 +1,10 @@
 import React from 'react';
 import {View,Text,Button, StyleSheet} from 'react-native';
 
-const HomeScreen = ()=>{
+const RoomsScreen = ()=>{
     return(
 <View style={styles.container}>
-    <Text>FavouritesScreen</Text>
+    <Text>RoomsScreen</Text>
     <Button 
     title="Click here"
     onPress={()=>alert('Button Clicked!')}
@@ -13,7 +13,7 @@ const HomeScreen = ()=>{
     );
 }
 
-export default HomeScreen;
+export default RoomsScreen;
 
 const styles= StyleSheet.create({
     container:{

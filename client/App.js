@@ -6,6 +6,9 @@ import Axios from "axios";
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './apps/screens/Routes';
+import HomeScreen from "./apps/screens/HomeScreen";
+import FavouritesScreen from "./apps/screens/FavouritesScreen";
+import MainTabScreen from "./apps/screens/MainTabScreen";
 
 export default function App() {
  
