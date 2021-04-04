@@ -4,7 +4,7 @@ const cors = require("cors");
 // depricated  const bodyParser=require("body-parser");
 
 const bcrypt = require("bcryptjs");
-const saltRounds = 3;
+//const saltRounds = 3;
 
 const app = express();
 
@@ -23,31 +23,35 @@ const mySqlConection = mysql.createConnection({
 });
 
 app.post("/register", (req, res) => {
-  const first_name = req.body.first_name;
-  const second_name = req.body.second_name;
-  const email = req.body.email;
-  const phone = req.body.phone;
-  const username = req.body.username;
-  const password = req.body.password;
+  try {
+    const first_name = req.body.first_name;
+    const second_name = req.body.second_name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const username = req.body.username;
+    const password = req.body.password;
 
-  const register_querry =
-    "INSERT INTO accounts (first_name,second_name,email,phone,role,password) VALUES (?,?,?,?,?,?)";
+    const register_querry =
+      "INSERT INTO accounts (first_name,second_name,email,phone,role,password) VALUES (?,?,?,?,?,?)";
 
-  console.log("aicia");
-  bcrypt.hash(password, saltRounds, (err, hash) => {
-    if (err) {
-      console.log(err);
-    }
-
-    mySqlConection.query(
-      register_querry,
-      [first_name, second_name, email, phone, 1, hash],
-      (err, result) => {
-        //console.log(err);
-        res.send(err);
+    const saltRounds = Math.random(5); //ii ok si cum ii mai sus cu 3 dar asta ofera ceva mai multa securitate (getSalt()  nu mergea bine)
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
       }
-    );
-  });
+
+      mySqlConection.query(
+        register_querry,
+        [first_name, second_name, email, phone, 1, hash],
+        (err, result) => {
+          //console.log(err);
+          res.send(err);
+        }
+      );
+    });
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.post("/login", (req, res) => {
