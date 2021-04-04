@@ -121,54 +121,87 @@ class SignUpScreen extends Component {
     console.log(text);
     let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
     if (reg.test(text) === false) {
-      console.log("Email is Not Correct");
+      //console.log("Email is Not Correct");
       //this.setState({ email: text })
+      this.setState({ emailErrorMsg: "The email is not valid" });
       return false;
     } else {
       //this.setState({ email: text })
-      console.log("Email is Correct");
+      //console.log("Email is Correct");
+      this.setState({ emailErrorMsg: "" });
       return true;
     }
   };
 
   _phoneValidation = () => {
-    if (this.state.phoneReq.length != 10) {
-      console.log("wrong number");
+    let phonenumberLenght = this.state.phoneReq.length;
+    if (phonenumberLenght != 10) {
+      this.setState({ phoneErrorMsg: "the phone number is not valid" });
       return false;
     }
+    this.setState({ phoneErrorMsg: "" });
     return true;
   };
 
   _passwordValidation = () => {
-    if (
-      this.state.passwordReq != "" &&
-      this.state.passwordReq === this.state.confPassReq
-    ) {
+    if (this.state.passwordReq != "") {
+      this.setState({ passwordErrorMsg: "" });
       return true;
     }
+    this.setState({ passwordErrorMsg: "This field cannot be empty" });
+    return false;
+  };
+
+  _passwordConfirmationValidation = () => {
+    if (this.state.confPassReq != "") {
+      this.setState({ confPassErrorMsg: "" });
+      return true;
+    }
+    this.setState({ confPassErrorMsg: "This field cannot be empty" });
+    return false;
+  };
+
+  _passwordEquallytyConfirnation = () => {
+    if (
+      this._passwordValidation() &&
+      this._passwordConfirmationValidation() &&
+      this.state.confPassReq === this.state.passwordReq
+    ) {
+      this.setState({ confPassErrorMsg: "" });
+      return true;
+    }
+    this.setState({ confPassErrorMsg: "The passwords dont match" });
     return false;
   };
 
   _firstNameValidation = () => {
-    if (this.state.firstNameReq != "") return true;
+    if (this.state.firstNameReq != "") {
+      this.setState({ firstNameErrorMsg: "" });
+      return true;
+    }
+    this.setState({ firstNameErrorMsg: "You need to complete this field" });
     return false;
   };
 
   _lastNameValidation = () => {
-    if (this.state.lastNameReq != "") return true;
+    if (this.state.lastNameReq != "") {
+      this.setState({ lastNameErrorMsg: "" });
+      return true;
+    }
+    this.setState({ lastNameErrorMsg: "You need to complete this field" });
     return false;
   };
 
   _failedAttemptsPenality = () => {};
 
   register = () => {
-    if (
-      this._firstNameValidation &&
-      this._lastNameValidation &&
-      this._phoneValidation &&
-      this._emailValidation &&
-      this._passwordValidation
-    ) {
+    let var1 = this._firstNameValidation();
+    let var2 = this._lastNameValidation();
+    let var3 = this._emailValidation(this.state.emailReq);
+    let var4 = this._phoneValidation();
+    let var5 = this._passwordEquallytyConfirnation();
+
+    if (var1 && var2 && var3 && var4 && var5) {
       Axios.post(
         "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
         {
@@ -372,7 +405,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "1%" }]}>
-              Error Fist name
+              {this.state.firstNameErrorMsg}
             </Text>
             <Animated.View
               style={{
@@ -398,7 +431,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "3%" }]}>
-              Error Fist name
+              {this.state.lastNameErrorMsg}
             </Text>
             <Animated.View
               style={{
@@ -426,7 +459,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "5%" }]}>
-              Error Fist name
+              {this.state.emailErrorMsg}
             </Text>
             <Animated.View
               style={{
@@ -453,7 +486,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "7%" }]}>
-              Error Fist name
+              {this.state.phoneErrorMsg}
             </Text>
             <Animated.View
               style={{
@@ -481,7 +514,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "9%" }]}>
-              Error Fist name
+              {this.state.passwordErrorMsg}
             </Text>
             <Animated.View
               style={{
@@ -509,7 +542,7 @@ class SignUpScreen extends Component {
               />
             </Animated.View>
             <Text style={[styles.wrongDataInput, { top: "11%" }]}>
-              Error Fist name
+              {this.state.confPassErrorMsg}
             </Text>
             <Animated.View
               style={{
