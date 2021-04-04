@@ -96,24 +96,8 @@ class SplashScreen extends Component {
 
   _failedAttemptsPenality = () => {};
 
-  register = () => {
-    Axios.post(
-      "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
-      {
-        first_name: first_name_req,
-        second_name: second_name_req,
-        email: email_req,
-        phone: phone_req,
-        username: username_req,
-        password: password_req,
-      }
-    ).then((response) => {
-      //console.log(response);
-    });
-  };
-
   login = (email1, password1) => {
-    Axios.post("https://mysql-ehotelplus.herokuapp.com/login", {
+    Axios.post("https://api-ehotelplus.herokuapp.com/login", {
       email: email1,
       password: password1,
     }).then((response) => {
@@ -127,6 +111,7 @@ class SplashScreen extends Component {
         //console.log(response.data.message);
       } else {
         this.props.navigation.navigate("MainMenu");
+        //console.log(response.data[0].password);
       }
     });
   };

@@ -213,7 +213,7 @@ class SignUpScreen extends Component {
 
     if (var1 && var2 && var3 && var4 && var5) {
       Axios.post(
-        "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
+        "https://api-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
         {
           first_name: this.state.firstNameReq,
           second_name: this.state.lastNameReq,

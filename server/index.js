@@ -3,6 +3,9 @@ const mysql = require("mysql");
 const cors = require("cors");
 // depricated  const bodyParser=require("body-parser");
 
+const bcrypt = require("bcryptjs");
+const saltRounds = 3;
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -30,14 +33,21 @@ app.post("/register", (req, res) => {
   const register_querry =
     "INSERT INTO accounts (first_name,second_name,email,phone,role,password) VALUES (?,?,?,?,?,?)";
 
-  mySqlConection.query(
-    register_querry,
-    [first_name, second_name, email, phone, 1, password],
-    (err, result) => {
-      //console.log(err);
-      res.send(err);
+  console.log("aicia");
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    if (err) {
+      console.log(err);
     }
-  );
+
+    mySqlConection.query(
+      register_querry,
+      [first_name, second_name, email, phone, 1, hash],
+      (err, result) => {
+        //console.log(err);
+        res.send(err);
+      }
+    );
+  });
 });
 
 app.post("/login", (req, res) => {
@@ -47,19 +57,27 @@ app.post("/login", (req, res) => {
   //console.log(email);
   //console.log(password);
 
-  const login_querry =
-    "SELECT * FROM accounts WHERE email = ? AND password = ?";
-  mySqlConection.query(login_querry, [email, password], (err, result) => {
+  const login_querry = "SELECT * FROM accounts WHERE email = ?;";
+
+  mySqlConection.query(login_querry, email, (err, result) => {
     if (err) {
       res.send({ err: err });
     }
-    if (Object.keys(result).length > 0) {
-      res.send(result);
+    //if (Object.keys(result).length > 0)
+    if (result.length > 0) {
+      //res.send(result);
       //console.log(Object.keys(result).length);
+      bcrypt.compare(password, result[0].password, (error, response) => {
+        if (response) {
+          res.send(result);
+        } else {
+          res.send({ message: "Wrong username/password combination" });
+        }
+      });
     } else {
       //console.log("wrong");
       //console.log(result);
-      res.send({ message: "Wrong username/password combination" });
+      res.send({ message: "User dosn't exist" });
     }
   });
 });
