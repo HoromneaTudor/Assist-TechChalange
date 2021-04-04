@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
+import { useNavigation } from '@react-navigation/native';
+import {withNavigation} from 'react-navigation';
+
+
 
 import {
   Image,
@@ -21,7 +25,7 @@ import { render } from "react-dom";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
-class SplashScreen extends Component {
+class SplashScreen extends Component  {
   state = {
     position: new Animated.ValueXY({ x: 0, y: -30 }),
     size: new Animated.Value(0),
@@ -222,6 +226,7 @@ class SplashScreen extends Component {
   }
 
   render() {
+   
     this.SplashAnimation();
     return (
       <SafeAreaView style={styles.container}>
@@ -338,6 +343,7 @@ class SplashScreen extends Component {
             onPress={() => {
               this.login(this.state.email, this.state.password);
               this.setState({ loginPressed: true });
+              
             }}
           >
             <View style={styles.loginBtn}>
@@ -362,7 +368,12 @@ class SplashScreen extends Component {
         >
           <View style={styles.SignUpBtnText}>
             <Text>I'm a new user. </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+             onPress={()=>{
+               this.props.navigation.navigate('Signup');
+             }
+            }
+            >
               <Text style={{ color: colors.secondary }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
@@ -432,4 +443,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SplashScreen;
+export default withNavigation(SplashScreen);

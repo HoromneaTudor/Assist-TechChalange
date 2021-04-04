@@ -1,6 +1,9 @@
 import React, { Component, PureComponent, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
+import { useNavigation } from '@react-navigation/native';
+import {withNavigation} from 'react-navigation';
+
 import {
   Image,
   SafeAreaView,
@@ -258,6 +261,7 @@ class SignUpScreen extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
     this.SplashAnimation();
     return (
       <SafeAreaView style={styles.container}>
@@ -482,8 +486,13 @@ class SignUpScreen extends Component {
           <Text style={{ color: "red", bottom: "20%" }}>Error message</Text>
           <View style={styles.SignUpBtnText}>
             <Text>I already have an account. </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={()=>{
+              this.props.navigation.goBack();
+            }
+           }>
               <Text style={{ color: colors.secondary }}>Login</Text>
+              
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -552,4 +561,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+
+export default withNavigation(SignUpScreen);
