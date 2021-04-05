@@ -30,6 +30,7 @@ class SplashScreen extends Component {
     opacityMoto: new Animated.Value(0),
     opacityLogin: new Animated.Value(0),
     loginPressed: false,
+    loginBtnDisable: false,
     email: "",
     password: "",
     loginStatus: "",
@@ -38,37 +39,19 @@ class SplashScreen extends Component {
     timePassed: false,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.loginPressed) {
-      //console.log("butonul de login a fost apasat" + this.state.loginPressed);
-      this.setState({ loginPressed: false });
-      return true;
-    }
-    //console.log(this.state.email+"   "+nextState.email);
-    if (this.state.email !== nextState.email) {
-      //console.log(this.state.writingEmail)
-      //this.setState({writingEmail:false});
-
-      return false;
-    }
-    if (this.state.password !== nextState.password) {
-      //this.setState({writingPass:false});
-      return false;
-    }
-    return true;
-
-    //     const differentEmail = this.state.email !== nextState.email;
-    //     console.log(differentEmail);
-    //     if(differentEmail)
-    //         return false;
-    //   //const differentPass = this.props.password !== nextProps.props;
-    //     const differentPass=this.state.pass!==nextState.password;
-    //     //console.log(differentPass);
-    //     if(differentPass)
-    //         return false;
-
-    //     return true ;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.state.loginPressed) {
+  //     this.setState({ loginPressed: false });
+  //     return true;
+  //   }
+  //   if (this.state.email !== nextState.email) {
+  //     return false;
+  //   }
+  //   if (this.state.password !== nextState.password) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   _getPass = (text) => {
     this.setState({ password: text });
@@ -81,7 +64,7 @@ class SplashScreen extends Component {
   };
 
   _emailValidation = (text) => {
-    console.log(text);
+    //console.log(text);
     let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
     if (reg.test(text) === false) {
       //console.log("Email is Not Correct");
@@ -106,6 +89,9 @@ class SplashScreen extends Component {
   _failedAttemptsPenality = () => {};
 
   login = (email1, password1) => {
+    //this.setState({ loginBtnDisable: true });
+    //console.log(this.state.loginBtnDisable);
+
     this.setState({ loginStatus: "" });
     if (
       this._emailValidation(this.state.email) &&
@@ -128,6 +114,8 @@ class SplashScreen extends Component {
         }
       });
     }
+    //this.setState({ loginBtnDisable: false });
+    //console.log(this.state.loginBtnDisable);
   };
 
   onFocusEmail() {
@@ -336,9 +324,14 @@ class SplashScreen extends Component {
           <TouchableOpacity
             style={{ top: 10 }}
             onPress={() => {
+              this.setState({ loginBtnDisable: true });
+              console.log(this.state.loginBtnDisable);
               this.login(this.state.email, this.state.password);
               this.setState({ loginPressed: true });
+              setTimeout(() => this.setState({ loginBtnDisable: false }), 800);
+              console.log(this.state.loginBtnDisable);
             }}
+            disabled={this.state.loginBtnDisable}
           >
             <View style={styles.loginBtn}>
               <Text style={styles.loginBtnText}>Login</Text>
