@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
 import { withNavigation } from "react-navigation";
-
+import { NavigationActions } from "react-navigation";
 import {
   Image,
   SafeAreaView,
@@ -113,7 +113,7 @@ class SplashScreen extends Component {
   };
 
   login = (email1, password1) => {
-    Axios.post("https://mysql-ehotelplus.herokuapp.com/login", {
+    Axios.post("https://api-ehotelplus.herokuapp.com/login", {
       email: email1,
       password: password1,
     }).then((response) => {
@@ -126,7 +126,7 @@ class SplashScreen extends Component {
         // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
         //console.log(response.data.message);
       } else {
-        this.props.navigation.navigate("MainMenu");
+        this.props.navigation.replace("MainMenu");
       }
     });
   };

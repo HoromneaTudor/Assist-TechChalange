@@ -212,17 +212,14 @@ class SignUpScreen extends Component {
     let var5 = this._passwordEquallytyConfirnation();
 
     if (var1 && var2 && var3 && var4 && var5) {
-      Axios.post(
-        "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
-        {
-          first_name: this.state.firstNameReq,
-          second_name: this.state.lastNameReq,
-          email: this.state.emailReq,
-          phone: this.state.phoneReq,
-          //username: username_req,
-          password: this.state.passwordReq,
-        }
-      ).then((response) => {
+      Axios.post("https://api-ehotelplus.herokuapp.com/register", {
+        first_name: this.state.firstNameReq,
+        second_name: this.state.lastNameReq,
+        email: this.state.emailReq,
+        phone: this.state.phoneReq,
+        //username: username_req,
+        password: this.state.passwordReq,
+      }).then((response) => {
         //console.log(response);
         if (response.data.message) {
           this.setState({ registerStatus: response.data.message });

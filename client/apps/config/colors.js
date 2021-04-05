@@ -5,4 +5,7 @@ export default {
   quaternary: "#818181",
   inputBorders: "#E5E5E5",
   wrongInput: "#FF0000",
+  TagNavOrange: "#FE5E00",
+  TagNavGreen: "#80B378",
+  TagNavYellow: "#FFBB10",
 };

@@ -12,9 +12,10 @@ export default function App() {
   let [fontsLoaded] = useFonts({
     roboto: require("./apps/fonts/Roboto-Regular.ttf"),
     freestyle: require("./apps/fonts/freescpt.ttf"),
+    robotoMed: require("./apps/fonts/Roboto-Medium.ttf"),
   });
 
   if (!fontsLoaded) {
     return <AppLoading />;
-  } else return <Routes></Routes>;
+  } else return <MainTabScreen></MainTabScreen>;
 }
