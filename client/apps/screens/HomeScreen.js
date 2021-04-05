@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,39 +15,10 @@ import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
+import Axios from "axios";
 
 const imageWidth = Dimensions.get("window").width / 2;
-
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d723",
-    title: "Third Item",
-  },
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f631",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d726",
-    title: "Third Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d724",
-    title: "Third Item",
-  },
-];
+let contor = true;
 
 const Item = ({ title }) => (
   <View style={styles.item}>
@@ -55,11 +26,31 @@ const Item = ({ title }) => (
   </View>
 );
 
+const displayRooms = () => {};
+
 const HomeScreen = () => {
-  const renderItem = ({ item }) => <Item title={item.title} />;
+  const [Data, DataChange] = useState();
+  console.log(contor);
+  if (contor === true) {
+    Axios.post("https://api-ehotelplus.herokuapp.com/rooms", {}).then(
+      (response) => {
+        //setRooms(response);
+        // response.data.forEach((element) => {
+        //   console.log(element);
+        // });
+
+        //console.log(response.data);
+        DataChange(response.data);
+        //console.log(response.data[0]);
+        contor = false;
+      }
+    );
+  }
+  console.log(Data);
+  const renderItem = ({ item }) => <Item title={item.nfc_code} />;
   return (
     <View style={styles.container}>
-      <View style={{ top: "45%" }}>
+      <View style={{ top: "38%" }}>
         <Image
           source={require("../assets/HomeImg.png")}
           style={{
@@ -114,15 +105,15 @@ const HomeScreen = () => {
           }}
         ></TextInput>
       </View>
-      <View style={{ bottom: "10%", zIndex: 7 }}>
-        <ScrollView>
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </ScrollView>
+
+      <View style={{ zIndex: 7, height: "65%", bottom: "18%" }}>
+        <FlatList
+          data={Data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.room_id}
+        />
       </View>
+      <View style={{ height: 100 }}></View>
 
       <StatusBar style="auto"></StatusBar>
     </View>
