@@ -10,8 +10,8 @@ import {
   TextInput,
   FlatList,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
-
 import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -19,6 +19,7 @@ import colors from "../config/colors";
 import Axios from "axios";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { set } from "react-native-reanimated";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let contor = true;
@@ -33,36 +34,91 @@ const Item = ({ roomType, roomPrice }) => {
         source={require("../assets/RoomImg.jpeg")}
         style={styles.itemImage}
       />
-      <Text style={styles.roomTypeItem}>{roomType}</Text>
-      <Text style={styles.RatingValueLabel}>Rating</Text>
-      <Text style={styles.RatingValue}>8.5</Text>
-      <Icon
-        name="star"
-        color={colors.TagNavYellow}
-        style={styles.RatingStar}
-        size={27}
-      />
-      <TouchableOpacity
-        style={styles.HartContainer}
-        onPress={() => {
-          if (Ico == "heart-outline") {
-            SetIco("heart");
-          } else {
-            SetIco("heart-outline");
-          }
-          contorFav++;
+      <View
+        style={{
+          //backgroundColor: "blue",
+          flex: 0.8,
         }}
       >
-        <Icon
-          name={Ico}
-          color={colors.TagNavYellow}
-          style={styles.FavoritesHart}
-          size={27}
-        />
-      </TouchableOpacity>
+        <View
+          style={{
+            //backgroundColor: "red",
+            flex: 1,
+            justifyContent: "center",
+            bottom: "5%",
+          }}
+        >
+          <Text style={styles.roomTypeItem}>{roomType}</Text>
+          <Text style={styles.RatingValueLabel}>Rating</Text>
+          <Text style={styles.RatingValue}>8.5</Text>
+          <Icon
+            name="star"
+            color={colors.TagNavYellow}
+            style={styles.RatingStar}
+            size={27}
+          />
+        </View>
 
-      <Text style={styles.roomPriceItemLabel}>Price</Text>
-      <Text style={styles.roomPriceItem}>{roomPrice} Euro</Text>
+        <View
+          style={{
+            //backgroundColor: "yellow",
+            flex: 0.3,
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.roomPriceItemLabel}>Price</Text>
+        </View>
+
+        <View
+          style={{
+            flex: 0.6,
+            justifyContent: "flex-start",
+          }}
+        >
+          <Text style={styles.roomPriceItem}>{roomPrice} Euro</Text>
+          <TouchableOpacity
+            style={styles.HartContainer}
+            onPress={() => {
+              if (Ico == "heart-outline") {
+                SetIco("heart");
+              } else {
+                SetIco("heart-outline");
+              }
+              contorFav++;
+            }}
+          >
+            <Icon
+              name={Ico}
+              color={colors.TagNavYellow}
+              style={styles.FavoritesHart}
+              size={27}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const Item2 = (props) => {
+  return (
+    <View
+      style={{
+        height: imageWidth * 2,
+        width: "100%",
+        backgroundColor: colors.inputBorders,
+        position: "absolute",
+      }}
+    >
+      <View style={{ flex: 1, backgroundColor: "red" }}></View>
+      <View style={{ flex: 1, backgroundColor: "blue" }}>
+        <TouchableOpacity>
+          <Icon name="arrow-back-outline" color={colors.quaternary} size={27} />
+        </TouchableOpacity>
+        <Text>Room type</Text>
+      </View>
+      <View style={{ flex: 1, backgroundColor: "green" }}></View>
+      <View style={{ flex: 1, backgroundColor: "violet" }}></View>
     </View>
   );
 };
@@ -89,74 +145,126 @@ const HomeScreen = () => {
   const renderItem = ({ item }) => (
     <Item roomType={item.capacity} roomPrice={item.price} />
   );
+
   return (
     <View style={styles.container}>
-      <View style={{ top: "38%" }}>
+      {/*Header View Home Screen*/}
+      <View
+        style={{
+          flex: 0.5,
+          zIndex: 8,
+        }}
+      >
+        <View style={{ zIndex: 10 }}>
+          <Item2></Item2>
+        </View>
+
         <Image
           source={require("../assets/HomeImg.png")}
           style={{
-            resizeMode: "cover",
-            height: "60%",
+            resizeMode: "stretch",
+            height: "109%",
             width: "100%",
-            bottom: "25%",
             zIndex: 1,
           }}
         />
-        <Text style={styles.AppName}>eHotel+</Text>
 
-        <TouchableOpacity
+        <View
           style={{
-            bottom: "66.2%",
-            zIndex: 3,
-            alignItems: "flex-end",
-            right: "5%",
+            zIndex: 11,
+            height: imageWidth / 3,
+            flexDirection: "column",
+            bottom: "95%",
           }}
         >
-          <Image
-            source={require("../assets/ProfileImg.png")}
+          {/*Name Logout profile View Home Screen*/}
+          <View
             style={{
-              height: 27,
-              width: 27,
-              borderRadius: 27 / 2,
-              backgroundColor: "black",
+              flexDirection: "row",
+              top: "2%",
+              zIndex: 11,
+              alignItems: "center",
+              flex: 1,
             }}
-          />
-        </TouchableOpacity>
+          >
+            <Text style={styles.AppName}>eHotel+</Text>
 
-        <TouchableOpacity style={styles.LogOutBtn}>
-          <Icon name="log-out-outline" color={"white"} size={27} />
-        </TouchableOpacity>
-
-        <Text style={styles.AppMoto}>
-          Let's explore the best{"\n"}hotel rooms
-        </Text>
-
-        <TextInput
-          placeholder="Search room"
+            <TouchableOpacity style={styles.LogOutBtn}>
+              <Icon name="log-out-outline" color={"white"} size={27} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                zIndex: 3,
+                alignItems: "flex-end",
+                right: "35%",
+              }}
+            >
+              <Image
+                source={require("../assets/ProfileImg.png")}
+                style={{
+                  height: 27,
+                  width: 27,
+                  borderRadius: 27 / 2,
+                  backgroundColor: "black",
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View
           style={{
-            width: "80%",
-            backgroundColor: "white",
-            borderRadius: 100,
-            borderColor: colors.inputBorders,
-            borderWidth: 1,
-            height: 40,
-            paddingLeft: 20,
-            zIndex: 5,
-            bottom: "65%",
-            left: "10%",
+            zIndex: 9,
+            height: imageWidth / 1.4,
+            flexDirection: "column",
+            bottom: "95%",
           }}
-        ></TextInput>
+        >
+          {/*Moto View Home Screen*/}
+          <View
+            style={{
+              zIndex: 2,
+              height: imageWidth / 4,
+              alignItems: "flex-start",
+              flex: 1,
+            }}
+          >
+            <Text style={styles.AppMoto}>
+              Let's explore the best{"\n"}hotel rooms
+            </Text>
+          </View>
+
+          {/*Search View Home Screen*/}
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <TextInput
+              placeholder="Search room"
+              style={{
+                width: "80%",
+                backgroundColor: "white",
+                borderRadius: 100,
+                borderColor: colors.inputBorders,
+                borderWidth: 1,
+                height: "60%",
+                paddingLeft: 20,
+                bottom: "20%",
+              }}
+            ></TextInput>
+          </View>
+        </View>
       </View>
 
-      <View style={{ zIndex: 7, height: "65%", bottom: "18%" }}>
+      {/*FlatList Rooms View Home Screen*/}
+      <View style={{ zIndex: 7, height: "90%", top: 10, flex: 1 }}>
         <FlatList
           data={Data}
           renderItem={renderItem}
           keyExtractor={(item) => item.room_id.toString()}
         />
       </View>
-      <View style={{ height: 100 }}></View>
 
+      {/*Delimitator View Home Screen*/}
+      <View style={{ height: "2%" }}></View>
       <StatusBar style="auto"></StatusBar>
     </View>
   );
@@ -171,32 +279,27 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   AppName: {
-    zIndex: 2,
-    bottom: "62%",
     textAlign: "left",
-    left: "8%",
+    left: "45%",
     fontFamily: "robotoMed",
-    color: "white",
+    color: colors.WhiteCol,
     fontSize: 27,
+    flex: 1,
   },
   AppMoto: {
-    zIndex: 2,
-    bottom: "69%",
     textAlign: "left",
-    left: "8%",
     fontFamily: "robotoMed",
     color: colors.inputBorders,
     fontSize: 20,
+    left: "8%",
   },
   LogOutBtn: {
-    bottom: "70.5%",
-    zIndex: 3,
     alignItems: "flex-end",
-    right: "15%",
+    right: "55%",
   },
   item: {
     backgroundColor: colors.WhiteCol,
-    padding: 20,
+
     marginVertical: 8,
     marginHorizontal: 16,
     height: imageWidth / 1.5,
@@ -210,6 +313,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     zIndex: 1,
     borderRadius: 10,
+    flexDirection: "row",
   },
   title: {
     fontSize: 32,
@@ -218,35 +322,32 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: imageWidth / 1.49,
     width: imageWidth / 1.49,
-    bottom: "21.3%",
-    right: "6.1%",
     alignContent: "flex-start",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     zIndex: 1,
+    flex: 0.5,
   },
   roomTypeItem: {
     color: "black",
-    left: "45%",
-    bottom: "100%",
     fontSize: 18,
     zIndex: 99,
+    left: "5%",
     position: "absolute",
     fontFamily: "robotoMed",
   },
   roomPriceItem: {
     color: "black",
-    left: "45%",
-    bottom: "16%",
+    left: "5%",
     fontSize: 16,
     zIndex: 99,
     position: "absolute",
     fontFamily: "robotoMed",
+    top: "5%",
   },
   roomPriceItemLabel: {
     color: colors.quaternary,
-    left: "45%",
-    bottom: "40%",
+    left: "5%",
     fontSize: 15,
     zIndex: 99,
     position: "absolute",
@@ -254,28 +355,27 @@ const styles = StyleSheet.create({
   },
   RatingValueLabel: {
     color: colors.quaternary,
-    left: "93%",
-    bottom: "100%",
     fontSize: 15,
     zIndex: 99,
+    left: "70%",
     position: "absolute",
     fontFamily: "roboto",
   },
   RatingValue: {
     color: colors.TagNavYellow,
-    left: "93%",
-    bottom: "75%",
     fontSize: 15,
     zIndex: 99,
+    left: "70%",
+    top: "65%",
     position: "absolute",
     fontFamily: "roboto",
   },
   RatingStar: {
     color: colors.TagNavYellow,
-    left: "100%",
-    bottom: "76.8%",
     fontSize: 15,
     zIndex: 99,
+    left: "81%",
+    top: "69%",
     position: "absolute",
     fontFamily: "roboto",
   },
@@ -286,10 +386,10 @@ const styles = StyleSheet.create({
     fontFamily: "roboto",
   },
   HartContainer: {
-    left: "87%",
     backgroundColor: colors.WhiteCol,
-    bottom: "75%",
-    height: "35%",
-    width: "15%",
+    height: "82%",
+    width: "17%",
+    left: "70%",
+    bottom: "20%",
   },
 });
