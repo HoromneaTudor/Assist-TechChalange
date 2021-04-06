@@ -78,7 +78,7 @@ const HomeScreen = () => {
         //   console.log(element);
         // });
 
-        //console.log(response.data);
+        console.log(response.data);
         DataChange(response.data);
         //console.log(response.data[0]);
         contor = false;
