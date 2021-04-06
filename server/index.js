@@ -4,6 +4,7 @@ const cors = require("cors");
 // depricated  const bodyParser=require("body-parser");
 
 const bcrypt = require("bcryptjs");
+const { response } = require("express");
 //const saltRounds = 3;
 
 const app = express();
@@ -30,6 +31,18 @@ app.post("/register", (req, res) => {
     const phone = req.body.phone;
     const username = req.body.username;
     const password = req.body.password;
+
+    if (first_name == "") res.status(400).send("invalid first name");
+
+    if (second_name == "") res.status(400).send("invalid last name");
+
+    let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    if (reg.test(email) === false) res.status(400).send("invalid email");
+
+    if (phone.length != 10 || isNaN(phone))
+      res.status(400).send("invalid number");
+
+    if (password == "") res.status(400).send("invalid passward");
 
     const register_querry =
       "INSERT INTO accounts (first_name,second_name,email,phone,role,password) VALUES (?,?,?,?,?,?)";
@@ -58,6 +71,11 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+  if (reg.test(email) === false) res.status(400).send("invalid email");
+
+  if (password == "") res.status(400).send("invalid passward");
+
   //console.log(email);
   //console.log(password);
 
@@ -82,6 +100,18 @@ app.post("/login", (req, res) => {
       //console.log("wrong");
       //console.log(result);
       res.send({ message: "User dosn't exist" });
+    }
+  });
+});
+
+app.post("/rooms", (req, res) => {
+  const room_sql = "SELECT * FROM rooms;";
+
+  mySqlConection.query(room_sql, (err, response) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send(response);
     }
   });
 });

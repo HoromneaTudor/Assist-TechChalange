@@ -136,7 +136,7 @@ class SignUpScreen extends Component {
 
   _phoneValidation = () => {
     let phonenumberLenght = this.state.phoneReq.length;
-    if (phonenumberLenght != 10) {
+    if (phonenumberLenght != 10 || isNaN(this.state.phoneReq)) {
       this.setState({ phoneErrorMsg: "the phone number is not valid" });
       this.setState({ InputBorderColorPhoneNumber: colors.wrongInput });
       return false;
@@ -210,6 +210,11 @@ class SignUpScreen extends Component {
     let var3 = this._emailValidation(this.state.emailReq);
     let var4 = this._phoneValidation();
     let var5 = this._passwordEquallytyConfirnation();
+
+    console.log(this.state.firstNameReq);
+    console.log(this.state.lastNameReq);
+    console.log(this.state.emailReq);
+    console.log(this.state.passwordReq);
 
     if (var1 && var2 && var3 && var4 && var5) {
       Axios.post("https://api-ehotelplus.herokuapp.com/register", {

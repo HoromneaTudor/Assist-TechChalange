@@ -30,6 +30,7 @@ class SplashScreen extends Component {
     opacityMoto: new Animated.Value(0),
     opacityLogin: new Animated.Value(0),
     loginPressed: false,
+    loginBtnDisable: false,
     email: "",
     password: "",
     loginStatus: "",
@@ -38,37 +39,19 @@ class SplashScreen extends Component {
     timePassed: false,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.loginPressed) {
-      //console.log("butonul de login a fost apasat" + this.state.loginPressed);
-      this.setState({ loginPressed: false });
-      return true;
-    }
-    //console.log(this.state.email+"   "+nextState.email);
-    if (this.state.email !== nextState.email) {
-      //console.log(this.state.writingEmail)
-      //this.setState({writingEmail:false});
-
-      return false;
-    }
-    if (this.state.password !== nextState.password) {
-      //this.setState({writingPass:false});
-      return false;
-    }
-    return true;
-
-    //     const differentEmail = this.state.email !== nextState.email;
-    //     console.log(differentEmail);
-    //     if(differentEmail)
-    //         return false;
-    //   //const differentPass = this.props.password !== nextProps.props;
-    //     const differentPass=this.state.pass!==nextState.password;
-    //     //console.log(differentPass);
-    //     if(differentPass)
-    //         return false;
-
-    //     return true ;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.state.loginPressed) {
+  //     this.setState({ loginPressed: false });
+  //     return true;
+  //   }
+  //   if (this.state.email !== nextState.email) {
+  //     return false;
+  //   }
+  //   if (this.state.password !== nextState.password) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   _getPass = (text) => {
     this.setState({ password: text });
@@ -81,11 +64,13 @@ class SplashScreen extends Component {
   };
 
   _emailValidation = (text) => {
-    console.log(text);
+    //console.log(text);
     let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
     if (reg.test(text) === false) {
       //console.log("Email is Not Correct");
       //this.setState({ email: text })
+      this.setState({ loginStatus: "The email is not valid" });
+      this.setState({ InputBorderColorEmail: colors.wrongInput });
       return false;
     } else {
       //this.setState({ email: text })
@@ -94,41 +79,43 @@ class SplashScreen extends Component {
     }
   };
 
-  _failedAttemptsPenality = () => {};
-
-  register = () => {
-    Axios.post(
-      "https://mysql-ehotelplus.herokuapp.com/register", //ipV4-ul vostru
-      {
-        first_name: first_name_req,
-        second_name: second_name_req,
-        email: email_req,
-        phone: phone_req,
-        username: username_req,
-        password: password_req,
-      }
-    ).then((response) => {
-      //console.log(response);
-    });
+  _passwordValidation = (text) => {
+    if (text != "") return true;
+    this.setState({ loginStatus: "The password field can't be empty" });
+    this.setState({ InputBorderColorPassword: colors.wrongInput });
+    return false;
   };
 
+  _failedAttemptsPenality = () => {};
+
   login = (email1, password1) => {
-    Axios.post("https://api-ehotelplus.herokuapp.com/login", {
-      email: email1,
-      password: password1,
-    }).then((response) => {
-      //console.log(response);
-      if (response.data.message) {
-        //setLoginStatus(response.data.message);
-        this.setState({ loginStatus: response.data.message });
-        this.setState({ InputBorderColorEmail: colors.wrongInput });
-        this.setState({ InputBorderColorPassword: colors.wrongInput });
-        // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
-        //console.log(response.data.message);
-      } else {
-        this.props.navigation.replace("MainMenu");
-      }
-    });
+    //this.setState({ loginBtnDisable: true });
+    //console.log(this.state.loginBtnDisable);
+
+    this.setState({ loginStatus: "" });
+    if (
+      this._emailValidation(this.state.email) &&
+      this._passwordValidation(this.state.password)
+    ) {
+      Axios.post("https://api-ehotelplus.herokuapp.com/login", {
+        email: email1,
+        password: password1,
+      }).then((response) => {
+        //console.log(response);
+        if (response.data.message) {
+          //setLoginStatus(response.data.message);
+          this.setState({ loginStatus: response.data.message });
+          this.setState({ InputBorderColorEmail: colors.wrongInput });
+          this.setState({ InputBorderColorPassword: colors.wrongInput });
+          // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
+          //console.log(response.data.message);
+        } else {
+          this.props.navigation.replace("MainMenu");
+        }
+      });
+    }
+    //this.setState({ loginBtnDisable: false });
+    //console.log(this.state.loginBtnDisable);
   };
 
   onFocusEmail() {
@@ -337,9 +324,14 @@ class SplashScreen extends Component {
           <TouchableOpacity
             style={{ top: 10 }}
             onPress={() => {
+              this.setState({ loginBtnDisable: true });
+              console.log(this.state.loginBtnDisable);
               this.login(this.state.email, this.state.password);
               this.setState({ loginPressed: true });
+              setTimeout(() => this.setState({ loginBtnDisable: false }), 800);
+              console.log(this.state.loginBtnDisable);
             }}
+            disabled={this.state.loginBtnDisable}
           >
             <View style={styles.loginBtn}>
               <Text style={styles.loginBtnText}>Login</Text>

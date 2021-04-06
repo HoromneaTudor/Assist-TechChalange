@@ -8,4 +8,5 @@ export default {
   TagNavOrange: "#FE5E00",
   TagNavGreen: "#80B378",
   TagNavYellow: "#FFBB10",
+  WhiteCol: "#FFFFFF",
 };
