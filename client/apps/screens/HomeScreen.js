@@ -20,6 +20,7 @@ import Axios from "axios";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { set } from "react-native-reanimated";
 import DropDownPicker from "react-native-dropdown-picker";
+import DatePicker from "react-native-datepicker";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let contor = true;
@@ -84,7 +85,6 @@ const Item = ({ roomType, roomPrice }) => {
               } else {
                 SetIco("heart-outline");
               }
-              contorFav++;
             }}
           >
             <Icon
@@ -106,19 +106,307 @@ const Item2 = (props) => {
       style={{
         height: imageWidth * 2,
         width: "100%",
-        backgroundColor: colors.inputBorders,
+        backgroundColor: colors.tertiary,
         position: "absolute",
       }}
     >
-      <View style={{ flex: 1, backgroundColor: "red" }}></View>
-      <View style={{ flex: 1, backgroundColor: "blue" }}>
+      {/*Header*/}
+      <View style={{ flex: 1.3 }}></View>
+
+      {/*Back and type*/}
+      <View style={{ flex: 0.7, paddingLeft: "7%" }}>
         <TouchableOpacity>
           <Icon name="arrow-back-outline" color={colors.quaternary} size={27} />
         </TouchableOpacity>
-        <Text>Room type</Text>
+        <Text
+          style={{
+            top: "5%",
+            fontFamily: "roboto",
+            fontSize: 14,
+            color: colors.quaternary,
+          }}
+        >
+          Room type
+        </Text>
       </View>
-      <View style={{ flex: 1, backgroundColor: "green" }}></View>
-      <View style={{ flex: 1, backgroundColor: "violet" }}></View>
+      {/*DropDown*/}
+      <View
+        style={{
+          flex: 0.5,
+
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <DropDownPicker
+          items={[
+            {
+              label: "USA",
+              value: "usa",
+              icon: () => <Icon name="flag" size={18} color="#900" />,
+              hidden: true,
+            },
+            {
+              label: "UK",
+              value: "uk",
+              icon: () => <Icon name="flag" size={18} color="#900" />,
+            },
+            {
+              label: "France",
+              value: "france",
+              icon: () => <Icon name="flag" size={18} color="#900" />,
+            },
+          ]}
+          defaultValue={"France"}
+          containerStyle={{
+            height: "85%",
+            width: "86%",
+          }}
+          style={{
+            backgroundColor: colors.WhiteCol,
+            borderColor: colors.inputBorders,
+          }}
+          itemStyle={{
+            justifyContent: "flex-start",
+            fontFamily: "roboto",
+            fontSize: 10,
+          }}
+          onChangeItem={() => {
+            console.log("dawd");
+          }}
+          placeholder="Select an item"
+          dropDownStyle={{
+            backgroundColor: colors.WhiteCol,
+          }}
+        />
+      </View>
+
+      {/*Text Check-in check-out*/}
+      <View
+        style={{
+          flex: 0.3,
+
+          paddingLeft: "7%",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "baseline",
+        }}
+      >
+        <Text
+          style={{
+            top: "5%",
+            fontFamily: "roboto",
+            fontSize: 14,
+            color: colors.quaternary,
+          }}
+        >
+          Check-in
+        </Text>
+
+        <Text
+          style={{
+            top: "5%",
+            fontFamily: "roboto",
+            fontSize: 14,
+            marginLeft: "36%",
+            color: colors.quaternary,
+          }}
+        >
+          Check-out
+        </Text>
+      </View>
+
+      {/*Date Picker*/}
+      <View
+        style={{
+          flex: 0.5,
+
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          alignContent: "center",
+          paddingLeft: "7%",
+        }}
+      >
+        <DatePicker
+          style={{ width: "50%" }}
+          mode="date"
+          placeholder="-"
+          format="YYYY-MM-DD"
+          minDate="2016-05-01"
+          maxDate="2016-06-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              height: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateInput: {
+              borderRadius: 10,
+              height: "90%",
+              borderColor: colors.inputBorders,
+              borderWidth: 2,
+              backgroundColor: colors.WhiteCol,
+              textAlign: "left",
+            },
+            // ... You can check the source to find the other keys.
+          }}
+        />
+
+        <DatePicker
+          style={{ width: "50%", left: "10%" }}
+          mode="date"
+          placeholder="-"
+          format="YYYY-MM-DD"
+          minDate="2016-05-01"
+          maxDate="2016-06-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              height: 0,
+              top: 4,
+              marginLeft: 0,
+            },
+            dateText: {
+              color: "red",
+              placeholderTextColor: "red",
+              fontSize: 10,
+            },
+            dateInput: {
+              borderRadius: 10,
+              height: "90%",
+              borderColor: colors.inputBorders,
+              borderWidth: 2,
+              backgroundColor: colors.WhiteCol,
+            },
+            // ... You can check the source to find the other keys.
+          }}
+        />
+      </View>
+
+      {/*Text Price min price max*/}
+      <View
+        style={{
+          flex: 0.3,
+
+          paddingLeft: "7%",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "baseline",
+        }}
+      >
+        <Text
+          style={{
+            top: "5%",
+            fontFamily: "roboto",
+            fontSize: 14,
+            color: colors.quaternary,
+          }}
+        >
+          Min price
+        </Text>
+
+        <Text
+          style={{
+            top: "5%",
+            fontFamily: "roboto",
+            fontSize: 14,
+            marginLeft: "36%",
+            color: colors.quaternary,
+          }}
+        >
+          Max price
+        </Text>
+      </View>
+
+      {/*Price range*/}
+      <View
+        style={{
+          flex: 0.5,
+
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          alignContent: "center",
+          paddingLeft: "7%",
+        }}
+      >
+        <TextInput
+          placeholder="Select price"
+          keyboardType="numeric"
+          placeholderTextColor={colors.primary}
+          style={{
+            height: "90%",
+            width: "40%",
+            borderWidth: 2,
+            borderRadius: 10,
+            borderColor: colors.inputBorders,
+            borderWidth: 2,
+            backgroundColor: colors.WhiteCol,
+            textAlign: "center",
+            color: "red",
+            fontFamily: "roboto",
+
+            fontSize: 13,
+          }}
+        />
+
+        <TextInput
+          placeholder="Select price"
+          color={colors.in}
+          placeholderTextColor={colors.primary}
+          keyboardType="numeric"
+          style={{
+            height: "90%",
+            width: "40%",
+            left: "108%",
+            borderWidth: 2,
+            borderRadius: 10,
+            borderColor: colors.inputBorders,
+            borderWidth: 2,
+            backgroundColor: colors.WhiteCol,
+            textAlign: "center",
+            color: colors.primary,
+
+            fontFamily: "roboto",
+            fontSize: 13,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity style={{ width: "80%" }}>
+          <View
+            style={{
+              backgroundColor: colors.secondary,
+              borderRadius: 100,
+              alignItems: "center",
+              justifyContent: "center",
+
+              height: imageWidth / 5,
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontSize: 17,
+                fontFamily: "roboto",
+              }}
+            >
+              Search room
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -155,7 +443,7 @@ const HomeScreen = () => {
           zIndex: 8,
         }}
       >
-        <View style={{ zIndex: 10 }}>
+        <View style={{ zIndex: 0 }}>
           <Item2></Item2>
         </View>
 
