@@ -20,7 +20,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
 import Axios from "axios";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import { set } from "react-native-reanimated";
+import { cos, set } from "react-native-reanimated";
 import DropDownPicker from "react-native-dropdown-picker";
 import { render } from "react-dom";
 import DatePicker from "react-native-datepicker";
@@ -112,13 +112,15 @@ class HomeScreen extends Component {
     renderItem: {},
     Ico: "heart-outline",
     RoomItem: {},
-    country: "uk",
+    capacity: "",
     dateCheckIn: "",
     dateCheckOut: "",
     size: new Animated.Value(0),
     position: new Animated.ValueXY({ x: 0, y: -500 }),
     MinPriceState: "Min price",
     MaxPriceState: "Max price",
+    MinPriceStateValue: 0,
+    MaxPriceStateValue: 0,
     CurrentDate: "",
     MaxDate: "",
     GetCurrentDate: true,
@@ -193,7 +195,6 @@ class HomeScreen extends Component {
         <View
           style={{
             flex: 0.5,
-
             justifyContent: "flex-start",
             alignItems: "center",
           }}
@@ -202,22 +203,22 @@ class HomeScreen extends Component {
             items={[
               {
                 label: "Single room",
-                value: "single",
+                value: "Single room",
               },
               {
                 label: "Double room",
-                value: "double",
+                value: "Double room",
               },
               {
                 label: "Triple room",
-                value: "triple",
+                value: "Triple room",
               },
               {
                 label: "Apartament",
-                value: "apartament",
+                value: "Apartament",
               },
             ]}
-            defaultValue={this.state.country}
+            defaultValue={this.state.capacity}
             containerStyle={{
               height: "85%",
               width: "86%",
@@ -233,7 +234,7 @@ class HomeScreen extends Component {
             }}
             onChangeItem={(item) =>
               this.setState({
-                country: item.value,
+                capacity: item.value,
               })
             }
             placeholder="Select an item"
@@ -411,6 +412,9 @@ class HomeScreen extends Component {
             step={10}
             onSlidingComplete={(someValue1) => {
               this.setState({ someValue1 });
+              this.setState({
+                MinPriceStateValue: someValue1,
+              });
               if (someValue1 > 0) {
                 if (someValue1 > 99) {
                   this.setState({
@@ -423,9 +427,10 @@ class HomeScreen extends Component {
                 }
               } else {
                 this.setState({
-                  MinPriceState: "Min price",
+                  MinPriceState: "Min price ",
                 });
               }
+              //console.log(this.state.MinPriceStateValue);
             }}
           />
 
@@ -440,6 +445,9 @@ class HomeScreen extends Component {
             step={10}
             onSlidingComplete={(someValue) => {
               this.setState({ someValue });
+              this.setState({
+                MaxPriceStateValue: someValue,
+              });
               if (someValue > 0) {
                 if (someValue > 99) {
                   this.setState({
@@ -537,7 +545,7 @@ class HomeScreen extends Component {
     this.getRooms();
     this.getMinDate();
     this.getMaxDate();
-    console.log(this.state.CurrentDate);
+    console.log(this.state.capacity);
     return (
       <View style={styles.container}>
         {/*Header View Home Screen*/}
