@@ -12,6 +12,7 @@ import {
   ScrollView,
   SafeAreaView,
   Animated,
+  ImageBackground,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
@@ -23,6 +24,7 @@ import { set } from "react-native-reanimated";
 import DropDownPicker from "react-native-dropdown-picker";
 import { render } from "react-dom";
 import DatePicker from "react-native-datepicker";
+import Slider from "@react-native-community/slider";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let verif = 3;
@@ -111,10 +113,10 @@ class HomeScreen extends Component {
     Ico: "heart-outline",
     RoomItem: {},
     country: "uk",
-    date: "2016-05-15",
+    dateCheckIn: "2021-04-07",
+    dateCheckOut: "2021-04-07",
+    size: new Animated.Value(0),
     position: new Animated.ValueXY({ x: 0, y: -500 }),
-    opacity: new Animated.Value(0),
-    FlatListTop: "2%",
   };
 
   //console.log(contor);
@@ -143,26 +145,36 @@ class HomeScreen extends Component {
         style={{
           height: imageWidth * 2,
           width: "100%",
-          backgroundColor: colors.tertiary,
+          backgroundColor: colors.WhiteCol,
+          elevation: 10,
           position: "absolute",
-          zIndex: 100,
+          zIndex: 10,
         }}
       >
         {/*Header*/}
-        <View style={{ flex: 1.3 }}></View>
+        <View style={{ flex: 1.1 }}></View>
 
         {/*Back and type*/}
-        <View style={{ flex: 0.7, paddingLeft: "7%" }}>
-          <TouchableOpacity>
+        <View
+          style={{
+            flex: 0.7,
+            paddingLeft: "7%",
+          }}
+        >
+          <TouchableOpacity
+            onPress={this.SearchAnimationBack}
+            style={{ width: "20%", height: "30%" }}
+          >
             <Icon
               name="arrow-back-outline"
               color={colors.quaternary}
-              size={27}
+              size={32}
+              style={{ bottom: "50%" }}
             />
           </TouchableOpacity>
           <Text
             style={{
-              top: "5%",
+              top: "28%",
               fontFamily: "roboto",
               fontSize: 14,
               color: colors.quaternary,
@@ -183,20 +195,20 @@ class HomeScreen extends Component {
           <DropDownPicker
             items={[
               {
-                label: "USA",
-                value: "usa",
-                icon: () => <Icon name="flag" size={18} color="#900" />,
-                hidden: true,
+                label: "Single room",
+                value: "single",
               },
               {
-                label: "UK",
-                value: "uk",
-                icon: () => <Icon name="flag" size={18} color="#900" />,
+                label: "Double room",
+                value: "double",
               },
               {
-                label: "France",
-                value: "france",
-                icon: () => <Icon name="flag" size={18} color="#900" />,
+                label: "Triple room",
+                value: "triple",
+              },
+              {
+                label: "Apartament",
+                value: "apartament",
               },
             ]}
             defaultValue={this.state.country}
@@ -229,7 +241,7 @@ class HomeScreen extends Component {
         <View
           style={{
             flex: 0.3,
-
+            top: "3%",
             paddingLeft: "7%",
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -264,7 +276,7 @@ class HomeScreen extends Component {
         <View
           style={{
             flex: 0.5,
-
+            top: "3%",
             flexDirection: "row",
             alignItems: "flex-start",
             justifyContent: "flex-start",
@@ -275,7 +287,7 @@ class HomeScreen extends Component {
           <DatePicker
             style={{ width: "50%" }}
             mode="date"
-            date={this.state.date}
+            date={this.state.dateCheckIn}
             placeholder="-"
             format="YYYY-MM-DD"
             minDate="2016-05-01"
@@ -299,7 +311,7 @@ class HomeScreen extends Component {
               // ... You can check the source to find the other keys.
             }}
             onDateChange={(date) => {
-              this.setState({ date: date });
+              this.setState({ dateCheckIn: date });
             }}
           />
 
@@ -307,6 +319,7 @@ class HomeScreen extends Component {
             style={{ width: "50%", left: "10%" }}
             mode="date"
             placeholder="-"
+            date={this.state.dateCheckOut}
             format="YYYY-MM-DD"
             minDate="2016-05-01"
             maxDate="2016-06-01"
@@ -318,11 +331,6 @@ class HomeScreen extends Component {
                 top: 4,
                 marginLeft: 0,
               },
-              dateText: {
-                color: "red",
-                placeholderTextColor: "red",
-                fontSize: 10,
-              },
               dateInput: {
                 borderRadius: 10,
                 height: "90%",
@@ -332,6 +340,9 @@ class HomeScreen extends Component {
               },
               // ... You can check the source to find the other keys.
             }}
+            onDateChange={(date) => {
+              this.setState({ dateCheckOut: date });
+            }}
           />
         </View>
 
@@ -339,7 +350,7 @@ class HomeScreen extends Component {
         <View
           style={{
             flex: 0.3,
-
+            top: "6%",
             paddingLeft: "7%",
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -379,55 +390,26 @@ class HomeScreen extends Component {
             alignItems: "flex-start",
             justifyContent: "flex-start",
             alignContent: "center",
+            top: "5%",
             paddingLeft: "7%",
           }}
         >
-          <TextInput
-            placeholder="Select price"
-            keyboardType="numeric"
-            placeholderTextColor={colors.primary}
-            style={{
-              height: "90%",
-              width: "40%",
-              borderWidth: 2,
-              borderRadius: 10,
-              borderColor: colors.inputBorders,
-              borderWidth: 2,
-              backgroundColor: colors.WhiteCol,
-              textAlign: "center",
-              color: "red",
-              fontFamily: "roboto",
-
-              fontSize: 13,
-            }}
-            onChangeText={() => {
-              console.log("dwad");
-            }}
+          <Slider
+            style={{ width: "46%", height: 40, right: "20%" }}
+            minimumValue={0}
+            maximumValue={400}
+            thumbTintColor={colors.secondary}
+            minimumTrackTintColor={colors.tertiary}
+            maximumTrackTintColor={colors.wrongInput}
           />
 
-          <TextInput
-            placeholder="Select price"
-            color={colors.in}
-            placeholderTextColor={colors.primary}
-            keyboardType="numeric"
-            style={{
-              height: "90%",
-              width: "40%",
-              left: "108%",
-              borderWidth: 2,
-              borderRadius: 10,
-              borderColor: colors.inputBorders,
-              borderWidth: 2,
-              backgroundColor: colors.WhiteCol,
-              textAlign: "center",
-              color: colors.primary,
-
-              fontFamily: "roboto",
-              fontSize: 13,
-            }}
-            onChangeText={() => {
-              console.log("dwad");
-            }}
+          <Slider
+            style={{ width: "46%", height: 40, paddingBottom: 10, left: 10 }}
+            minimumValue={0}
+            maximumValue={400}
+            thumbTintColor={colors.secondary}
+            minimumTrackTintColor={colors.tertiary}
+            maximumTrackTintColor={colors.wrongInput}
           />
         </View>
         <View
@@ -445,7 +427,7 @@ class HomeScreen extends Component {
                 borderRadius: 100,
                 alignItems: "center",
                 justifyContent: "center",
-
+                top: "10%",
                 height: imageWidth / 5,
               }}
             >
@@ -456,7 +438,7 @@ class HomeScreen extends Component {
                   fontFamily: "roboto",
                 }}
               >
-                Search room
+                Search rooms
               </Text>
             </View>
           </TouchableOpacity>
@@ -466,33 +448,32 @@ class HomeScreen extends Component {
   };
 
   SearchAnimation = () => {
-    Animated.parallel([
-      Animated.timing(this.state.position, {
-        toValue: { x: 0, y: 0 },
-        useNativeDriver: true,
-      }),
-    ]).start();
+    Animated.timing(this.state.position, {
+      toValue: { x: 0, y: imageWidth / 1.5 },
+      useNativeDriver: "true",
+    }).start();
   };
 
-  HomeHide = () => {
-    Animated.timing(this.state.opacity, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
+  SearchAnimationBack = () => {
+    Animated.timing(this.state.position, {
+      toValue: { x: 0, y: -500 },
+      useNativeDriver: "true",
     }).start();
   };
 
   render() {
     this.getRooms();
-    this.SearchAnimation();
+
     return (
       <View style={styles.container}>
         {/*Header View Home Screen*/}
 
         <View
           style={{
-            flex: 0.5,
-            zIndex: 8,
+            zIndex: 11,
+            height: "70%",
+
+            flexDirection: "column",
           }}
         >
           <Animated.View
@@ -501,38 +482,31 @@ class HomeScreen extends Component {
                 { translateX: this.state.position.x },
                 { translateY: this.state.position.y },
               ],
+              height: imageWidth * 2,
+              width: "100%",
+
+              elevation: 10,
+              position: "absolute",
+              zIndex: 10,
             }}
           >
             <this.Item2></this.Item2>
           </Animated.View>
-          <Image
+          <ImageBackground
             source={require("../assets/HomeImg.png")}
             style={{
               resizeMode: "stretch",
-              height: "109%",
+              height: "95%",
               width: "100%",
-              height: 0,
-              zIndex: 1,
-            }}
-          />
-
-          <View
-            style={{
-              zIndex: 11,
-              height: imageWidth / 3,
-              flexDirection: "column",
-              bottom: "95%",
             }}
           >
             {/*Name Logout profile View Home Screen*/}
             <View
               style={{
                 flexDirection: "row",
-                top: "2%",
-                zIndex: 11,
-                height: 0,
-                alignItems: "center",
-                flex: 1,
+                zIndex: 9,
+                alignItems: "flex-end",
+                flex: 1.9,
               }}
             >
               <Text style={styles.AppName}>eHotel+</Text>
@@ -544,7 +518,7 @@ class HomeScreen extends Component {
                 style={{
                   zIndex: 3,
                   alignItems: "flex-end",
-                  right: "35%",
+                  right: "10%",
                 }}
               >
                 <Image
@@ -553,27 +527,18 @@ class HomeScreen extends Component {
                     height: 27,
                     width: 27,
                     borderRadius: 27 / 2,
-                    backgroundColor: "black",
                   }}
                 />
               </TouchableOpacity>
             </View>
-          </View>
-          <View
-            style={{
-              zIndex: 9,
-              height: 0,
-              flexDirection: "column",
-              bottom: "95%",
-            }}
-          >
+
             {/*Moto View Home Screen*/}
             <View
               style={{
                 zIndex: 2,
-                height: 0,
+                height: imageWidth / 4,
                 alignItems: "flex-start",
-                flex: 1,
+                flex: 0.7,
               }}
             >
               <Text style={styles.AppMoto}>
@@ -584,40 +549,58 @@ class HomeScreen extends Component {
             {/*Search View Home Screen*/}
             <View
               style={{
-                flex: 1,
-                height: 0,
                 alignItems: "center",
                 justifyContent: "center",
+
+                justifyContent: "flex-start",
+                alignItems: "center",
+                flex: 1.3,
               }}
             >
-              <TextInput
+              <TouchableOpacity
                 placeholder="Search room"
                 style={{
                   width: "80%",
+                  flexDirection: "row",
                   backgroundColor: "white",
                   borderRadius: 100,
                   borderColor: colors.inputBorders,
+
+                  alignItems: "center",
                   borderWidth: 1,
-                  height: "60%",
+                  height: "25%",
                   paddingLeft: 20,
-                  bottom: "20%",
                 }}
-                onTouchStart={() => {
+                onPress={() => {
                   this.SearchAnimation();
-                  this.setState({ FlatListTop: "300%" });
                 }}
-              ></TextInput>
+              >
+                <Icon
+                  name="search-outline"
+                  color={colors.quaternary}
+                  size={22}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: "roboto",
+                    color: colors.quaternary,
+                    left: 5,
+                  }}
+                >
+                  Search rooms
+                </Text>
+              </TouchableOpacity>
             </View>
-          </View>
+          </ImageBackground>
         </View>
 
         {/*FlatList Rooms View Home Screen*/}
         <View
           style={{
             zIndex: 7,
-            height: "90%",
-            top: this.state.FlatListTop,
-            flex: 1,
+            height: "60%",
+            bottom: "10%",
           }}
         >
           <FlatList
@@ -628,7 +611,7 @@ class HomeScreen extends Component {
         </View>
 
         {/*Delimitator View Home Screen*/}
-        <View style={{ height: "2%" }}></View>
+        <View style={{ height: "8%" }}></View>
         <StatusBar style="auto"></StatusBar>
       </View>
     );
@@ -645,7 +628,7 @@ const styles = StyleSheet.create({
   },
   AppName: {
     textAlign: "left",
-    left: "45%",
+    left: "12%",
     fontFamily: "robotoMed",
     color: colors.WhiteCol,
     fontSize: 27,
@@ -660,7 +643,7 @@ const styles = StyleSheet.create({
   },
   LogOutBtn: {
     alignItems: "flex-end",
-    right: "55%",
+    right: "15%",
   },
   item: {
     backgroundColor: colors.WhiteCol,
