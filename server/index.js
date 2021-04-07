@@ -123,18 +123,18 @@ app.post("/search", (req, res) => {
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
 
-  console.log(
-    capacity +
-      "    " +
-      minPrice +
-      "  " +
-      "     " +
-      maxPrice +
-      "    " +
-      startDate +
-      "    " +
-      endDate
-  );
+  // console.log(
+  //   capacity +
+  //     "    " +
+  //     minPrice +
+  //     "  " +
+  //     "     " +
+  //     maxPrice +
+  //     "    " +
+  //     startDate +
+  //     "    " +
+  //     endDate
+  // );
 
   let ReturnedCameras = [];
 
@@ -190,19 +190,32 @@ app.post("/search", (req, res) => {
           }
         );
       } else {
-        res.send({
-          message: "Sorry! We have no rooms with these requirements",
-        });
+        res.send(ReturnedCameras);
       }
     }
   );
 });
 
 app.post("/addBooking", (req, res) => {
-  //const
+  const clientId = req.body.id;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+  const roomId = req.body.roomId;
+
+  const mySqlAddBooking =
+    "INSERT INTO bookings (start_date,end_date,room_id,client_id,1,2) VALUES (?,?,?,?)";
+
+  mySqlConection.query(
+    mySqlAddBooking,
+    [startDate, endDate, roomId, clientId],
+    (err, result) => {
+      if (err) res.send({ err: err });
+      res.send({ message: "The room was booked successfull" });
+    }
+  );
 });
 
-app.post("/booking", (req, res) => {
+app.post("/editBooking", (req, res) => {
   const id = req.body.id;
 
   const mySqlId = "SELECT * FROM bookings where client_id=?;";
