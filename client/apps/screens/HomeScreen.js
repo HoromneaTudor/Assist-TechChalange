@@ -147,6 +147,38 @@ class HomeScreen extends Component {
     }
   };
 
+  getSearchedRooms = () => {
+    // Axios.post("https://api-ehotelplus.herokuapp.com/search", {
+    console.log(
+      this.state.capacity +
+        "   " +
+        this.state.dateCheckIn +
+        "    " +
+        this.state.dateCheckOut +
+        "    " +
+        this.state.MaxPriceStateValue +
+        "     " +
+        this.state.MinPriceStateValue
+    );
+    Axios.post("https://api-ehotelplus.herokuapp.com/search", {
+      capacity: this.state.capacity,
+      startDate: this.state.dateCheckIn,
+      endDate: this.state.dateCheckOut,
+      maxPrice: this.state.MaxPriceState,
+      minPrice: this.state.MinPriceState,
+    }).then((response) => {
+      if (response.data.message) {
+        console.log(response.data.message);
+      } else {
+        this.setState({ Data: response.data });
+        //console.log(response.data);
+      }
+    });
+
+    let testDate = "2021-4-6";
+    //console.log(testDate < this.state.dateCheckIn);
+  };
+
   Item2 = (props) => {
     return (
       <View
@@ -476,7 +508,10 @@ class HomeScreen extends Component {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity style={{ width: "80%" }}>
+          <TouchableOpacity
+            style={{ width: "80%" }}
+            onPress={this.getSearchedRooms}
+          >
             <View
               style={{
                 backgroundColor: colors.secondary,
@@ -542,6 +577,7 @@ class HomeScreen extends Component {
   };
 
   render() {
+    let clientId = global.this;
     this.getRooms();
     this.getMinDate();
     this.getMaxDate();

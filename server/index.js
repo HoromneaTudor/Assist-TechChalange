@@ -116,6 +116,120 @@ app.post("/rooms", (req, res) => {
   });
 });
 
+app.post("/search", (req, res) => {
+  const capacity = req.body.capacity;
+  const minPrice = req.body.minPrice;
+  const maxPrice = req.body.maxPrice;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+
+  console.log(
+    capacity +
+      "    " +
+      minPrice +
+      "  " +
+      "     " +
+      maxPrice +
+      "    " +
+      startDate +
+      "    " +
+      endDate
+  );
+
+  let ReturnedCameras = [];
+
+  const searchByCantityAndPrice =
+    "SELECT * FROM rooms where capacity=? and ?<=price  and price<=?";
+  const searchByDateAvability =
+    "SELECT room_id FROM bookings where ((?<start_date and ?<end_date) or(?>start_date and ?>end_date)) and (booking_status=3 or booking_status=4);";
+
+  mySqlConection.query(
+    searchByCantityAndPrice,
+    [capacity, minPrice, maxPrice],
+    (err1, result1) => {
+      if (err1) res.send({ err1: err1 });
+      if (result1.length > 0) {
+        //console.log(result1);
+        mySqlConection.query(
+          searchByDateAvability,
+          [endDate, endDate, startDate, startDate],
+          (err2, result2) => {
+            if (err2) res.send({ err2: err });
+            //console.log(result2.length);
+            if (result2.length > 0) {
+              let ArrayCamera = [];
+              //let ValidCameraIndex=[],
+
+              for (i = 0; i < result2.length - 1; i++) {
+                let contorIdenticalId = 0;
+                //contorIdenticalId.push(i);
+                for (j = 1; j < result2.length; j++) {
+                  if (result2[i].room_id == result2[j].room_id) {
+                    if (
+                      result2[i].start_date < result2[j].start_date &&
+                      result2[i].end_date < result[j].end_date
+                    ) {
+                    } else contorIdenticalId++;
+                  }
+                }
+                if (contorIdenticalId.length == 0) {
+                  ArrayCamera.push(result2[i]);
+                }
+              }
+              for (k = 0; k < result1.length; k++) {
+                for (h = 0; h < ArrayCamera.length; h++) {
+                  if (result1[k].room_id == ArrayCamera[h])
+                    ReturnedCameras.push(result[k]);
+                }
+              }
+              res.send(ReturnedCameras);
+            } else {
+              res.send(result1);
+              //console.log(result1);
+            }
+          }
+        );
+      } else {
+        res.send({
+          message: "Sorry! We have no rooms with these requirements",
+        });
+      }
+    }
+  );
+});
+
+app.post("/addBooking", (req, res) => {
+  //const
+});
+
+app.post("/booking", (req, res) => {
+  const id = req.body.id;
+
+  const mySqlId = "SELECT * FROM bookings where client_id=?;";
+
+  mySqlConection.query(mySqlId, id, (err, result) => {
+    if (err) res.send({ err: err });
+    if (result.length > 0) {
+      res.send(result); //aici sar putea sa trebuiasca sa creez un array separat
+    } else {
+      res.send({ message: "You dont have any bookings yet" });
+    }
+  });
+});
+
+app.post("/checkin", (req, res) => {
+  const idBooking = req.body.id;
+
+  const myChangeBookingStatus = "SELECT * FROM bookings where if=?;";
+
+  mySqlConection.query(myChangeBookingStatus, idBooking, (err, response) => {
+    if (err) res.send({ err: err });
+    if (response) {
+      res.send(response);
+    }
+  });
+});
+
 app.listen(process.env.PORT || PORT, () => {
   console.log("Running on port " + PORT);
 });
