@@ -113,10 +113,16 @@ class HomeScreen extends Component {
     Ico: "heart-outline",
     RoomItem: {},
     country: "uk",
-    dateCheckIn: "2021-04-07",
-    dateCheckOut: "2021-04-07",
+    dateCheckIn: "",
+    dateCheckOut: "",
     size: new Animated.Value(0),
     position: new Animated.ValueXY({ x: 0, y: -500 }),
+    MinPriceState: "Min price",
+    MaxPriceState: "Max price",
+    CurrentDate: "",
+    MaxDate: "",
+    GetCurrentDate: true,
+    GetMaxDate: true,
   };
 
   //console.log(contor);
@@ -290,8 +296,8 @@ class HomeScreen extends Component {
             date={this.state.dateCheckIn}
             placeholder="-"
             format="YYYY-MM-DD"
-            minDate="2016-05-01"
-            maxDate="2016-06-01"
+            minDate={this.state.CurrentDate}
+            maxDate={this.state.MaxDate}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -321,8 +327,8 @@ class HomeScreen extends Component {
             placeholder="-"
             date={this.state.dateCheckOut}
             format="YYYY-MM-DD"
-            minDate="2016-05-01"
-            maxDate="2016-06-01"
+            minDate={this.state.CurrentDate}
+            maxDate={this.state.MaxDate}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -365,7 +371,7 @@ class HomeScreen extends Component {
               color: colors.quaternary,
             }}
           >
-            Min price
+            {this.state.MinPriceState}
           </Text>
 
           <Text
@@ -377,7 +383,7 @@ class HomeScreen extends Component {
               color: colors.quaternary,
             }}
           >
-            Max price
+            {this.state.MaxPriceState}
           </Text>
         </View>
 
@@ -397,22 +403,61 @@ class HomeScreen extends Component {
           <Slider
             style={{ width: "46%", height: 40, right: "20%" }}
             minimumValue={0}
-            maximumValue={400}
+            maximumValue={300}
+            value={this.state.someValue1}
             thumbTintColor={colors.secondary}
             minimumTrackTintColor={colors.tertiary}
             maximumTrackTintColor={colors.wrongInput}
-            onValueChange={() => {
-              console.log(SliderValue);
+            step={10}
+            onSlidingComplete={(someValue1) => {
+              this.setState({ someValue1 });
+              if (someValue1 > 0) {
+                if (someValue1 > 99) {
+                  this.setState({
+                    MinPriceState: someValue1.toString() + " EUR",
+                  });
+                } else {
+                  this.setState({
+                    MinPriceState: someValue1.toString() + " EURO",
+                  });
+                }
+              } else {
+                this.setState({
+                  MinPriceState: "Min price",
+                });
+              }
             }}
           />
 
           <Slider
             style={{ width: "46%", height: 40, paddingBottom: 10, left: 10 }}
             minimumValue={0}
-            maximumValue={400}
+            maximumValue={300}
+            value={this.state.someValue}
             thumbTintColor={colors.secondary}
             minimumTrackTintColor={colors.tertiary}
             maximumTrackTintColor={colors.wrongInput}
+            step={10}
+            onSlidingComplete={(someValue) => {
+              this.setState({ someValue });
+              if (someValue > 0) {
+                if (someValue > 99) {
+                  this.setState({
+                    MaxPriceState: someValue.toString() + " EUR",
+                  });
+                } else {
+                  this.setState({
+                    MaxPriceState: someValue.toString() + " EURO",
+                  });
+                }
+              } else {
+                this.setState({
+                  MaxPriceState: "Max price",
+                });
+              }
+
+              //console.log(this.state.MaxPriceState);
+            }}
           />
         </View>
         <View
@@ -464,9 +509,35 @@ class HomeScreen extends Component {
     }).start();
   };
 
+  getMinDate = () => {
+    if (this.state.GetCurrentDate) {
+      var date = new Date().getDate();
+      var month = new Date().getMonth() + 1;
+      var year = new Date().getFullYear();
+      var CurrentDate = year + "-" + month + "-" + date;
+      this.setState({ CurrentDate: CurrentDate });
+      this.setState({ dateCheckIn: CurrentDate });
+      this.setState({ dateCheckOut: CurrentDate });
+      this.setState({ GetCurrentDate: false });
+    }
+  };
+
+  getMaxDate = () => {
+    if (this.state.GetMaxDate) {
+      var date = new Date().getDate();
+      var month = new Date().getMonth() + 1;
+      var year = new Date().getFullYear() + 1;
+      var CurrentDate = year + "-" + month + "-" + date;
+      this.setState({ MaxDate: CurrentDate });
+      this.setState({ GetMaxDate: false });
+    }
+  };
+
   render() {
     this.getRooms();
-
+    this.getMinDate();
+    this.getMaxDate();
+    console.log(this.state.CurrentDate);
     return (
       <View style={styles.container}>
         {/*Header View Home Screen*/}
