@@ -19,8 +19,10 @@ import { Dimensions } from "react-native";
 import { useEffect } from "react";
 import Axios from "axios";
 import { render } from "react-dom";
+import DialogInput from "react-native-dialog-input";
 
 const imageWidth = Dimensions.get("window").width / 2;
+let forgpas = false;
 
 class SplashScreen extends Component {
   state = {
@@ -213,6 +215,19 @@ class SplashScreen extends Component {
     this.SplashAnimation();
     return (
       <SafeAreaView style={styles.container}>
+        <View>
+          <DialogInput
+            isDialogVisible={forgpas}
+            title={"Password Recovery"}
+            message={"Recover your password"}
+            hintInput={"E-mail address"}
+            submitInput={(inputText) => {}}
+            closeDialog={() => {
+              forgpas = false;
+              this.forceUpdate();
+            }}
+          ></DialogInput>
+        </View>
         <Animated.View
           style={{
             alignItems: "center",
@@ -310,7 +325,13 @@ class SplashScreen extends Component {
             bottom: "5%",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              forgpas = true;
+
+              this.forceUpdate();
+            }}
+          >
             <Text style={styles.forgetPass}>Forgot password?</Text>
           </TouchableOpacity>
         </Animated.View>
