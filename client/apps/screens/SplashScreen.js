@@ -346,11 +346,11 @@ class SplashScreen extends Component {
             style={{ top: 10 }}
             onPress={() => {
               this.setState({ loginBtnDisable: true });
-              console.log(this.state.loginBtnDisable);
+              //console.log(this.state.loginBtnDisable);
               this.login(this.state.email, this.state.password);
               this.setState({ loginPressed: true });
               setTimeout(() => this.setState({ loginBtnDisable: false }), 800);
-              console.log(this.state.loginBtnDisable);
+              //console.log(this.state.loginBtnDisable);
             }}
             disabled={this.state.loginBtnDisable}
           >
