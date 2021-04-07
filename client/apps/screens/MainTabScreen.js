@@ -20,11 +20,6 @@ class MainTabScreen extends React.Component {
     id: 0,
   };
 
-  shouldComponentUpdate() {
-    if (id == 2) {
-      culoare = "black";
-    }
-  }
   render() {
     return (
       <NavigationContainer independent="true">
