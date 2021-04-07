@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   Animated,
   ImageBackground,
+  DevSettings,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
@@ -28,80 +29,8 @@ import Slider from "@react-native-community/slider";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let verif = 3;
-let Ico = "heart-outline";
 
-const renderItem = ({ item }) => {
-  return (
-    <View style={styles.item}>
-      <Image
-        source={require("../assets/RoomImg.jpeg")}
-        style={styles.itemImage}
-      />
-      <View
-        style={{
-          //backgroundColor: "blue",
-          flex: 0.8,
-        }}
-      >
-        <View
-          style={{
-            //backgroundColor: "red",
-            flex: 1,
-            justifyContent: "center",
-            bottom: "5%",
-          }}
-        >
-          <Text style={styles.roomTypeItem}>{item.capacity}</Text>
-          <Text style={styles.RatingValueLabel}>Rating</Text>
-          <Text style={styles.RatingValue}>8.5</Text>
-          <Icon
-            name="star"
-            color={colors.TagNavYellow}
-            style={styles.RatingStar}
-            size={27}
-          />
-        </View>
-
-        <View
-          style={{
-            //backgroundColor: "yellow",
-            flex: 0.3,
-            justifyContent: "center",
-          }}
-        >
-          <Text style={styles.roomPriceItemLabel}>Price</Text>
-        </View>
-
-        <View
-          style={{
-            flex: 0.6,
-            justifyContent: "flex-start",
-          }}
-        >
-          <Text style={styles.roomPriceItem}>{item.price} Euro</Text>
-          <TouchableOpacity
-            style={styles.HartContainer}
-            onPress={() => {
-              if (Ico == "heart-outline") {
-                Ico = "heart";
-              } else {
-                Ico = "heart-outline";
-              }
-              console.log(Ico);
-            }}
-          >
-            <Icon
-              name={Ico}
-              color={colors.TagNavYellow}
-              style={styles.FavoritesHart}
-              size={27}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-};
+const renderItem = ({ item }) => {};
 
 class HomeScreen extends Component {
   state = {
@@ -120,11 +49,16 @@ class HomeScreen extends Component {
     MinPriceState: "Min price",
     MaxPriceState: "Max price",
     MinPriceStateValue: 0,
-    MaxPriceStateValue: 0,
+    MaxPriceStateValue: 300,
     CurrentDate: "",
     MaxDate: "",
     GetCurrentDate: true,
     GetMaxDate: true,
+    Ico: "heart-outline",
+    BookRoomLabel: "",
+    LeftBtnHartBook: "70%",
+    WidthBtnHartBook: "15%",
+    BackColorHartBook: colors.WhiteCol,
   };
 
   //console.log(contor);
@@ -149,28 +83,33 @@ class HomeScreen extends Component {
 
   getSearchedRooms = () => {
     // Axios.post("https://api-ehotelplus.herokuapp.com/search", {
-    console.log(
-      this.state.capacity +
-        "   " +
-        this.state.dateCheckIn +
-        "    " +
-        this.state.dateCheckOut +
-        "    " +
-        this.state.MaxPriceStateValue +
-        "     " +
-        this.state.MinPriceStateValue
-    );
+    // console.log(
+    //   this.state.capacity +
+    //     "   " +
+    //     this.state.dateCheckIn +
+    //     "    " +
+    //     this.state.dateCheckOut +
+    //     "    " +
+    //     this.state.MaxPriceStateValue +
+    //     "     " +
+    //     this.state.MinPriceStateValue
+    // );
     Axios.post("https://api-ehotelplus.herokuapp.com/search", {
       capacity: this.state.capacity,
       startDate: this.state.dateCheckIn,
       endDate: this.state.dateCheckOut,
-      maxPrice: this.state.MaxPriceState,
-      minPrice: this.state.MinPriceState,
+      maxPrice: this.state.MaxPriceStateValue,
+      minPrice: this.state.MinPriceStateValue,
     }).then((response) => {
       if (response.data.message) {
-        console.log(response.data.message);
+        //console.log(response.data.message);
       } else {
         this.setState({ Data: response.data });
+        this.setState({ BookRoomLabel: "Book" });
+        this.setState({ Ico: "" });
+        this.setState({ LeftBtnHartBook: "55%" });
+        this.setState({ WidthBtnHartBook: "37%" });
+        this.setState({ BackColorHartBook: colors.secondary });
         //console.log(response.data);
       }
     });
@@ -233,6 +172,10 @@ class HomeScreen extends Component {
         >
           <DropDownPicker
             items={[
+              {
+                label: "Show all",
+                value: "All",
+              },
               {
                 label: "Single room",
                 value: "Single room",
@@ -470,7 +413,7 @@ class HomeScreen extends Component {
             style={{ width: "46%", height: 40, paddingBottom: 10, left: 10 }}
             minimumValue={0}
             maximumValue={300}
-            value={this.state.someValue}
+            value={(this.state.someValue = 300)}
             thumbTintColor={colors.secondary}
             minimumTrackTintColor={colors.tertiary}
             maximumTrackTintColor={colors.wrongInput}
@@ -510,7 +453,19 @@ class HomeScreen extends Component {
         >
           <TouchableOpacity
             style={{ width: "80%" }}
-            onPress={this.getSearchedRooms}
+            onPress={() => {
+              if (this.state.capacity == "All") {
+                this.setState({ contor: true });
+                this.setState({ BookRoomLabel: "Book" });
+                this.setState({ Ico: "" });
+                this.setState({ LeftBtnHartBook: "55%" });
+                this.setState({ WidthBtnHartBook: "37%" });
+                this.setState({ BackColorHartBook: colors.secondary });
+                this.getRooms();
+              } else {
+                this.getSearchedRooms();
+              }
+            }}
           >
             <View
               style={{
@@ -581,7 +536,7 @@ class HomeScreen extends Component {
     this.getRooms();
     this.getMinDate();
     this.getMaxDate();
-    console.log(this.state.capacity);
+    //console.log(this.state.capacity);
     return (
       <View style={styles.container}>
         {/*Header View Home Screen*/}
@@ -629,7 +584,12 @@ class HomeScreen extends Component {
             >
               <Text style={styles.AppName}>eHotel+</Text>
 
-              <TouchableOpacity style={styles.LogOutBtn}>
+              <TouchableOpacity
+                style={styles.LogOutBtn}
+                onPress={() => {
+                  DevSettings.reload();
+                }}
+              >
                 <Icon name="log-out-outline" color={"white"} size={27} />
               </TouchableOpacity>
               <TouchableOpacity
@@ -723,7 +683,94 @@ class HomeScreen extends Component {
         >
           <FlatList
             data={this.state.Data}
-            renderItem={renderItem}
+            renderItem={(item) => {
+              return (
+                <View style={styles.item}>
+                  <Image
+                    source={require("../assets/RoomImg.jpeg")}
+                    style={styles.itemImage}
+                  />
+                  <View
+                    style={{
+                      //backgroundColor: "blue",
+                      flex: 0.8,
+                    }}
+                  >
+                    <View
+                      style={{
+                        //backgroundColor: "red",
+                        flex: 1,
+                        justifyContent: "center",
+                        bottom: "5%",
+                      }}
+                    >
+                      <Text style={styles.roomTypeItem}>
+                        {item.item.capacity}
+                      </Text>
+                      <Text style={styles.RatingValueLabel}>Rating</Text>
+                      <Text style={styles.RatingValue}>8.5</Text>
+                      <Icon
+                        name="star"
+                        color={colors.TagNavYellow}
+                        style={styles.RatingStar}
+                        size={27}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        //backgroundColor: "yellow",
+                        flex: 0.3,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text style={styles.roomPriceItemLabel}>Price</Text>
+                    </View>
+
+                    <View
+                      style={{
+                        flex: 0.6,
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <Text style={styles.roomPriceItem}>
+                        {item.item.price} Euro
+                      </Text>
+                      <TouchableOpacity
+                        style={[
+                          styles.HartContainer,
+                          {
+                            alignItems: "center",
+                            height: "70%",
+                            width: this.state.WidthBtnHartBook,
+                            left: this.state.LeftBtnHartBook,
+                            backgroundColor: this.state.BackColorHartBook,
+                            borderRadius: 100,
+                            fontFamily: "robotoMed",
+                            fontSize: 14,
+                          },
+                        ]}
+                      >
+                        <Text
+                          style={{
+                            color: colors.WhiteCol,
+                            top: "15%",
+                          }}
+                        >
+                          {this.state.BookRoomLabel}
+                        </Text>
+                        <Icon
+                          name={this.state.Ico}
+                          color={colors.TagNavYellow}
+                          style={[styles.FavoritesHart, { bottom: "70%" }]}
+                          size={27}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              );
+            }}
             keyExtractor={(item) => item.room_id.toString()}
           />
         </View>

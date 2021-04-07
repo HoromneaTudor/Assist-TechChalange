@@ -17,5 +17,5 @@ export default function App() {
 
   if (!fontsLoaded) {
     return <AppLoading />;
-  } else return <MainTabScreen></MainTabScreen>;
+  } else return <Routes></Routes>;
 }
