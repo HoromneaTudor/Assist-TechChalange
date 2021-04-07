@@ -163,12 +163,12 @@ class HomeScreen extends Component {
         >
           <TouchableOpacity
             onPress={this.SearchAnimationBack}
-            style={{ width: "20%", height: "30%" }}
+            style={{ width: "20%", height: "40%" }}
           >
             <Icon
               name="arrow-back-outline"
               color={colors.quaternary}
-              size={32}
+              size={31}
               style={{ bottom: "50%" }}
             />
           </TouchableOpacity>
@@ -401,6 +401,9 @@ class HomeScreen extends Component {
             thumbTintColor={colors.secondary}
             minimumTrackTintColor={colors.tertiary}
             maximumTrackTintColor={colors.wrongInput}
+            onValueChange={() => {
+              console.log(SliderValue);
+            }}
           />
 
           <Slider
@@ -611,7 +614,7 @@ class HomeScreen extends Component {
         </View>
 
         {/*Delimitator View Home Screen*/}
-        <View style={{ height: "8%" }}></View>
+        <View style={{ height: "10%" }}></View>
         <StatusBar style="auto"></StatusBar>
       </View>
     );
