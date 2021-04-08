@@ -57,7 +57,7 @@ class SignUpScreen extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.loginPressed) {
-      console.log("butonul de login a fost apasat" + this.state.loginPressed);
+      //console.log("butonul de login a fost apasat" + this.state.loginPressed);
       this.setState({ loginPressed: false });
       return true;
     }
@@ -211,10 +211,10 @@ class SignUpScreen extends Component {
     let var4 = this._phoneValidation();
     let var5 = this._passwordEquallytyConfirnation();
 
-    console.log(this.state.firstNameReq);
-    console.log(this.state.lastNameReq);
-    console.log(this.state.emailReq);
-    console.log(this.state.passwordReq);
+    // console.log(this.state.firstNameReq);
+    // console.log(this.state.lastNameReq);
+    // console.log(this.state.emailReq);
+    // console.log(this.state.passwordReq);
 
     if (var1 && var2 && var3 && var4 && var5) {
       Axios.post("https://api-ehotelplus.herokuapp.com/register", {
@@ -228,13 +228,13 @@ class SignUpScreen extends Component {
         //console.log(response);
         if (response.data.message) {
           this.setState({ registerStatus: response.data.message });
-          console.log(response.data.message);
+          //console.log(response.data.message);
         } else {
           this.setState({
             registerStatus:
               "Registration was successful please log in from login menu",
           });
-          console.log(response);
+          //console.log(response);
         }
       });
     } else {

@@ -4,7 +4,7 @@
     "slug": "eHotelPlus",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./apps/assets/icon.png",
+    "icon": "./apps/assets/eHotelPlus.png",
     "splash": {
       "image": "./apps/assets/splash.png",
       "resizeMode": "contain",

@@ -1,5 +1,5 @@
 import React, { Component, memo, useMemo, useState } from "react";
-import Routes from './Routes';
+import Routes from "./Routes";
 import { withNavigation } from "react-navigation";
 import {
   View,
@@ -28,10 +28,11 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { render } from "react-dom";
 import DatePicker from "react-native-datepicker";
 import Slider from "@react-native-community/slider";
+import RoomDetailsScreen from "./RoomDetailsScreen";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let verif = 3;
-
+window.paramKey = {};
 const renderItem = ({ item }) => {};
 
 class HomeScreen extends Component {
@@ -116,7 +117,6 @@ class HomeScreen extends Component {
       }
     });
 
-    let testDate = "2021-4-6";
     //console.log(testDate < this.state.dateCheckIn);
   };
 
@@ -155,7 +155,7 @@ class HomeScreen extends Component {
           </TouchableOpacity>
           <Text
             style={{
-              top: "28%",
+              top: "15%",
               fontFamily: "roboto",
               fontSize: 14,
               color: colors.quaternary,
@@ -512,7 +512,13 @@ class HomeScreen extends Component {
   getMinDate = () => {
     if (this.state.GetCurrentDate) {
       var date = new Date().getDate();
+      if (date < 10) {
+        date = "0" + date;
+      }
       var month = new Date().getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
       var year = new Date().getFullYear();
       var CurrentDate = year + "-" + month + "-" + date;
       this.setState({ CurrentDate: CurrentDate });
@@ -525,7 +531,13 @@ class HomeScreen extends Component {
   getMaxDate = () => {
     if (this.state.GetMaxDate) {
       var date = new Date().getDate();
+      if (date < 10) {
+        date = "0" + date;
+      }
       var month = new Date().getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
       var year = new Date().getFullYear() + 1;
       var CurrentDate = year + "-" + month + "-" + date;
       this.setState({ MaxDate: CurrentDate });
@@ -534,6 +546,7 @@ class HomeScreen extends Component {
   };
 
   render() {
+    <RoomDetailsScreen />;
     const { navigation } = this.props;
     let clientId = global.this;
     this.getRooms();
@@ -548,7 +561,6 @@ class HomeScreen extends Component {
           style={{
             zIndex: 11,
             height: "70%",
-
             flexDirection: "column",
           }}
         >
@@ -590,7 +602,7 @@ class HomeScreen extends Component {
               <TouchableOpacity
                 style={styles.LogOutBtn}
                 onPress={() => {
-                  navigation.replace('Login');
+                  navigation.replace("Login");
                 }}
               >
                 <Icon name="log-out-outline" color={"white"} size={27} />
@@ -600,6 +612,7 @@ class HomeScreen extends Component {
                   zIndex: 3,
                   alignItems: "flex-end",
                   right: "10%",
+                  bottom: "0.3%",
                 }}
               >
                 <Image
@@ -753,6 +766,12 @@ class HomeScreen extends Component {
                             fontSize: 14,
                           },
                         ]}
+                        onPress={() => {
+                          paramKey = item.item;
+                          if (this.state.Ico != "heart-outline") {
+                            this.props.navigation.navigate("RoomDetailsScreen");
+                          }
+                        }}
                       >
                         <Text
                           style={{

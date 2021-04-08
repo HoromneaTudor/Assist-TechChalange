@@ -6,8 +6,9 @@ import Axios from "axios";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import Routes from "./apps/screens/Routes";
-import MainTabScreen from "./apps/screens/MainTabScreen";
+
 import RoomDetailsScreen from "./apps/screens/RoomDetailsScreen";
+import HomeScreen from "./apps/screens/HomeScreen";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -18,5 +19,5 @@ export default function App() {
 
   if (!fontsLoaded) {
     return <AppLoading />;
-  } else return <RoomDetailsScreen></RoomDetailsScreen>;
+  } else return <Routes></Routes>;
 }
