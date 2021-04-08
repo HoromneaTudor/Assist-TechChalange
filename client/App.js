@@ -15,6 +15,7 @@ export default function App() {
     roboto: require("./apps/fonts/Roboto-Regular.ttf"),
     freestyle: require("./apps/fonts/freescpt.ttf"),
     robotoMed: require("./apps/fonts/Roboto-Medium.ttf"),
+    robotoBold: require("./apps/fonts/Roboto-Black.ttf"),
   });
 
   if (!fontsLoaded) {
