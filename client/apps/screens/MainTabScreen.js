@@ -5,6 +5,7 @@ import HomeScreen from "./HomeScreen";
 import RoomsScreen from "./RoomsScreen";
 import FavouritesScreen from "./FavouritesScreen";
 import MyAccountScreen from "./MyAccountScreen";
+import RoomDetailsScreen from "./RoomDetailsScreen";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import { NavigationContainer } from "@react-navigation/native";
@@ -47,7 +48,7 @@ class MainTabScreen extends React.Component {
           />
           <Tab.Screen
             name="Rooms"
-            component={RoomsScreen}
+            component={RoomDetailsScreen}
             options={{
               tabBarLabel: "Rooms",
               tabBarColor: colors.TagNavOrange,
@@ -56,6 +57,7 @@ class MainTabScreen extends React.Component {
               ),
             }}
           />
+
           <Tab.Screen
             name="Account"
             component={FavouritesScreen}

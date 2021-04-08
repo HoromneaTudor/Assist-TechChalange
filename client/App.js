@@ -7,6 +7,7 @@ import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import Routes from "./apps/screens/Routes";
 import MainTabScreen from "./apps/screens/MainTabScreen";
+import RoomDetailsScreen from "./apps/screens/RoomDetailsScreen";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -17,5 +18,5 @@ export default function App() {
 
   if (!fontsLoaded) {
     return <AppLoading />;
-  } else return <Routes></Routes>;
+  } else return <RoomDetailsScreen></RoomDetailsScreen>;
 }

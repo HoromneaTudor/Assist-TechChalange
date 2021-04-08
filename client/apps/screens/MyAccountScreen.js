@@ -9,7 +9,7 @@ class MyAccountScreen extends React.Component {
   onSubmit = () => {
     let { current: field } = this.fieldRef;
 
-    console.log(field.value());
+    //console.log(field.value());
   };
 
   formatText = (text) => {
