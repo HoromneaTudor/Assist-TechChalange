@@ -119,7 +119,7 @@ class SignUpScreen extends Component {
 
   _emailValidation = (text) => {
     console.log(text);
-    let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (reg.test(text) === false) {
       //console.log("Email is Not Correct");
       //this.setState({ email: text })

@@ -36,7 +36,7 @@ app.post("/register", (req, res) => {
 
     if (second_name == "") res.status(400).send("invalid last name");
 
-    let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (reg.test(email) === false) res.status(400).send("invalid email");
 
     if (phone.length != 10 || isNaN(phone))
@@ -71,7 +71,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  let reg = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+  let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (reg.test(email) === false) res.status(400).send("invalid email");
 
   if (password == "") res.status(400).send("invalid passward");
@@ -202,6 +202,104 @@ app.post("/search", (req, res) => {
       }
     }
   );
+});
+
+// app.post("/k", (req, res) => {
+//   const clientId = req.body.clientId;
+//   console.log(clientId);
+
+//   const mySqlGetBooking = "SELECT * FROM bookings where client_id=?;";
+
+//   const mySqlGetRooms = "SELECT * FROM rooms where room_id=?;";
+
+//   mySqlConection.query(mySqlGetBooking, clientId, (err, response) => {
+//     if (err) {
+//       console.log(err);
+//       res.send({ err: err });
+//     }
+//     if (response.length == 0) {
+//       let room = [];
+//       res.send(room);
+//     } else {
+//       // let rooms = [];
+//       // for (i = 0; i < response.length; i++) {
+//       //   mySqlConection.query(
+//       //     mySqlGetRooms,
+//       //     response[i].room_id,
+//       //     (err, responseRooms) => {
+//       //       rooms.push(responseRooms[0]);
+//       //     }
+//       //   );
+//       // }
+
+//       // let finalResponse = [];
+//       // for (i = 0; i < response.length; i++) {
+//       //   finalResponse.push({ booking: response[i], room: responseRooms[i] });
+//       // }
+//       // console.log(finalResponse);
+//       // res.send(finalResponse);
+//       res.send(response);
+//     }
+//   });
+// });
+
+app.post("/getBooking", (req, res) => {
+  const clientId = req.body.clientId;
+
+  //const room_sql = "SELECT * FROM rooms;";
+  //console.log(clientId);
+
+  const mySqlBookings = "SELECT * FROM bookings where client_id=?;";
+
+  const mySqlBookingRooms = "SELECT * FROM rooms where room_id=?;";
+
+  let rooms = [];
+  let booking = [];
+
+  mySqlConection.query(mySqlBookings, clientId, async (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    let BookWithRooms = [];
+    if (result.length > 0) {
+      // for (i = 0; i < result.length; i++) {
+      //   //rooms.push(1);
+      //   mySqlConection.query(
+      //     mySqlBookingRooms,
+      //     result[i].room_id,
+      //     (error, resultRooms) => {
+      //       //console.log(resultRooms);
+      //       rooms.push(resultRooms);
+      //       console.log(rooms);
+      //     }
+      //   );
+      // }
+      // for (i = 0; i < result.length; i++) {
+      //   await BookWithRooms.push({ booking: result[i], room: rooms[i] });
+      //   console.log(BookWithRooms);
+      // }
+      // res.send(rooms);
+      res.send(result);
+
+      //console.log(result[2].room_id);
+      //console.log(rooms);
+    }
+  });
+});
+
+app.post("/getBookingRooms", (req, res) => {
+  const roomId = req.body.roomId;
+
+  const mySalBookingRoom = "SELECT * FROM rooms where room_id=?;";
+
+  mySqlConection.query(mySqlBookingRooms, roomId, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (result) {
+      res.send(result);
+    }
+  });
 });
 
 app.post("/addBooking", (req, res) => {
