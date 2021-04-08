@@ -11,7 +11,7 @@ import HomeScreen from "./HomeScreen";
 import colors from "../config/colors";
 import Icon from "react-native-vector-icons/Ionicons";
 import RoomsScreen from "./RoomsScreen";
-import FavouritesScreen from "./FavouritesScreen";
+import FavouritesScreen from "./DigitalKeyScreen";
 import MyAccountScreen from "./MyAccountScreen";
 import RoomDetailsScreen from "./RoomDetailsScreen";
 
@@ -65,18 +65,22 @@ class MainTabScreen extends React.Component {
           }}
         />
         <Tab.Screen
-          name="Account"
+          name="Digital Key"
           component={FavouritesScreen}
           options={{
-            tabBarLabel: "Favorites",
-            tabBarColor: colors.TagNavYellow,
+            tabBarLabel: "Digital Key",
+            tabBarColor: "#228B22",
             tabBarIcon: ({ color }) => (
-              <Icon name="star-outline" color={this.state.culoare} size={24} />
+              <Icon
+                name="lock-open-outline"
+                color={this.state.culoare}
+                size={24}
+              />
             ),
           }}
         />
         <Tab.Screen
-          name="Explore"
+          name="Account"
           component={MyAccountScreen}
           options={{
             tabBarLabel: "Account",

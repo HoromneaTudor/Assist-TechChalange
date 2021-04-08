@@ -33,7 +33,6 @@ import RoomDetailsScreen from "./RoomDetailsScreen";
 const imageWidth = Dimensions.get("window").width / 2;
 let verif = 3;
 window.paramKey = {};
-const renderItem = ({ item }) => {};
 
 class HomeScreen extends Component {
   state = {
@@ -627,6 +626,9 @@ class HomeScreen extends Component {
                   alignItems: "flex-end",
                   right: "10%",
                   bottom: "0.3%",
+                }}
+                onPress={() => {
+                  navigation.navigate("Account");
                 }}
               >
                 <Image

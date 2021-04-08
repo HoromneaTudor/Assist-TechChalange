@@ -9,17 +9,22 @@ import {
   ImageBackground,
   TouchableOpacity,
   Animated,
+  FlatList,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import colors from "../config/colors";
 import { Dimensions } from "react-native";
 
 const imageWidth = Dimensions.get("window").width / 2;
+
 class MyAccountScreen extends React.Component {
   fieldRef = React.createRef();
 
   state = {
-    position: new Animated.ValueXY({ x: 0, y: -500 }),
+    position: new Animated.ValueXY({ x: 0, y: -1000 }),
+    positionLabel: new Animated.ValueXY({ x: -900, y: 0 }),
+    positionCards: new Animated.ValueXY({ x: 0, y: 1000 }),
+    renderMode: "",
   };
 
   onSubmit = () => {
@@ -32,43 +37,154 @@ class MyAccountScreen extends React.Component {
     return text.replace(/[^+\d]/g, "");
   };
 
-  SearchAnimation = () => {
-    Animated.timing(this.state.position, {
-      toValue: { x: 0, y: imageWidth / 1.5 },
-      useNativeDriver: "true",
-    }).start();
+  ShowPrivacyAnimation = () => {
+    Animated.parallel([
+      Animated.timing(this.state.position, {
+        toValue: { x: 0, y: imageWidth / 6 },
+        useNativeDriver: "true",
+      }),
+      Animated.timing(this.state.positionLabel, {
+        toValue: { x: -900, y: 0 },
+        useNativeDriver: "true",
+      }),
+    ]).start();
   };
 
-  render() {
-    this.SearchAnimation();
-    return (
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.profileImg}
-          source={require("../assets/ImgProfile6.jpeg")}
-          resizeMode="stretch"
-        >
-          <Image
-            source={require("../assets/ProfileAccountImage.png")}
+  ShowGeneralAnimation = () => {
+    Animated.parallel([
+      Animated.timing(this.state.positionLabel, {
+        toValue: { x: 0, y: -imageWidth },
+        useNativeDriver: "true",
+      }),
+      Animated.timing(this.state.position, {
+        toValue: { x: 0, y: -1000 },
+        useNativeDriver: "true",
+      }),
+    ]).start();
+  };
+
+  ShowCardsAnimation = () => {
+    Animated.parallel([
+      Animated.timing(this.state.positionCards, {
+        toValue: { x: 0, y: -imageWidth },
+        useNativeDriver: "true",
+      }),
+      Animated.timing(this.state.position, {
+        toValue: { x: 0, y: -1000 },
+        useNativeDriver: "true",
+      }),
+      Animated.timing(this.state.positionLabel, {
+        toValue: { x: -900, y: 0 },
+        useNativeDriver: "true",
+      }),
+    ]).start();
+  };
+
+  Item = () => {
+    const Cards = [
+      {
+        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+        title: "MasterCard",
+      },
+      {
+        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+        title: "Visa Card",
+      },
+      {
+        id: "58694a0f-3da1-471f-bd96-145571e29d72",
+        title: "Visa Card",
+      },
+    ];
+
+    if (this.state.renderMode == "General") {
+      return (
+        <View style={{ top: "20%" }}>
+          <Text
             style={{
-              height: imageWidth / 1.2,
-              width: imageWidth / 1.2,
-              borderRadius: imageWidth / 2,
-              top: "5%",
+              color: colors.primary,
+              fontSize: 35,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "freestyle",
             }}
-          />
-        </ImageBackground>
-        <View style={styles.profileLabel}>
-          <Text style={styles.AccountLabel}>General information</Text>
+          >
+            Team Atlas
+          </Text>
+          <Text
+            style={{
+              color: colors.quaternary,
+              fontSize: 15,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "roboto",
+            }}
+          >
+            Suceava 2021
+          </Text>
+          <Text
+            style={{
+              color: colors.quaternary,
+              fontSize: 15,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "roboto",
+            }}
+          >
+            Version 2.1
+          </Text>
         </View>
-        <ScrollView
-          style={{
-            flex: 2,
-            paddingBottom: 10,
-            top: "2%",
-          }}
-        >
-          <View style={styles.profileData}>
+      );
+    }
+
+    if (this.state.renderMode == "Settings") {
+      return (
+        <View style={{ top: "20%" }}>
+          <Text
+            style={{
+              color: colors.primary,
+              fontSize: 35,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "freestyle",
+            }}
+          >
+            Team Atlas
+          </Text>
+          <Text
+            style={{
+              color: colors.quaternary,
+              fontSize: 15,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "roboto",
+            }}
+          >
+            Suceava 2021
+          </Text>
+          <Text
+            style={{
+              color: colors.quaternary,
+              fontSize: 15,
+              textAlign: "center",
+              alignItems: "center",
+              fontFamily: "roboto",
+            }}
+          >
+            Settings
+          </Text>
+        </View>
+      );
+    }
+
+    if (this.state.renderMode == "Privacy") {
+      return (
+        <View>
+          <ScrollView
+            style={{
+              paddingBottom: 10,
+              top: "2%",
+            }}
+          >
             <TextInput
               placeholder="First name"
               keyboardType="default"
@@ -210,8 +326,146 @@ class MyAccountScreen extends React.Component {
             </TouchableOpacity>
 
             <View style={{ height: 300 }} />
+          </ScrollView>
+        </View>
+      );
+    }
+    if (this.state.renderMode == "Cards") {
+      return (
+        <View style={{ bottom: 10 }}>
+          <FlatList
+            data={Cards}
+            renderItem={() => {
+              return (
+                <Image
+                  source={require("../assets/CreditCard.png")}
+                  resizeMode="contain"
+                  style={{
+                    padding: "25%",
+                    marginVertical: 2,
+                    marginHorizontal: 16,
+                    height: "40%",
+                    right: "54%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                ></Image>
+              );
+            }}
+            keyExtractor={(item) => item.id}
+            style={{ height: "100%", paddingTop: 10 }}
+          />
+          <View style={{ height: 500 }}></View>
+        </View>
+      );
+    }
+    return (
+      <View style={{ top: "20%" }}>
+        <Text
+          style={{
+            color: colors.primary,
+            fontSize: 35,
+            textAlign: "center",
+            alignItems: "center",
+            fontFamily: "freestyle",
+          }}
+        >
+          Team Atlas
+        </Text>
+        <Text
+          style={{
+            color: colors.quaternary,
+            fontSize: 15,
+            textAlign: "center",
+            alignItems: "center",
+            fontFamily: "roboto",
+          }}
+        >
+          Suceava 2021
+        </Text>
+        <Text
+          style={{
+            color: colors.quaternary,
+            fontSize: 15,
+            textAlign: "center",
+            alignItems: "center",
+            fontFamily: "roboto",
+          }}
+        >
+          Version 2.1
+        </Text>
+      </View>
+    );
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.profileImg}
+          source={require("../assets/ImgProfile23.png")}
+          resizeMode="stretch"
+        >
+          <View
+            style={{
+              height: "70%",
+              width: "80%",
+              justifyContent: "center",
+              elevation: 20,
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../assets/ProfileAccountImage.png")}
+              style={{
+                height: imageWidth / 1.2,
+                width: imageWidth / 1.2,
+                borderRadius: imageWidth / 2,
+              }}
+            />
           </View>
-        </ScrollView>
+        </ImageBackground>
+        <View style={{ flex: 0.1, flexDirection: "row" }}>
+          <TouchableOpacity
+            style={styles.profileLabel}
+            onPress={() => {
+              this.setState({ renderMode: "General" });
+            }}
+          >
+            <Text style={styles.AccountLabel}>About</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.profileLabel2}
+            onPress={() => {
+              this.setState({ renderMode: "Privacy" });
+            }}
+          >
+            <Text style={styles.AccountLabel}>Privacy</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 0.1, flexDirection: "row", bottom: "4%" }}>
+          <TouchableOpacity
+            style={styles.profileLabel}
+            onPress={() => {
+              this.setState({ renderMode: "Cards" });
+            }}
+          >
+            <Text style={styles.AccountLabel}>Cards</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.profileLabel2}
+            onPress={() => {
+              this.setState({ renderMode: "Settings" });
+            }}
+          >
+            <Text style={styles.AccountLabel}>Settings</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 0.5 }}>
+          <this.Item></this.Item>
+        </View>
       </View>
     );
   }
@@ -225,8 +479,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WhiteCol,
   },
   profileImg: {
-    flex: 0.7,
-    backgroundColor: colors.secondary,
+    flex: 0.4,
+    zIndex: 100,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -234,29 +488,40 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   profileLabel: {
-    flex: 0.2,
     justifyContent: "center",
     borderBottomColor: colors.primary,
-    shadowOpacity: 0.8,
-    elevation: 2,
-    bottom: "1%",
-    width: "100%",
+    backgroundColor: colors.WhiteCol,
+    shadowOpacity: 1,
+    elevation: 10,
+    borderRadius: 20,
+    width: "45%",
+    height: "60%",
+    alignItems: "center",
+    shadowOffset: { width: 0, height: 10 },
+    left: "15%",
+  },
+  profileLabel2: {
+    justifyContent: "center",
+    borderBottomColor: colors.primary,
+    backgroundColor: colors.WhiteCol,
+    shadowOpacity: 1,
+    elevation: 10,
+    borderRadius: 20,
+    width: "45%",
+    height: "60%",
+    alignItems: "center",
+    left: "40%",
     shadowOffset: { width: 0, height: 10 },
   },
-  Top: {
-    flex: 0.3,
-  },
-  TopLabel: {
-    flex: 0.3,
 
+  TopLabel: {
     justifyContent: "center",
     alignItems: "center",
   },
   AccountLabel: {
     fontFamily: "robotoMed",
-    fontSize: 23,
-    left: "10%",
-    top: "8%",
+    fontSize: 19,
+
     color: colors.quaternary,
   },
 });
