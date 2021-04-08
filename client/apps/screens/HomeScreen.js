@@ -62,6 +62,7 @@ class HomeScreen extends Component {
     LeftBtnHartBook: "70%",
     WidthBtnHartBook: "15%",
     BackColorHartBook: colors.WhiteCol,
+    clientId1: 0,
   };
 
   //console.log(contor);
@@ -76,6 +77,8 @@ class HomeScreen extends Component {
 
           //console.log(response.data);
           this.setState({ Data: response.data });
+          this.setState({ clientId1: global.clientId });
+          //console.log(this.state.clientId1);
           //console.log(this.state.Data);
           //console.log(response.data[0]);
           this.setState({ contor: false });
@@ -118,6 +121,18 @@ class HomeScreen extends Component {
     });
 
     //console.log(testDate < this.state.dateCheckIn);
+  };
+
+  addBooking = (roomId) => {
+    Axios.post("https://api-ehotelplus.herokuapp.com/addBooking", {
+      clientId: this.state.clientId1,
+      startDate: this.state.dateCheckIn,
+      endDate: this.state.dateCheckOut,
+      roomId: roomId,
+    }).then((response) => {
+      //console.log(response);
+      this.getSearchedRooms();
+    });
   };
 
   Item2 = (props) => {

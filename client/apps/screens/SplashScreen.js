@@ -112,6 +112,8 @@ class SplashScreen extends Component {
           // this.setState({failedAttemptsLogin:failedAttemptsLogin+1})
           //console.log(response.data.message);
         } else {
+          global.clientId = response.data[0].id;
+          console.log(global.clientId);
           this.props.navigation.replace("MainMenu");
         }
       });

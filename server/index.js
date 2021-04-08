@@ -141,48 +141,56 @@ app.post("/search", (req, res) => {
   const searchByCantityAndPrice =
     "SELECT * FROM rooms where capacity=? and ?<=price  and price<=?";
   const searchByDateAvability =
-    "SELECT room_id FROM bookings where ((?<start_date and ?<end_date) or(?>start_date and ?>end_date)) and (booking_status=3 or booking_status=4);";
+    "SELECT * FROM bookings where (end_date>=? && ?>=start_date);";
+
+  //console.log(startDate + "  " + endDate);
+  //console.log(startDate < endDate);
 
   mySqlConection.query(
     searchByCantityAndPrice,
     [capacity, minPrice, maxPrice],
     (err1, result1) => {
       if (err1) res.send({ err1: err1 });
+      //console.log(result1.length);
       if (result1.length > 0) {
         //console.log(result1);
         mySqlConection.query(
           searchByDateAvability,
-          [endDate, endDate, startDate, startDate],
+          [startDate, endDate],
           (err2, result2) => {
+            //console.log(result2);
             if (err2) res.send({ err2: err });
             //console.log(result2.length);
             if (result2.length > 0) {
-              let ArrayCamera = [];
-              //let ValidCameraIndex=[],
-
-              for (i = 0; i < result2.length - 1; i++) {
-                let contorIdenticalId = 0;
-                //contorIdenticalId.push(i);
-                for (j = 1; j < result2.length; j++) {
-                  if (result2[i].room_id == result2[j].room_id) {
-                    if (
-                      result2[i].start_date < result2[j].start_date &&
-                      result2[i].end_date < result[j].end_date
-                    ) {
-                    } else contorIdenticalId++;
+              if (result2.length == 1) {
+                let room = [];
+                for (i = 0; i < result1.length; i++) {
+                  if (result1[i].room_id == result2[0].room_id) {
+                  } else {
+                    room.push(result1[i]);
                   }
                 }
-                if (contorIdenticalId.length == 0) {
-                  ArrayCamera.push(result2[i]);
+                res.send(room);
+              } else {
+                //console.log("incepe distractia");
+
+                let returnDate = [];
+
+                for (i = 0; i < result1.length; i++) {
+                  let badDate = 0;
+                  for (j = 0; j < result2.length; j++) {
+                    if (result1[i].room_id == result2[j].room_id) {
+                      badDate++;
+                    }
+                  }
+                  if (badDate == 0) {
+                    returnDate.push(result1[i]);
+                    //console.log(badDate);
+                  }
                 }
+                //console.log(returnDate);
+                res.send(returnDate);
               }
-              for (k = 0; k < result1.length; k++) {
-                for (h = 0; h < ArrayCamera.length; h++) {
-                  if (result1[k].room_id == ArrayCamera[h])
-                    ReturnedCameras.push(result[k]);
-                }
-              }
-              res.send(ReturnedCameras);
             } else {
               res.send(result1);
               //console.log(result1);
@@ -197,20 +205,27 @@ app.post("/search", (req, res) => {
 });
 
 app.post("/addBooking", (req, res) => {
-  const clientId = req.body.id;
+  const clientId = req.body.clientId;
   const startDate = req.body.startDate;
   const endDate = req.body.endDate;
   const roomId = req.body.roomId;
+  // console.log(
+  //   clientId + "   " + startDate + "    " + endDate + "    " + roomId
+  // );
 
   const mySqlAddBooking =
-    "INSERT INTO bookings (start_date,end_date,room_id,client_id,1,2) VALUES (?,?,?,?)";
+    "INSERT INTO bookings (start_date,end_date,room_id,client_id,booking_status,room_status) VALUES (?,?,?,?,5,2);";
 
   mySqlConection.query(
     mySqlAddBooking,
     [startDate, endDate, roomId, clientId],
     (err, result) => {
-      if (err) res.send({ err: err });
-      res.send({ message: "The room was booked successfull" });
+      if (err) {
+        res.send({ err: err });
+        //console.log("yeap");
+      } else {
+        res.send({ message: "The room was booked successfull" });
+      }
     }
   );
 });
