@@ -15,6 +15,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import Icon from "react-native-vector-icons/Ionicons";
 import { color } from "react-native-reanimated";
 import Routes from "./Routes";
+import Axios from "axios";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let options = {};
@@ -30,6 +31,22 @@ class RoomDetailsScreen extends Component {
     RoomOptions: "",
     contor: true,
     positionUp: new Animated.ValueXY({ x: -400, y: 0 }),
+    RoomId: 0,
+    startDate: "",
+    sndDate: "",
+    clientId: 0,
+  };
+
+  addBooking = () => {
+    Axios.post("https://api-ehotelplus.herokuapp.com/addBooking", {
+      clientId: this.state.clientId,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      roomId: this.state.RoomId,
+    }).then((response) => {
+      //console.log(response);
+      this.getSearchedRooms();
+    });
   };
 
   UpAnimation = () => {
@@ -161,7 +178,7 @@ class RoomDetailsScreen extends Component {
               left: "5%",
             }}
             onPress={() => {
-              console.log(this.state.RoomOptions);
+              this.addBooking();
             }}
           >
             <Text

@@ -33,6 +33,7 @@ import RoomDetailsScreen from "./RoomDetailsScreen";
 const imageWidth = Dimensions.get("window").width / 2;
 let verif = 3;
 window.paramKey = {};
+window.addBookingParamKey = {};
 
 class HomeScreen extends Component {
   state = {
@@ -783,6 +784,11 @@ class HomeScreen extends Component {
                           },
                         ]}
                         onPress={() => {
+                          addBookingParamKey = {
+                            startDate: this.state.dateCheckIn,
+                            endDate: this.state.dateCheckOut,
+                            clientId: this.state.clientId1,
+                          };
                           paramKey = item.item;
                           if (this.state.Ico != "heart-outline") {
                             this.props.navigation.navigate("RoomDetailsScreen");
