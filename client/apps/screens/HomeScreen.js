@@ -1,4 +1,6 @@
 import React, { Component, memo, useMemo, useState } from "react";
+import Routes from './Routes';
+import { withNavigation } from "react-navigation";
 import {
   View,
   Text,
@@ -532,6 +534,7 @@ class HomeScreen extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
     let clientId = global.this;
     this.getRooms();
     this.getMinDate();
@@ -587,7 +590,7 @@ class HomeScreen extends Component {
               <TouchableOpacity
                 style={styles.LogOutBtn}
                 onPress={() => {
-                  DevSettings.reload();
+                  navigation.replace('Login');
                 }}
               >
                 <Icon name="log-out-outline" color={"white"} size={27} />
@@ -783,7 +786,7 @@ class HomeScreen extends Component {
   }
 }
 
-export default HomeScreen;
+export default withNavigation(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {

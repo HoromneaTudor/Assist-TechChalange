@@ -6,7 +6,7 @@ import Axios from "axios";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import Routes from "./apps/screens/Routes";
-import MainTabScreen from "./apps/screens/MainTabScreen";
+
 
 export default function App() {
   let [fontsLoaded] = useFonts({
