@@ -262,40 +262,9 @@ class MyAccountScreenAdmin extends React.Component {
 
     if (this.state.renderMode == "Settings") {
       return (
-        <View style={{ top: "20%" }}>
-          <Text
-            style={{
-              color: colors.primary,
-              fontSize: 35,
-              textAlign: "center",
-              alignItems: "center",
-              fontFamily: "freestyle",
-            }}
-          >
-            Team Atlas
-          </Text>
-          <Text
-            style={{
-              color: colors.quaternary,
-              fontSize: 15,
-              textAlign: "center",
-              alignItems: "center",
-              fontFamily: "roboto",
-            }}
-          >
-            Suceava 2021
-          </Text>
-          <Text
-            style={{
-              color: colors.quaternary,
-              fontSize: 15,
-              textAlign: "center",
-              alignItems: "center",
-              fontFamily: "roboto",
-            }}
-          >
-            Settings
-          </Text>
+        <View
+          style={{ top: "20%", justifyContent: "center", alignItems: "center" }}
+        >
           <TextInput
             placeholder="News"
             style={{
@@ -304,12 +273,34 @@ class MyAccountScreenAdmin extends React.Component {
               borderRadius: 10,
               borderColor: colors.quaternary,
               borderWidth: 2,
-
+              top: "2%",
               alignItems: "center",
               justifyContent: "center",
               paddingLeft: "3%",
             }}
           ></TextInput>
+          <TouchableOpacity
+            style={{
+              top: "10%",
+              height: "25%",
+              backgroundColor: colors.secondary,
+              borderRadius: 10,
+              width: "70%",
+              justifyContent: "center",
+              alignItems: "center",
+              color: colors.WhiteCol,
+            }}
+          >
+            <Text
+              style={{
+                color: colors.WhiteCol,
+                fontFamily: "roboto",
+                fontSize: 20,
+              }}
+            >
+              Send Newsletter
+            </Text>
+          </TouchableOpacity>
         </View>
       );
     }
@@ -540,7 +531,7 @@ class MyAccountScreenAdmin extends React.Component {
             fontFamily: "roboto",
           }}
         >
-          Version 2.1
+          Version 2.2
         </Text>
       </View>
     );
@@ -620,7 +611,7 @@ class MyAccountScreenAdmin extends React.Component {
               this.setState({ renderMode: "Settings" });
             }}
           >
-            <Text style={styles.AccountLabel}>Settings</Text>
+            <Text style={styles.AccountLabel}>Newsletter</Text>
           </TouchableOpacity>
         </View>
         <View style={{ flex: 0.5 }}>

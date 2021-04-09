@@ -16,6 +16,7 @@ import {
   TextInput,
   View,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useEffect } from "react";
@@ -230,6 +231,8 @@ class SignUpScreen extends Component {
           this.setState({ registerStatus: response.data.message });
           //console.log(response.data.message);
         } else {
+          Alert.alert("Account created!");
+          this.props.navigation.goBack();
           this.setState({
             registerStatus:
               "Registration was successful please log in from login menu",
