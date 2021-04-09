@@ -53,21 +53,22 @@ class RoomsScreenAdmin extends Component {
     contor2: true,
     clientBookings: [],
     clientBookingSize: 0,
+    adminBooking: [],
   };
 
   getBooking = () => {
     //console.log("yo");
     if (this.state.contor2 == true) {
-      Axios.post("https://api-ehotelplus.herokuapp.com/getBooking", {
-        clientId: this.state.clientId1,
-      }).then((response) => {
-        //buff = response.data;
-        this.setState({ clientBookings: response.data });
-        console.log(response.data);
-        //console.log(Object.keys(this.state.clientBookings).length);
+      Axios.post("https://api-ehotelplus.herokuapp.com/getAllBookings").then(
+        (response) => {
+          //buff = response.data;
+          this.setState({ adminBooking: response.data });
+          console.log(response.data);
+          //console.log(Object.keys(this.state.clientBookings).length);
 
-        //console.log(this.state.clientBookingSize);
-      });
+          //console.log(this.state.clientBookingSize);
+        }
+      );
 
       this.setState({ contor2: false });
       //this.getRoomsBooking();
@@ -101,7 +102,7 @@ class RoomsScreenAdmin extends Component {
 
         <View style={{ flex: 1, top: "2%" }}>
           <FlatList
-            data={this.state.clientBookings}
+            data={this.state.adminBooking}
             renderItem={(item) => {
               return (
                 <View style={styles.item}>

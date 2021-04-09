@@ -362,8 +362,7 @@ app.post("/updateFirstName", (req, res) => {
   const newFirstName = req.body.firstName;
   const clientId = req.body.clientId;
 
-  const mySqlChange =
-    "UPDATE 'hotel_db'.'accounts' SET 'first_name'= ? where id=?;";
+  const mySqlChange = "UPDATE accounts SET first_name= ? where id=?;";
 
   mySqlConection.query(mySqlChange, [newFirstName, clientId], (err, result) => {
     if (err) {
@@ -378,8 +377,7 @@ app.post("/updateLastName", (req, res) => {
   const newLastName = req.body.lastName;
   const clientId = req.body.clientId;
 
-  const mySqlChange =
-    "UPDATE 'hotel_db'.'accounts' SET 'second_name'= ? where id=?;";
+  const mySqlChange = "UPDATE accounts SET second_name= ? where id=?;";
 
   mySqlConection.query(mySqlChange, [newLastName, clientId], (err, result) => {
     if (err) {
@@ -394,7 +392,7 @@ app.post("/updateEmail", (req, res) => {
   const newEmail = req.body.email;
   const clientId = req.body.clientId;
 
-  const mySqlChange = "UPDATE 'hotel_db'.'accounts' SET 'email'= ? where id=?;";
+  const mySqlChange = "UPDATE accounts SET email= ? where id=?;";
 
   mySqlConection.query(mySqlChange, [newEmail, clientId], (err, result) => {
     if (err) {
@@ -409,7 +407,7 @@ app.post("/updatePhoneNumber", (req, res) => {
   const newPhone = req.body.phone;
   const clientId = req.body.clientId;
 
-  const mySqlChange = "UPDATE 'hotel_db'.'accounts' SET 'phone'= ? where id=?;";
+  const mySqlChange = "UPDATE accounts SET phone= ? where id=?;";
 
   mySqlConection.query(mySqlChange, [newPhone, clientId], (err, result) => {
     if (err) {
@@ -424,8 +422,7 @@ app.post("/updatePassword", (req, res) => {
   const newPassword = req.body.password;
   const clientId = req.body.clientId;
 
-  const mySqlChange =
-    "UPDATE 'hotel_db'.'accounts' SET 'password'= ? where id=?;";
+  const mySqlChange = "UPDATE accounts SET password= ? where id=?;";
 
   const saltRounds = Math.random(5); //ii ok si cum ii mai sus cu 3 dar asta ofera ceva mai multa securitate (getSalt()  nu mergea bine)
   bcrypt.hash(newPassword, saltRounds, (err, hash) => {
@@ -464,8 +461,7 @@ app.post("/getPassword", (req, res) => {
 app.post("/checkin", (req, res) => {
   const bookingId = req.body.bookingId;
 
-  const mySqlCheckin =
-    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= 2 where id=?;";
+  const mySqlCheckin = "UPDATE bookings SET booking_status= 2 where id=?;";
 
   mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
     if (err) {
@@ -480,8 +476,7 @@ app.post("/checkin", (req, res) => {
 app.post("/checkout", (req, res) => {
   const bookingId = req.body.bookingId;
 
-  const mySqlCheckin =
-    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= 3 where id=?;";
+  const mySqlCheckin = "UPDATE bookings SET booking_status= 3 where id=?;";
 
   mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
     if (err) {
@@ -496,8 +491,7 @@ app.post("/checkout", (req, res) => {
 app.post("/cancel", (req, res) => {
   const bookingId = req.body.bookingId;
 
-  const mySqlCheckin =
-    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= deleted where id=?;";
+  const mySqlCheckin = "UPDATE bookings SET booking_status= 5 where id=?;";
 
   mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
     if (err) {
@@ -507,6 +501,56 @@ app.post("/cancel", (req, res) => {
       res.send({ message: "ok" });
     }
   });
+});
+
+app.post("/getAllBookings", (req, res) => {
+  const mySqlAllBookings = "SELECT * FROM bookings";
+
+  mySqlConection.query(mySqlAllBookings, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (result) {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/changePrice", (req, res) => {
+  const price = req.body.price;
+  const roomId = req.body.roomId;
+
+  const mySqlChangePrice =
+    "UPDATE `rooms` SET `price` = '200' WHERE (`room_id` = '1');";
+
+  mySqlConection.query(mySqlChangePrice, { price, roomId }, (err, result) => {
+    if ({ err: err }) {
+      res.send({ err: err });
+    }
+    if (result) {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/changeCapacity", (req, res) => {
+  const capacity = req.body.capacity;
+  const roomId = req.body.roomId;
+
+  const mySqlChangePrice = "UPDATE rooms SET capacity= ? where room_id=?;";
+
+  mySqlConection.query(
+    mySqlChangePrice,
+    { capacity, roomId },
+    (err, result) => {
+      if ({ err: err }) {
+        res.send({ err: err });
+      }
+      if (result) {
+        res.send(result);
+      }
+    }
+  );
 });
 
 app.listen(process.env.PORT || PORT, () => {

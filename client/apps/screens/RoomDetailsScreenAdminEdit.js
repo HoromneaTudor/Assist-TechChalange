@@ -37,6 +37,33 @@ class RoomDetailsScreenAdminEdit extends Component {
     startDate: "",
     sndDate: "",
     clientId: 0,
+    price: 0,
+    capacity: "",
+  };
+
+  _getPrice = (text) => {
+    this.setState({ price: text });
+  };
+
+  _getCapacity = (text) => {
+    this.setState({ capacity: text });
+  };
+
+  editRoom = () => {
+    if (this.state.price != 0) {
+      Axios.post("https://api-ehotelplus.herokuapp.com/changePrice", {
+        roomId: window.paramKey.room_id,
+        price: window.paramKey.price,
+      }).then((response) => {
+        console.log(response);
+      });
+    }
+    if (this.state.capacity != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/changeCapacity", {
+        roomId: window.paramKey.room_id,
+        capacity: window.paramKey.capacity,
+      }).then((result) => {});
+    }
   };
 
   addBooking = () => {
@@ -164,11 +191,12 @@ class RoomDetailsScreenAdminEdit extends Component {
                 fontFamily: "roboto",
                 fontSize: 10,
               }}
-              onChangeItem={(item) =>
+              onChangeItem={(item) => {
                 this.setState({
                   capacity: item.value,
-                })
-              }
+                });
+                this._getCapacity(item.value);
+              }}
               placeholder="Select an item"
               dropDownStyle={{
                 backgroundColor: colors.WhiteCol,
@@ -199,6 +227,7 @@ class RoomDetailsScreenAdminEdit extends Component {
                 justifyContent: "center",
                 paddingLeft: "3%",
               }}
+              onChangeText={this._getPrice}
             ></TextInput>
           </View>
         </View>
@@ -252,7 +281,7 @@ class RoomDetailsScreenAdminEdit extends Component {
               left: "5%",
             }}
             onPress={() => {
-              this.addBooking();
+              //this.editRoom();
             }}
           >
             <Text
