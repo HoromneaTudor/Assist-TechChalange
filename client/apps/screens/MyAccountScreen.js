@@ -336,7 +336,7 @@ class MyAccountScreen extends React.Component {
     }
     if (this.state.renderMode == "Cards") {
       return (
-        <View style={{ backgroundColor: "blue" }}>
+        <View style={{}}>
           <FlatList
             data={Cards}
             renderItem={() => {
@@ -344,7 +344,8 @@ class MyAccountScreen extends React.Component {
                 <View
                   style={{
                     height: "5%",
-                    paddingBottom: "60%",
+                    paddingBottom: "50%",
+                    alignItems: "center",
                   }}
                 >
                   <Image
@@ -352,8 +353,7 @@ class MyAccountScreen extends React.Component {
                     resizeMode="contain"
                     style={{
                       padding: "25%",
-                      marginVertical: 2,
-                      marginHorizontal: 16,
+
                       height: "30%",
 
                       justifyContent: "center",
