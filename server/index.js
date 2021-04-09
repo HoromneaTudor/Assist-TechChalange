@@ -189,8 +189,8 @@ app.post("/search", (req, res) => {
                     //console.log(badDate);
                   }
                 }
-                console.log(returnDate);
-                //res.send(returnDate);
+                //console.log(returnDate);
+                res.send(returnDate);
               }
             } else {
               res.send(result1);
