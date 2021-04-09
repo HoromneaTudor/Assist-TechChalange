@@ -79,6 +79,9 @@ class RoomDetailsScreen extends Component {
       this.setState({ RoomPrice: window.paramKey.price });
       this.setState({ RoomType: window.paramKey.capacity });
       this.setState({ RoomOptions: window.paramKey.options });
+      this.setState({ startDate: window.addBookingParamKey.startDate });
+      this.setState({ endDate: window.addBookingParamKey.endDate });
+      this.setState({ clientId: window.addBookingParamKey.clientId });
       this.setState({ contor: false });
     }
   };
