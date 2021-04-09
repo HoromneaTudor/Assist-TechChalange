@@ -45,7 +45,7 @@ class RoomDetailsScreen extends Component {
       roomId: this.state.RoomId,
     }).then((response) => {
       //console.log(response);
-      this.getSearchedRooms();
+      //this.getSearchedRooms();
     });
   };
 
