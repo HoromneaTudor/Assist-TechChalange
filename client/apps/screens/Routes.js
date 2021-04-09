@@ -58,7 +58,7 @@ class MainTabScreen extends React.Component {
           component={RoomsScreen}
           options={{
             tabBarLabel: "Rooms",
-            tabBarColor: colors.TagNavOrange,
+            tabBarColor: "#7d0901",
             tabBarIcon: ({ color }) => (
               <Icon name="bed-outline" color={this.state.culoare} size={25} />
             ),
@@ -69,7 +69,7 @@ class MainTabScreen extends React.Component {
           component={FavouritesScreen}
           options={{
             tabBarLabel: "Digital Key",
-            tabBarColor: "#228B22",
+            tabBarColor: "#004d9a",
             tabBarIcon: ({ color }) => (
               <Icon
                 name="lock-open-outline"
@@ -102,7 +102,7 @@ class MainTabScreen extends React.Component {
 function Routes() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainTabScreen">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={SplashScreen}

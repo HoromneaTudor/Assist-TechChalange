@@ -21,6 +21,8 @@ const imageWidth = Dimensions.get("window").width / 2;
 class MyAccountScreen extends React.Component {
   fieldRef = React.createRef();
 
+
+
   state = {
     position: new Animated.ValueXY({ x: 0, y: -1000 }),
     positionLabel: new Animated.ValueXY({ x: -900, y: 0 }),
@@ -155,6 +157,119 @@ class MyAccountScreen extends React.Component {
     //console.log(field.value());
   };
 
+
+  changeCreditentials = () => {
+    Axios.post("https://api-ehotelplus.herokuapp.com/getPassword", {
+      clientId: this.state.clientId,
+    }).then((response) => {
+      this._setTemporaryPassword(response.data[0]);
+      console.log(response.data[0]);
+    });
+
+    if (this.state.firstNameReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateFirstName", {
+        clientId: this.state.clientId,
+        firstName: this.state.firstNameReq,
+      }).then((response) => {});
+    }
+    if (this.state.lastNameReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateLastName", {
+        clientId: this.state.clientId,
+        lastName: this.state.lastNameReq,
+      }).then((response) => {});
+    }
+    if (this.state.emailReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateEmail", {
+        clientId: this.state.clientId,
+        email: this.state.emailReq,
+      }).then((response) => {});
+    }
+    if (this.state.phoneReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updatePhoneNumber", {
+        clientId: this.state.clientId,
+        phone: this.state.phoneReq,
+      }).then((response) => {});
+    }
+    if (this.state.passwordReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updatePassword", {
+        clientId: this.state.clientId,
+        password: this.state.passwordReq,
+      }).then((response) => {});
+    }
+  };
+
+  _setTemporaryPassword = (text) => {
+    this.setState({ tempoparyPassword: text });
+  };
+
+  _getFirstName = (text) => {
+    this.setState({ firstNameReq: text });
+    //console.log(this.state.firstNameReq);
+  };
+
+  _getLastName = (text) => {
+    this.setState({ lastNameReq: text });
+    //console.log(this.state.lastNameReq);
+  };
+
+  _getEmail = (text) => {
+    this.setState({ emailReq: text });
+    //console.log(this.state.emailReq);
+  };
+
+  _getPhone = (text) => {
+    this.setState({ phoneReq: text });
+    //console.log(this.state.phoneReq);
+  };
+
+  _getPassword = (text) => {
+    this.setState({ passwordReq: text });
+    //console.log(this.state.passwordReq);
+  };
+
+  _getPasswardConfirmation = (text) => {
+    this.setState({ confPassReq: text });
+    //console.log(this.state.confPassReq);
+  };
+
+  _emailValidation = (text) => {
+    console.log(text);
+    let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (reg.test(text) === false) {
+      //console.log("Email is Not Correct");
+      //this.setState({ email: text })
+      this.setState({ emailErrorMsg: "The email is not valid" });
+      this.setState({ InputBorderColorEmail: colors.wrongInput });
+      return false;
+    } else {
+      //this.setState({ email: text })
+      //console.log("Email is Correct");
+      this.setState({ emailErrorMsg: "" });
+      return true;
+    }
+  };
+
+  _phoneValidation = () => {
+    let phonenumberLenght = this.state.phoneReq.length;
+    if (phonenumberLenght != 10 || isNaN(this.state.phoneReq)) {
+      this.setState({ phoneErrorMsg: "the phone number is not valid" });
+      this.setState({ InputBorderColorPhoneNumber: colors.wrongInput });
+      return false;
+    }
+    this.setState({ phoneErrorMsg: "" });
+    return true;
+  };
+
+  _passwordValidation = () => {
+    if (this.state.passwordReq != "") {
+      this.setState({ passwordErrorMsg: "" });
+      return true;
+    }
+    this.setState({ passwordErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorPassword: colors.wrongInput });
+    return false;
+  };
+
   formatText = (text) => {
     return text.replace(/[^+\d]/g, "");
   };
@@ -210,6 +325,10 @@ class MyAccountScreen extends React.Component {
       },
       {
         id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+        title: "Visa Card",
+      },
+      {
+        id: "58694a0f-3da1-471f-bd96-145571e29d72",
         title: "Visa Card",
       },
       {
@@ -427,6 +546,9 @@ class MyAccountScreen extends React.Component {
             ></TextInput>
 
             <TouchableOpacity
+              onPress={
+                ()=>{this.changeCreditentials();}
+              }
               placeholder="Search room"
               style={{
                 width: "80%",
@@ -461,30 +583,36 @@ class MyAccountScreen extends React.Component {
     }
     if (this.state.renderMode == "Cards") {
       return (
-        <View style={{ bottom: 10 }}>
+        <View style={{}}>
           <FlatList
             data={Cards}
             renderItem={() => {
               return (
-                <Image
-                  source={require("../assets/CreditCard.png")}
-                  resizeMode="contain"
+                <View
                   style={{
-                    padding: "25%",
-                    marginVertical: 2,
-                    marginHorizontal: 16,
-                    height: "40%",
-                    right: "54%",
-                    justifyContent: "center",
+                    height: "5%",
+                    paddingBottom: "50%",
                     alignItems: "center",
                   }}
-                ></Image>
+                >
+                  <Image
+                    source={require("../assets/CreditCard.png")}
+                    resizeMode="contain"
+                    style={{
+                      padding: "25%",
+
+                      height: "30%",
+
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                    }}
+                  ></Image>
+                </View>
               );
             }}
             keyExtractor={(item) => item.id}
             style={{ height: "100%", paddingTop: 10 }}
           />
-          <View style={{ height: 500 }}></View>
         </View>
       );
     }
@@ -544,14 +672,26 @@ class MyAccountScreen extends React.Component {
               alignItems: "center",
             }}
           >
-            <Image
-              source={require("../assets/ProfileAccountImage.png")}
+            <View
               style={{
-                height: imageWidth / 1.2,
-                width: imageWidth / 1.2,
-                borderRadius: imageWidth / 2,
+                height: 200,
+                width: 200,
+                borderRadius: 100,
+                backgroundColor: "rgba(52, 52, 52, 0.7)",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
+            >
+              <Text
+                style={{
+                  fontFamily: "robotoMed",
+                  fontSize: 100,
+                  color: "#d6d6d6",
+                }}
+              >
+                C
+              </Text>
+            </View>
           </View>
         </ImageBackground>
         <View style={{ flex: 0.1, flexDirection: "row" }}>
