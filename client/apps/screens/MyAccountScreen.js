@@ -14,6 +14,7 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import colors from "../config/colors";
 import { Dimensions } from "react-native";
+import Axios from "axios";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
@@ -25,6 +26,127 @@ class MyAccountScreen extends React.Component {
     positionLabel: new Animated.ValueXY({ x: -900, y: 0 }),
     positionCards: new Animated.ValueXY({ x: 0, y: 1000 }),
     renderMode: "",
+
+    firstNameReq: "",
+    lastNameReq: "",
+    emailReq: "",
+    phoneReq: "",
+    passwordReq: "",
+    confPassReq: "",
+    clientId: global.clientId,
+    tempoparyPassword: "",
+  };
+
+  changeCreditentials = () => {
+    Axios.post("https://api-ehotelplus.herokuapp.com/getPassword", {
+      clientId: this.state.clientId,
+    }).then((response) => {
+      this._setTemporaryPassword(response.data[0]);
+      console.log(response.data[0]);
+    });
+
+    if (this.state.firstNameReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateFirstName", {
+        clientId: this.state.clientId,
+        firstName: this.state.firstNameReq,
+      }).then((response) => {});
+    }
+    if (this.state.lastNameReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateLastName", {
+        clientId: this.state.clientId,
+        lastName: this.state.lastNameReq,
+      }).then((response) => {});
+    }
+    if (this.state.emailReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updateEmail", {
+        clientId: this.state.clientId,
+        email: this.state.emailReq,
+      }).then((response) => {});
+    }
+    if (this.state.phoneReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updatePhoneNumber", {
+        clientId: this.state.clientId,
+        phone: this.state.phoneReq,
+      }).then((response) => {});
+    }
+    if (this.state.passwordReq != "") {
+      Axios.post("https://api-ehotelplus.herokuapp.com/updatePassword", {
+        clientId: this.state.clientId,
+        password: this.state.passwordReq,
+      }).then((response) => {});
+    }
+  };
+
+  _setTemporaryPassword = (text) => {
+    this.setState({ tempoparyPassword: text });
+  };
+
+  _getFirstName = (text) => {
+    this.setState({ firstNameReq: text });
+    //console.log(this.state.firstNameReq);
+  };
+
+  _getLastName = (text) => {
+    this.setState({ lastNameReq: text });
+    //console.log(this.state.lastNameReq);
+  };
+
+  _getEmail = (text) => {
+    this.setState({ emailReq: text });
+    //console.log(this.state.emailReq);
+  };
+
+  _getPhone = (text) => {
+    this.setState({ phoneReq: text });
+    //console.log(this.state.phoneReq);
+  };
+
+  _getPassword = (text) => {
+    this.setState({ passwordReq: text });
+    //console.log(this.state.passwordReq);
+  };
+
+  _getPasswardConfirmation = (text) => {
+    this.setState({ confPassReq: text });
+    //console.log(this.state.confPassReq);
+  };
+
+  _emailValidation = (text) => {
+    console.log(text);
+    let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (reg.test(text) === false) {
+      //console.log("Email is Not Correct");
+      //this.setState({ email: text })
+      this.setState({ emailErrorMsg: "The email is not valid" });
+      this.setState({ InputBorderColorEmail: colors.wrongInput });
+      return false;
+    } else {
+      //this.setState({ email: text })
+      //console.log("Email is Correct");
+      this.setState({ emailErrorMsg: "" });
+      return true;
+    }
+  };
+
+  _phoneValidation = () => {
+    let phonenumberLenght = this.state.phoneReq.length;
+    if (phonenumberLenght != 10 || isNaN(this.state.phoneReq)) {
+      this.setState({ phoneErrorMsg: "the phone number is not valid" });
+      this.setState({ InputBorderColorPhoneNumber: colors.wrongInput });
+      return false;
+    }
+    this.setState({ phoneErrorMsg: "" });
+    return true;
+  };
+
+  _passwordValidation = () => {
+    if (this.state.passwordReq != "") {
+      this.setState({ passwordErrorMsg: "" });
+      return true;
+    }
+    this.setState({ passwordErrorMsg: "You need to complete this field" });
+    this.setState({ InputBorderColorPassword: colors.wrongInput });
+    return false;
   };
 
   onSubmit = () => {
@@ -325,6 +447,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getFirstName}
             ></TextInput>
 
             <TextInput
@@ -344,6 +467,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getLastName}
             ></TextInput>
 
             <TextInput
@@ -363,6 +487,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getEmail}
             ></TextInput>
 
             <TextInput
@@ -382,6 +507,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getPhone}
             ></TextInput>
 
             <TextInput
@@ -401,6 +527,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getPassword}
             ></TextInput>
 
             <TextInput
@@ -420,6 +547,7 @@ class MyAccountScreen extends React.Component {
                 paddingLeft: "5%",
                 color: "red",
               }}
+              onChangeText={this._getPasswardConfirmation}
             ></TextInput>
 
             <TouchableOpacity
@@ -440,6 +568,7 @@ class MyAccountScreen extends React.Component {
                 height: "9%",
                 alignSelf: "center",
               }}
+              onPress={() => console.log("asfada")}
             >
               <Text
                 style={{

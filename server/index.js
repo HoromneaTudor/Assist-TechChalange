@@ -172,7 +172,7 @@ app.post("/search", (req, res) => {
                 }
                 res.send(room);
               } else {
-                //console.log("incepe distractia");
+                console.log("incepe distractia");
 
                 let returnDate = [];
 
@@ -183,6 +183,7 @@ app.post("/search", (req, res) => {
                       badDate++;
                     }
                   }
+                  console.log(badDate);
                   if (badDate == 0) {
                     returnDate.push(result1[i]);
                     //console.log(badDate);
@@ -256,7 +257,7 @@ app.post("/getBooking", (req, res) => {
   let rooms = [];
   let booking = [];
 
-  mySqlConection.query(mySqlBookings, clientId, async (err, result) => {
+  mySqlConection.query(mySqlBookings, clientId, (err, result) => {
     if (err) {
       res.send({ err: err });
     }
@@ -290,7 +291,7 @@ app.post("/getBooking", (req, res) => {
 app.post("/getBookingRooms", (req, res) => {
   const roomId = req.body.roomId;
 
-  const mySalBookingRoom = "SELECT * FROM rooms where room_id=?;";
+  const mySqlBookingRooms = "SELECT * FROM rooms where room_id=?;";
 
   mySqlConection.query(mySqlBookingRooms, roomId, (err, result) => {
     if (err) {
@@ -298,6 +299,7 @@ app.post("/getBookingRooms", (req, res) => {
     }
     if (result) {
       res.send(result);
+      console.log(result);
     }
   });
 });
@@ -352,6 +354,157 @@ app.post("/checkin", (req, res) => {
     if (err) res.send({ err: err });
     if (response) {
       res.send(response);
+    }
+  });
+});
+
+app.post("/updateFirstName", (req, res) => {
+  const newFirstName = req.body.firstName;
+  const clientId = req.body.clientId;
+
+  const mySqlChange =
+    "UPDATE 'hotel_db'.'accounts' SET 'first_name'= ? where id=?;";
+
+  mySqlConection.query(mySqlChange, [newFirstName, clientId], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/updateLastName", (req, res) => {
+  const newLastName = req.body.lastName;
+  const clientId = req.body.clientId;
+
+  const mySqlChange =
+    "UPDATE 'hotel_db'.'accounts' SET 'second_name'= ? where id=?;";
+
+  mySqlConection.query(mySqlChange, [newLastName, clientId], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/updateEmail", (req, res) => {
+  const newEmail = req.body.email;
+  const clientId = req.body.clientId;
+
+  const mySqlChange = "UPDATE 'hotel_db'.'accounts' SET 'email'= ? where id=?;";
+
+  mySqlConection.query(mySqlChange, [newEmail, clientId], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/updatePhoneNumber", (req, res) => {
+  const newPhone = req.body.phone;
+  const clientId = req.body.clientId;
+
+  const mySqlChange = "UPDATE 'hotel_db'.'accounts' SET 'phone'= ? where id=?;";
+
+  mySqlConection.query(mySqlChange, [newPhone, clientId], (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    } else {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/updatePassword", (req, res) => {
+  const newPassword = req.body.password;
+  const clientId = req.body.clientId;
+
+  const mySqlChange =
+    "UPDATE 'hotel_db'.'accounts' SET 'password'= ? where id=?;";
+
+  const saltRounds = Math.random(5); //ii ok si cum ii mai sus cu 3 dar asta ofera ceva mai multa securitate (getSalt()  nu mergea bine)
+  bcrypt.hash(newPassword, saltRounds, (err, hash) => {
+    if (err) {
+      console.log(err);
+    }
+    mySqlConection.query(
+      mySqlChange,
+      [newPassword, clientId],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err });
+        } else {
+          res.send({ message: "ok" });
+        }
+      }
+    );
+  });
+});
+
+app.post("/getPassword", (req, res) => {
+  const clientId = req.body.clientId;
+
+  const mySqlPass = "Select password from accounte where id=?;";
+
+  mySqlConection.query(mySqlPass, clientId, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (result > 0) {
+      res.send(result);
+    }
+  });
+});
+
+app.post("/checkin", (req, res) => {
+  const bookingId = req.body.bookingId;
+
+  const mySqlCheckin =
+    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= 2 where id=?;";
+
+  mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (resulr) {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/checkout", (req, res) => {
+  const bookingId = req.body.bookingId;
+
+  const mySqlCheckin =
+    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= 3 where id=?;";
+
+  mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (resulr) {
+      res.send({ message: "ok" });
+    }
+  });
+});
+
+app.post("/cancel", (req, res) => {
+  const bookingId = req.body.bookingId;
+
+  const mySqlCheckin =
+    "UPDATE 'hotel_db'.'bookings' SET 'booking_status'= deleted where id=?;";
+
+  mySqlConection.query(mySqlCheckin, bookingId, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    if (resulr) {
+      res.send({ message: "ok" });
     }
   });
 });

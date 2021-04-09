@@ -21,6 +21,7 @@ import Slider from "@react-native-community/slider";
 import RoomDetailsScreen from "./RoomDetailsScreen";
 
 const imageWidth = Dimensions.get("window").width / 2;
+let buff = [];
 
 class RoomsScreen extends Component {
   state = {
@@ -74,6 +75,44 @@ class RoomsScreen extends Component {
     }
   };
 
+  getBooking = () => {
+    //console.log("yo");
+    if (this.state.contor2 == true) {
+      Axios.post("https://api-ehotelplus.herokuapp.com/getBooking", {
+        clientId: this.state.clientId1,
+      }).then((response) => {
+        //buff = response.data;
+        this.setState({ clientBookings: response.data });
+        //console.log(Object.keys(this.state.clientBookings).length);
+
+        //console.log(this.state.clientBookingSize);
+      });
+
+      this.setState({ contor2: false });
+      //this.getRoomsBooking();
+    }
+  };
+
+  // getRoomsBooking = () => {
+  //   //console.log("sfsafha");
+  //   //let buf = Object.keys(this.state.clientBookings).length;
+  //   //console.log(buf);
+  //   //console.log(this.state.clientBookingSize);
+  //   //console.log(buff);
+  //   let rooms = [];
+  //   for (i = 0; i < this.state.clientBookingSize; i++) {
+  //     let buff = this.state.clientBookings[i];
+  //     console.log(buff);
+  //     Axios.post("http://192.168.1.6:3001/getBookingRooms", {
+  //       clientId: buff,
+  //     }).then((response) => {
+  //       rooms.push(response.data);
+  //       //console.log(response.data);
+  //     });
+  //   }
+  //   console.log(rooms);
+  // };
+
   SearchAnimation = () => {
     Animated.timing(this.state.position, {
       toValue: { x: 0, y: imageWidth / 1.5 },
@@ -103,6 +142,7 @@ class RoomsScreen extends Component {
           <FlatList
             data={this.state.clientBookings}
             renderItem={(item) => {
+              //this.getRoomsBooking();
               return (
                 <View style={styles.item}>
                   <Image
