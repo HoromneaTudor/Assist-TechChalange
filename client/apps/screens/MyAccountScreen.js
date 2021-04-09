@@ -94,6 +94,10 @@ class MyAccountScreen extends React.Component {
         id: "58694a0f-3da1-471f-bd96-145571e29d72",
         title: "Visa Card",
       },
+      {
+        id: "58694a0f-3da1-471f-bd96-145571e29d72",
+        title: "Visa Card",
+      },
     ];
 
     if (this.state.renderMode == "General") {
@@ -332,30 +336,36 @@ class MyAccountScreen extends React.Component {
     }
     if (this.state.renderMode == "Cards") {
       return (
-        <View style={{ bottom: 10 }}>
+        <View style={{ backgroundColor: "blue" }}>
           <FlatList
             data={Cards}
             renderItem={() => {
               return (
-                <Image
-                  source={require("../assets/CreditCard.png")}
-                  resizeMode="contain"
+                <View
                   style={{
-                    padding: "25%",
-                    marginVertical: 2,
-                    marginHorizontal: 16,
-                    height: "40%",
-                    right: "54%",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    height: "5%",
+                    paddingBottom: "60%",
                   }}
-                ></Image>
+                >
+                  <Image
+                    source={require("../assets/CreditCard.png")}
+                    resizeMode="contain"
+                    style={{
+                      padding: "25%",
+                      marginVertical: 2,
+                      marginHorizontal: 16,
+                      height: "30%",
+
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                    }}
+                  ></Image>
+                </View>
               );
             }}
             keyExtractor={(item) => item.id}
             style={{ height: "100%", paddingTop: 10 }}
           />
-          <View style={{ height: 500 }}></View>
         </View>
       );
     }
@@ -415,14 +425,26 @@ class MyAccountScreen extends React.Component {
               alignItems: "center",
             }}
           >
-            <Image
-              source={require("../assets/ProfileAccountImage.png")}
+            <View
               style={{
-                height: imageWidth / 1.2,
-                width: imageWidth / 1.2,
-                borderRadius: imageWidth / 2,
+                height: 200,
+                width: 200,
+                borderRadius: 100,
+                backgroundColor: "rgba(52, 52, 52, 0.7)",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
+            >
+              <Text
+                style={{
+                  fontFamily: "robotoMed",
+                  fontSize: 100,
+                  color: "#d6d6d6",
+                }}
+              >
+                C
+              </Text>
+            </View>
           </View>
         </ImageBackground>
         <View style={{ flex: 0.1, flexDirection: "row" }}>

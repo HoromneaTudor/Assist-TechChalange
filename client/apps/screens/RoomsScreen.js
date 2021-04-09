@@ -50,26 +50,27 @@ class RoomsScreen extends Component {
     WidthBtnHartBook: "15%",
     BackColorHartBook: colors.WhiteCol,
     clientId1: global.clientId,
+    contor2: true,
+    clientBookings: [],
+    clientBookingSize: 0,
   };
 
-  //console.log(contor);
-  getRooms = () => {
-    if (this.state.contor === true) {
-      Axios.post("https://api-ehotelplus.herokuapp.com/rooms", {}).then(
-        (response) => {
-          //setRooms(response);
-          // response.data.forEach((element) => {
-          //   console.log(element);
-          // });
+  getBooking = () => {
+    //console.log("yo");
+    if (this.state.contor2 == true) {
+      Axios.post("https://api-ehotelplus.herokuapp.com/getBooking", {
+        clientId: this.state.clientId1,
+      }).then((response) => {
+        //buff = response.data;
+        this.setState({ clientBookings: response.data });
+        console.log(response.data);
+        //console.log(Object.keys(this.state.clientBookings).length);
 
-          //console.log(response.data);
-          this.setState({ Data: response.data });
-          console.log(this.state.clientId1);
-          //console.log(this.state.Data);
-          //console.log(response.data[0]);
-          this.setState({ contor: false });
-        }
-      );
+        //console.log(this.state.clientBookingSize);
+      });
+
+      this.setState({ contor2: false });
+      //this.getRoomsBooking();
     }
   };
 
@@ -89,24 +90,18 @@ class RoomsScreen extends Component {
 
   render() {
     //console.log(this.state.capacity);
+    this.getBooking();
     return (
       <View style={styles.container}>
         {/*Header View Home Screen*/}
 
-        {/*FlatList Rooms View Home Screen*/}
-        <View
-          style={{
-            zIndex: 7,
-            height: "60%",
-            bottom: "10%",
-          }}
-        >
-          <View style={styles.Header}>
-            <Text style={styles.HeaderLabel}>My bookings</Text>
-          </View>
+        <View style={styles.Header}>
+          <Text style={styles.HeaderLabel}>My bookings</Text>
+        </View>
 
+        <View style={{ flex: 1, top: "2%" }}>
           <FlatList
-            data={this.state.Data}
+            data={this.state.clientBookings}
             renderItem={(item) => {
               return (
                 <View style={styles.item}>
@@ -129,72 +124,102 @@ class RoomsScreen extends Component {
                       }}
                     >
                       <Text style={styles.roomTypeItem}>
-                        {item.item.capacity}
+                        CHECK-IN: {item.item.start_date}
                       </Text>
-                      <Text style={styles.RatingValueLabel}>Rating</Text>
-                      <Text style={styles.RatingValue}>8.5</Text>
-                      <Icon
-                        name="star"
-                        color={colors.TagNavYellow}
-                        style={styles.RatingStar}
-                        size={27}
-                      />
-                    </View>
-
-                    <View
-                      style={{
-                        //backgroundColor: "yellow",
-                        flex: 0.3,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text style={styles.roomPriceItemLabel}>Price</Text>
+                      <Text style={styles.roomTypeItem2}>
+                        CHECK-OUT: {item.item.end_date}
+                      </Text>
                     </View>
 
                     <View
                       style={{
                         flex: 0.6,
-                        justifyContent: "flex-start",
+                        justifyContent: "center",
+                        flexDirection: "row",
                       }}
                     >
-                      <Text style={styles.roomPriceItem}>
-                        {item.item.price} Euro
-                      </Text>
                       <TouchableOpacity
                         style={[
                           styles.HartContainer,
                           {
                             alignItems: "center",
                             height: "70%",
-                            width: this.state.WidthBtnHartBook,
-                            left: this.state.LeftBtnHartBook,
-                            backgroundColor: this.state.BackColorHartBook,
-                            borderRadius: 100,
+                            width: "28%",
+                            right: "15%",
+                            backgroundColor: colors.wrongInput,
+                            borderRadius: 10,
                             fontFamily: "robotoMed",
-                            fontSize: 14,
+                            justifyContent: "center",
+                            fontSize: 13,
                           },
                         ]}
-                        onPress={() => {
-                          paramKey = item.item;
-                          if (this.state.Ico != "heart-outline") {
-                            this.props.navigation.navigate("RoomDetailsScreen");
-                          }
-                        }}
+                        onPress={() => {}}
                       >
                         <Text
                           style={{
                             color: colors.WhiteCol,
-                            top: "15%",
+                            fontSize: 11,
+                            fontFamily: "robotoMed",
                           }}
                         >
-                          {this.state.BookRoomLabel}
+                          Cancel
                         </Text>
-                        <Icon
-                          name={this.state.Ico}
-                          color={colors.TagNavYellow}
-                          style={[styles.FavoritesHart, { bottom: "70%" }]}
-                          size={27}
-                        />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[
+                          styles.HartContainer,
+                          {
+                            alignItems: "center",
+                            height: "70%",
+                            width: "28%",
+                            right: "5%",
+                            backgroundColor: colors.secondary,
+                            borderRadius: 10,
+                            fontFamily: "robotoMed",
+                            justifyContent: "center",
+                            fontSize: 11,
+                          },
+                        ]}
+                        onPress={() => {}}
+                      >
+                        <Text
+                          style={{
+                            color: colors.WhiteCol,
+                            fontSize: 11,
+                            fontFamily: "robotoMed",
+                          }}
+                        >
+                          Check-in
+                        </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[
+                          styles.HartContainer,
+                          {
+                            alignItems: "center",
+                            height: "70%",
+                            width: "28%",
+                            left: "6%",
+                            backgroundColor: colors.secondary,
+                            borderRadius: 10,
+                            fontFamily: "robotoMed",
+                            justifyContent: "center",
+                            fontSize: 14,
+                          },
+                        ]}
+                        onPress={() => {}}
+                      >
+                        <Text
+                          style={{
+                            color: colors.WhiteCol,
+                            fontSize: 11,
+                            fontFamily: "robotoMed",
+                          }}
+                        >
+                          Check-out
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -206,7 +231,7 @@ class RoomsScreen extends Component {
         </View>
 
         {/*Delimitator View Home Screen*/}
-        <View style={{ height: "10%" }}></View>
+        <View style={{ height: "3%" }}></View>
         <StatusBar style="auto"></StatusBar>
       </View>
     );
@@ -227,13 +252,13 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     height: imageWidth / 1.5,
-    elevation: 5,
+    elevation: 7,
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowColor: colors.primary,
-    shadowOpacity: 0.8,
+    shadowOpacity: 1,
     shadowRadius: 5,
     zIndex: 1,
     borderRadius: 10,
@@ -254,9 +279,18 @@ const styles = StyleSheet.create({
   },
   roomTypeItem: {
     color: "black",
-    fontSize: 18,
+    fontSize: 16,
     zIndex: 99,
     left: "5%",
+    position: "absolute",
+    fontFamily: "robotoMed",
+  },
+  roomTypeItem2: {
+    color: "black",
+    fontSize: 16,
+    zIndex: 99,
+    left: "5%",
+    bottom: "5%",
     position: "absolute",
     fontFamily: "robotoMed",
   },
@@ -309,20 +343,14 @@ const styles = StyleSheet.create({
     zIndex: 99,
     fontFamily: "roboto",
   },
-  HartContainer: {
-    backgroundColor: colors.WhiteCol,
-    height: "82%",
-    width: "17%",
-    left: "70%",
-    bottom: "20%",
-  },
+
   Header: {
     flex: 0.2,
     justifyContent: "flex-end",
   },
   HeaderLabel: {
-    fontSize: 23,
+    fontSize: 35,
     fontFamily: "robotoBold",
-    left: "10%",
+    left: "5%",
   },
 });
