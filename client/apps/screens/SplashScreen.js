@@ -114,7 +114,11 @@ class SplashScreen extends Component {
         } else {
           global.clientId = response.data[0].id;
           console.log(global.clientId);
-          this.props.navigation.replace("MainMenu");
+          if (response.data[0].role == "administrator") {
+            this.props.navigation.replace("MainMenuAdmin");
+          } else {
+            this.props.navigation.replace("MainMenu");
+          }
         }
       });
     }

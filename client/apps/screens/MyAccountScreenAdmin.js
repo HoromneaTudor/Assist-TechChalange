@@ -17,7 +17,7 @@ import { Dimensions } from "react-native";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
-class MyAccountScreen extends React.Component {
+class MyAccountScreenAdmin extends React.Component {
   fieldRef = React.createRef();
 
   state = {
@@ -296,6 +296,20 @@ class MyAccountScreen extends React.Component {
           >
             Settings
           </Text>
+          <TextInput
+            placeholder="News"
+            style={{
+              height: "25%",
+              width: "70%",
+              borderRadius: 10,
+              borderColor: colors.quaternary,
+              borderWidth: 2,
+
+              alignItems: "center",
+              justifyContent: "center",
+              paddingLeft: "3%",
+            }}
+          ></TextInput>
         </View>
       );
     }
@@ -566,7 +580,7 @@ class MyAccountScreen extends React.Component {
                   color: "#d6d6d6",
                 }}
               >
-                C
+                A
               </Text>
             </View>
           </View>
@@ -617,7 +631,7 @@ class MyAccountScreen extends React.Component {
   }
 }
 
-export default MyAccountScreen;
+export default MyAccountScreenAdmin;
 
 const styles = StyleSheet.create({
   container: {

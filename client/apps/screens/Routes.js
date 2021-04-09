@@ -14,10 +14,97 @@ import RoomsScreen from "./RoomsScreen";
 import FavouritesScreen from "./DigitalKeyScreen";
 import MyAccountScreen from "./MyAccountScreen";
 import RoomDetailsScreen from "./RoomDetailsScreen";
+import RoomsScreenAdmin from "./RoomsScreenAdmin";
+import FavouritesScreenAdmin from "./DigitalKeyScreenAdmin";
+import MyAccountScreenAdmin from "./MyAccountScreenAdmin";
+import HomeScreenAdmin from "./HomeScreenAdmin";
+import RoomDetailsScreenAdmin from "./RoomDetailsScreenAdmin";
+import RoomDetailsScreenAdminEdit from "./RoomDetailsScreenAdminEdit";
 
 const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
+const TabAdmin = createMaterialBottomTabNavigator();
+
+class MainTabScreenAdmin extends React.Component {
+  state = {
+    culoare: "white",
+    componenta: "",
+    id: 0,
+  };
+
+  render() {
+    return (
+      <TabAdmin.Navigator
+        screenOptions={({ route }) => ({
+          tabBarButton: ["Login"].includes(route.name)
+            ? () => {
+                return null;
+              }
+            : undefined,
+        })}
+        initialRouteName="Home"
+        activeColor="#fff"
+        onPress={() => {
+          this.setState({ id: 2 });
+        }}
+      >
+        <TabAdmin.Screen
+          name="Home"
+          component={HomeScreenAdmin}
+          options={{
+            tabBarLabel: "Home",
+            tabBarColor: colors.secondary,
+            tabBarIcon: ({ color }) => (
+              <Icon name="home-outline" color={this.state.culoare} size={25} />
+            ),
+          }}
+        />
+        <TabAdmin.Screen
+          name="Rooms"
+          component={RoomsScreenAdmin}
+          options={{
+            tabBarLabel: "Rooms",
+            tabBarColor: "#7d0901",
+            tabBarIcon: ({ color }) => (
+              <Icon name="bed-outline" color={this.state.culoare} size={25} />
+            ),
+          }}
+        />
+        <TabAdmin.Screen
+          name="Digital Key"
+          component={FavouritesScreenAdmin}
+          options={{
+            tabBarLabel: "Digital Key",
+            tabBarColor: "#004d9a",
+            tabBarIcon: ({ color }) => (
+              <Icon
+                name="lock-open-outline"
+                color={this.state.culoare}
+                size={24}
+              />
+            ),
+          }}
+        />
+        <TabAdmin.Screen
+          name="Account"
+          component={MyAccountScreenAdmin}
+          options={{
+            tabBarLabel: "Account",
+            tabBarColor: colors.TagNavViolet,
+            tabBarIcon: ({ color }) => (
+              <Icon
+                name="person-outline"
+                color={this.state.culoare}
+                size={25}
+              />
+            ),
+          }}
+        />
+      </TabAdmin.Navigator>
+    );
+  }
+}
 
 class MainTabScreen extends React.Component {
   state = {
@@ -119,13 +206,34 @@ function Routes() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="MainMenuAdmin"
+          component={MainTabScreenAdmin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="HomeScreenAdmin"
+          component={HomeScreenAdmin}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
           name="RoomDetailsScreen"
           component={RoomDetailsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RoomDetailsScreenAdmin"
+          component={RoomDetailsScreenAdmin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RoomDetailsScreenAdminEdit"
+          component={RoomDetailsScreenAdminEdit}
           options={{ headerShown: false }}
         />
         <Stack.Screen
