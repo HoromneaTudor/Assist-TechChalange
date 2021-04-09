@@ -42,7 +42,7 @@ class MyAccountScreen extends React.Component {
       clientId: this.state.clientId,
     }).then((response) => {
       this._setTemporaryPassword(response.data[0]);
-      console.log(response.data[0]);
+      //console.log(response.data[0]);
     });
 
     if (this.state.firstNameReq != "") {
@@ -568,7 +568,6 @@ class MyAccountScreen extends React.Component {
                 height: "9%",
                 alignSelf: "center",
               }}
-              onPress={() => console.log("asfada")}
             >
               <Text
                 style={{

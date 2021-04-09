@@ -1,7 +1,6 @@
-import React, { Component, PureComponent, useState } from "react";
+import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
-import { useNavigation } from "@react-navigation/native";
 import { withNavigation } from "react-navigation";
 
 import {
@@ -10,8 +9,6 @@ import {
   StyleSheet,
   Text,
   Animated,
-  Button,
-  TouchableHighlight,
   TouchableOpacity,
   TextInput,
   View,
@@ -19,9 +16,7 @@ import {
   Alert,
 } from "react-native";
 import { Dimensions } from "react-native";
-import { useEffect } from "react";
 import Axios from "axios";
-import { render } from "react-dom";
 
 const imageWidth = Dimensions.get("window").width / 2;
 let PostitionWrong = 1;
@@ -90,36 +85,36 @@ class SignUpScreen extends Component {
 
   _getFirstName = (text) => {
     this.setState({ firstNameReq: text });
-    console.log(this.state.firstNameReq);
+    //nsole.log(this.state.firstNameReq);
   };
 
   _getLastName = (text) => {
     this.setState({ lastNameReq: text });
-    console.log(this.state.lastNameReq);
+    //console.log(this.state.lastNameReq);
   };
 
   _getEmail = (text) => {
     this.setState({ emailReq: text });
-    console.log(this.state.emailReq);
+    //console.log(this.state.emailReq);
   };
 
   _getPhone = (text) => {
     this.setState({ phoneReq: text });
-    console.log(this.state.phoneReq);
+    //console.log(this.state.phoneReq);
   };
 
   _getPassword = (text) => {
     this.setState({ passwordReq: text });
-    console.log(this.state.passwordReq);
+    //console.log(this.state.passwordReq);
   };
 
   _getPasswardConfirmation = (text) => {
     this.setState({ confPassReq: text });
-    console.log(this.state.confPassReq);
+    //console.log(this.state.confPassReq);
   };
 
   _emailValidation = (text) => {
-    console.log(text);
+    //console.log(text);
     let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (reg.test(text) === false) {
       //console.log("Email is Not Correct");

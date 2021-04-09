@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Animated,
-  ImageBackground,
   TouchableOpacity,
   FlatList,
 } from "react-native";
@@ -12,9 +11,6 @@ import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import colors from "../config/colors";
 import { SliderBox } from "react-native-image-slider-box";
-import Icon from "react-native-vector-icons/Ionicons";
-import { color } from "react-native-reanimated";
-import Routes from "./Routes";
 import Axios from "axios";
 
 const imageWidth = Dimensions.get("window").width / 2;

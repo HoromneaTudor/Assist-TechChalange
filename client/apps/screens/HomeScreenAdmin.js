@@ -1,31 +1,21 @@
-import React, { Component, memo, useMemo, useState } from "react";
-import Routes from "./Routes";
+import React, { Component } from "react";
 import { withNavigation } from "react-navigation";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  TextInput,
   FlatList,
-  ScrollView,
-  SafeAreaView,
   Animated,
   ImageBackground,
-  DevSettings,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
 import Axios from "axios";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { cos, set } from "react-native-reanimated";
 import DropDownPicker from "react-native-dropdown-picker";
-import { render } from "react-dom";
 import DatePicker from "react-native-datepicker";
 import Slider from "@react-native-community/slider";
 import RoomDetailsScreen from "./RoomDetailsScreen";
@@ -76,7 +66,7 @@ class HomeScreenAdmin extends Component {
 
           //console.log(response.data);
           this.setState({ Data: response.data });
-          console.log(this.state.clientId1);
+          //console.log(this.state.clientId1);
           //console.log(this.state.Data);
           //console.log(response.data[0]);
           this.setState({ contor: false });

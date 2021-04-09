@@ -2,23 +2,18 @@ import React, { Component } from "react";
 import { StatusBar } from "expo-status-bar";
 import colors from "../config/colors";
 import { withNavigation } from "react-navigation";
-import { NavigationActions } from "react-navigation";
 import {
   Image,
   SafeAreaView,
   StyleSheet,
   Text,
   Animated,
-  Button,
-  TouchableHighlight,
   TouchableOpacity,
   TextInput,
   View,
 } from "react-native";
 import { Dimensions } from "react-native";
-import { useEffect } from "react";
 import Axios from "axios";
-import { render } from "react-dom";
 import DialogInput from "react-native-dialog-input";
 
 const imageWidth = Dimensions.get("window").width / 2;

@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Animated,
-  ImageBackground,
   TouchableOpacity,
   FlatList,
   TextInput,
@@ -13,9 +12,6 @@ import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
 import colors from "../config/colors";
 import { SliderBox } from "react-native-image-slider-box";
-import Icon from "react-native-vector-icons/Ionicons";
-import { color } from "react-native-reanimated";
-import Routes from "./Routes";
 import Axios from "axios";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -55,7 +51,7 @@ class RoomDetailsScreenAdminEdit extends Component {
         roomId: window.paramKey.room_id,
         price: window.paramKey.price,
       }).then((response) => {
-        console.log(response);
+        //console.log(response);
       });
     }
     if (this.state.capacity != "") {
@@ -93,7 +89,7 @@ class RoomDetailsScreenAdminEdit extends Component {
     for (var i = 0, len = options.length; i < len; i += chunkSize)
       R.push(options.slice(i, i + chunkSize) + "\n\n");
 
-    console.log(R);
+    //console.log(R);
     return (
       <FlatList
         data={[R]}

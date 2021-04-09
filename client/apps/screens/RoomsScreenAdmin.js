@@ -8,17 +8,11 @@ import {
   TouchableOpacity,
   FlatList,
   Animated,
-  ImageBackground,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Dimensions } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import colors from "../config/colors";
 import Axios from "axios";
-import DropDownPicker from "react-native-dropdown-picker";
-import DatePicker from "react-native-datepicker";
-import Slider from "@react-native-community/slider";
-import RoomDetailsScreen from "./RoomDetailsScreen";
 
 const imageWidth = Dimensions.get("window").width / 2;
 
@@ -63,7 +57,7 @@ class RoomsScreenAdmin extends Component {
         (response) => {
           //buff = response.data;
           this.setState({ adminBooking: response.data });
-          console.log(response.data);
+          //console.log(response.data);
           //console.log(Object.keys(this.state.clientBookings).length);
 
           //console.log(this.state.clientBookingSize);
